@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block container %}
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <img class="img-responsive" style="display:  block;margin: 15px auto"
+                         src="{% static 'img/new.png' %}" alt="ALTA_PACIENTE">
+                    <h5 class="card-title">Alta pacientes</h5>
+                    <p class="card-text">Ingresar nuevos pacientes al sistema</p>
+                    <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-primary btn-block">Entrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <img class="img-responsive" style="display:  block;margin: 15px auto"
+                         src="{% static 'img/doc.png' %}" alt="NUEVA HIC">
+                    <h5 class="card-title">Nueva Consulta</h5>
+                    <p class="card-text">Aquí puede registrar las consultas</p>
+                    <a href="{% url 'consultas:nueva_consulta' %}" class="btn btn-primary btn-block">Entrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <img class="img-responsive" style="display:  block;margin: 15px auto"
+                         src="{% static 'img/appoint.png' %}" alt="NUEVA CITA">
+                    <h5 class="card-title">Registro citas</h5>
+                    <p class="card-text">Crear las citas a los pacientes</p>
+                    <a href="{% url 'citas:nueva_cita' %}" class="btn btn-primary btn-block btn-block">Entrar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

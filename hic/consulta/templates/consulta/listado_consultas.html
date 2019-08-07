@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block container %}
+    <div class="row mt-4">
+        <div class="col-sm-6">
+            <h2>Listado de consultas</h2>
+        </div>
+        <div class="col-sm-6">
+            <div class="flex flex-end">
+                <a href="{% url 'consultas:nueva_consulta' %}" class="btn btn-info"> Nueva consulta</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                <th>Paciente</th>
+                <th>Fecha</th>
+                <th>Doctor</th>
+                <th>Tipo de consulta</th>
+                <th>Indicaciones</th>
+                <th>Pagado</th>
+                <th>Costo</th>
+                <th>Acciones</th>
+                </thead>
+                <tbody>
+                {% for consulta in consultas %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'pacientes:historia_clinica' paciente_id=consulta.paciente.pk %}">
+                                {{ consulta.paciente }}
+                            </a>
+                        </td>
+                        <td>{{ consulta.fecha|date:"d-m-y" }}</td>
+                        <td>{{ consulta.get_doctor_display }}</td>
+                        <td>{{ consulta.tipo_consulta }}</td>
+                        <td>{{ consulta.indicaciones|truncatechars:"20" }}</td>
+                        <td>
+                            {% if consulta.pagado %}
+                                <span class="badge badge-success">SI</span>
+                            {% else %}
+                                <span class="badge badge-danger">NO</span>
+                            {% endif %}
+                        </td>
+                        <td>${{ consulta.costo }}</td>
+                        <td>
+                            <a href="{% url 'consultas:editar_consulta' consulta_id=consulta.pk %}"
+                               class="btn btn-info btn-sm">Editar</a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

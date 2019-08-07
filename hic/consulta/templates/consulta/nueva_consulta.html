@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block custom_style %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{% static 'vendors/chosen/chosen.css' %}">
+{% endblock %}
+{% block container %}
+    <h2>Nueva Consulta</h2>
+    <hr>
+    <form action="" method="post" class="">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="nombre">Paciente</label>
+                {{ form.paciente }}
+            </div>
+            <div class="form-group col-md-3">
+                <label for="nombre">Doctor</label>
+                {{ form.doctor }}
+            </div>
+            <div class="form-group col-md-3">
+                <label for="nombre">Tipo Consulta</label>
+                {{ form.tipo_consulta }}
+            </div>
+            <div class="form-group col-md-3">
+                <label for="nombre">Costo</label>
+                {{ form.costo }}
+            </div>
+            <div class="form-group col-md-3">
+                <label for="nombre">Pagado</label>
+                {{ form.pagado }}
+            </div>
+            <div class="col-md-12">
+                <label for="nombre">Indicaciones</label>
+                {{ form.indicaciones }}
+            </div>
+        </div>
+        <button class="btn btn-info">Guardar</button>
+    </form>
+{% endblock %}
+{% block custom_js %}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{% static 'vendors/chosen/chosen.jquery.js' %}"></script>
+    <script>
+        $(function () {
+            $('#id_fecha').datepicker();
+            $('select').addClass('chosen');
+            $('.chosen').chosen();
+        })
+    </script>
+{% endblock %}

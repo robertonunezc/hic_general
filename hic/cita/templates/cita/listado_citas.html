@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block container %}
+    <div class="row mt-4">
+        <div class="col-sm-6">
+            <h2>Listado de citas</h2>
+        </div>
+        <div class="col-sm-6">
+            <div class="flex flex-end">
+                <a href="{% url 'citas:nueva_cita' %}" class="btn btn-info"> Nueva cita</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-striped">
+                <thead>
+                <th>Paciente</th>
+                <th>Fecha</th>
+                <th>Doctor</th>
+                <th>Tipo de consulta</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+                </thead>
+                <tbody>
+                {% for cita in citas %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'pacientes:historia_clinica' paciente_id=cita.paciente.pk %}">
+                                {{ cita.paciente }}
+                            </a>
+                        </td>
+                        <td>{{ cita.fecha|date:"d-m-y H:i" }}</td>
+                        <td>{{ cita.get_doctor_display }}</td>
+                        <td>{{ cita.tipo_consulta }}</td>
+                        <td>
+                            {% if cita.estado == 0 %}
+                                <span class="badge badge-warning text-uppercase">
+                            {% endif %}
+                            {% if cita.estado == 1 %}
+                                <span class="badge badge-success text-uppercase">
+                            {% endif %}
+                            {% if cita.estado == 2 %}
+                                <span class="badge badge-danger text-uppercase">
+                            {% endif %}
+                            {{ cita.get_estado_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'citas:editar_cita' cita_id=cita.pk %}"
+                               class="btn btn-sm btn-info">Editar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load cloudinary %}
+
+{% load staticfiles %}
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="text-center">Datos personales</h3>
+                <hr>
+            </div>
+            <div class="col col-sm-6 col-md-2">
+               {% cloudinary historia_clinica.paciente.image format="jpg" width=120 height=80 crop="fill" %}
+            </div>
+            <div class="col col-sm-6 col-md-2">
+                <label class="bold" for="">Nombre Completo</label>
+                <p>{{ historia_clinica.paciente }}</p>
+                <div class="flex">
+                    <div class="mr-2">
+                        <label class="bold" for="">Edad</label>
+                        <p>{{ historia_clinica.paciente.edad }}</p>
+                    </div>
+                    <div>
+                        <label class="bold" for="">Peso</label>
+                        <p>{{ historia_clinica.paciente.peso }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-sm-6 col-md-3">
+                <label class="bold" for="">Dirección</label>
+                <p>{{ historia_clinica.paciente.direccion }}</p>
+            </div>
+            <div class="col col-sm-6 col-md-3">
+                <label class="bold" for="">Datos iniciales</label>
+                <div class="flex">
+                    <div class="mr-2">
+                        <label for="">Temp:</label>
+                        {{ historia_clinica.paciente.temp }}
+                    </div>
+                    <div class="mr-2">
+                        <label for="">TA:</label>
+                        {{ historia_clinica.paciente.ta }}
+                    </div>
+                    <div class="mr-2">
+                        <label for="">FC:</label>
+                        {{ historia_clinica.paciente.fc }}
+                    </div>
+                    <div class="mr-2">
+                        <label for="">%SO2:</label>
+                        {{ historia_clinica.paciente.so2 }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="text-center">Datos Médicos</h3>
+                <hr>
+            </div>
+            <div class="col-md-6">
+                <div class="flex">
+                    <div class="mr-5">
+                        <label for="" class="bold">Antecedentes Patológicos</label>
+                        <ul>
+                            {% for antecedente in historia_clinica.paciente.antecedentes_patologicos.all %}
+                                <li>{{ antecedente }}</li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                    <div>
+                        <label for="" class="bold">Otros</label>
+                        <p>{{ historia_clinica.paciente.otros }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="" class="bold">Motivo de consulta</label>
+                <p>{{ historia_clinica.paciente.motivos_consulta }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="text-center">Valoración Médica</h3>
+                <hr>
+            </div>
+            <div class="col-md-6">
+                <label for="" class="bold">Diagnóstico</label>
+                <p>{{ historia_clinica.paciente.diagnostico }}</p>
+            </div>
+            <div class="col-md-6">
+                <label for="" class="bold">Indicaciones</label>
+                <p>{{ historia_clinica.paciente.indicaciones }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="text-center">Consultas Médicas Realizadas</h3>
+                <hr>
+            </div>
+            {% for consulta in historia_clinica.consultas %}
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="fecha" class="bold">Fecha:</label>
+                            <p>{{ consulta.fecha|date:"d-m-Y" }}</p>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="doctor"
+                                   class="bold">Doctor:</label>
+                            <p>
+                                {{ consulta.get_doctor_display }}
+                            </p>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="pagado" class="bold">Pagado:</label>
+                            <p>
+                                {% if consulta.pagado %}
+                                    <span class="label label-success">Pagado</span>
+                                {% else %}
+                                    <span class="label label-danger">No Pagado</span>
+
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="costo" class="bold">Costo:</label>
+                            <p>
+                                ${{ consulta.costo }}
+                            </p>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="tipo_consulta"
+                                   class="bold">Consulta:</label>
+                            <p>
+                                {{ consulta.tipo_consulta }}
+                            </p>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="indicaciones"
+                                   class="bold">Indicaciones:</label>
+                            <p>
+                                {{ consulta.indicaciones }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,524 @@
+[
+  {
+    "model": "main.usuario",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$1JwptEXXe2EP$YhD8JKQAxRYcUfkqMxOjWs2skEDOTgRoWr47uSR1wMI=",
+      "last_login": "2019-02-19T13:30:35.724Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "admin@local.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-12-03T05:38:21.109Z",
+      "telefono": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 4,
+    "fields": {
+      "nombre": "Batman",
+      "primer_apellido": "Lopez",
+      "segundo_apellido": "Perez",
+      "fecha": "2018-12-25",
+      "edad": 63,
+      "direccion": "Kza",
+      "peso": 63.0,
+      "temp": 25.0,
+      "ta": "76",
+      "fc": "76",
+      "so2": "76",
+      "otros": "",
+      "motivos_consulta": "Motivo",
+      "diagnostico": "Diagn\u00f3stico",
+      "indicaciones": "Indicaciones",
+      "image": "image/upload/v1545696190/mad1zaevnqgnemarumf0.jpg",
+      "antecedentes_patologicos": [
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 6,
+    "fields": {
+      "nombre": "lex 2r2",
+      "primer_apellido": "e3",
+      "segundo_apellido": "4r",
+      "fecha": "2019-01-14",
+      "edad": null,
+      "direccion": "",
+      "peso": null,
+      "temp": null,
+      "ta": null,
+      "fc": null,
+      "so2": null,
+      "otros": "",
+      "motivos_consulta": "",
+      "diagnostico": "",
+      "indicaciones": "",
+      "image": null,
+      "antecedentes_patologicos": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 7,
+    "fields": {
+      "nombre": "alex 2",
+      "primer_apellido": "qwq",
+      "segundo_apellido": "qsdq",
+      "fecha": "2019-01-14",
+      "edad": null,
+      "direccion": "",
+      "peso": null,
+      "temp": null,
+      "ta": null,
+      "fc": null,
+      "so2": null,
+      "otros": "",
+      "motivos_consulta": "",
+      "diagnostico": "",
+      "indicaciones": "",
+      "image": "image/upload/v1550233627/ogq1gx9gjpre90lzntu9.jpg",
+      "antecedentes_patologicos": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 8,
+    "fields": {
+      "nombre": "Juan",
+      "primer_apellido": "Lopez",
+      "segundo_apellido": "Perez",
+      "fecha": "2019-01-25",
+      "edad": 55,
+      "direccion": "donde vive",
+      "peso": 55.0,
+      "temp": 15.0,
+      "ta": "15",
+      "fc": "15",
+      "so2": "15",
+      "otros": "",
+      "motivos_consulta": "asd",
+      "diagnostico": "asd",
+      "indicaciones": "asd",
+      "image": "image/upload/v1547555649/x2rfbvsyuodfimk4gceg.jpg",
+      "antecedentes_patologicos": [
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 9,
+    "fields": {
+      "nombre": "ALICIA",
+      "primer_apellido": "VALDEZ",
+      "segundo_apellido": "1",
+      "fecha": "2019-01-16",
+      "edad": 40,
+      "direccion": "LUIS PASTEUR, UNIVERSO 2000",
+      "peso": 65.0,
+      "temp": 36.5,
+      "ta": "120'80",
+      "fc": null,
+      "so2": null,
+      "otros": "ANTIBIOTICOS",
+      "motivos_consulta": "DOLOR LUMBAR",
+      "diagnostico": "",
+      "indicaciones": "OZONO PARAVERTEBRAL",
+      "image": null,
+      "antecedentes_patologicos": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 10,
+    "fields": {
+      "nombre": "SERGIO",
+      "primer_apellido": "SANCHEZ",
+      "segundo_apellido": "2",
+      "fecha": null,
+      "edad": null,
+      "direccion": "",
+      "peso": null,
+      "temp": null,
+      "ta": null,
+      "fc": null,
+      "so2": null,
+      "otros": "",
+      "motivos_consulta": "",
+      "diagnostico": "",
+      "indicaciones": "",
+      "image": null,
+      "antecedentes_patologicos": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 11,
+    "fields": {
+      "nombre": "CANDELARIA",
+      "primer_apellido": "GUERRERO",
+      "segundo_apellido": "3",
+      "fecha": null,
+      "edad": null,
+      "direccion": "",
+      "peso": null,
+      "temp": null,
+      "ta": null,
+      "fc": null,
+      "so2": null,
+      "otros": "",
+      "motivos_consulta": "",
+      "diagnostico": "",
+      "indicaciones": "",
+      "image": null,
+      "antecedentes_patologicos": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 12,
+    "fields": {
+      "nombre": "MARTHA",
+      "primer_apellido": "RANGEL",
+      "segundo_apellido": "3",
+      "fecha": "2019-01-16",
+      "edad": null,
+      "direccion": "",
+      "peso": null,
+      "temp": null,
+      "ta": null,
+      "fc": null,
+      "so2": null,
+      "otros": "",
+      "motivos_consulta": "",
+      "diagnostico": "",
+      "indicaciones": "",
+      "image": null,
+      "antecedentes_patologicos": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 13,
+    "fields": {
+      "nombre": "GISELA",
+      "primer_apellido": "RAYI",
+      "segundo_apellido": "4",
+      "fecha": null,
+      "edad": null,
+      "direccion": "",
+      "peso": null,
+      "temp": null,
+      "ta": null,
+      "fc": null,
+      "so2": null,
+      "otros": "",
+      "motivos_consulta": "",
+      "diagnostico": "",
+      "indicaciones": "",
+      "image": null,
+      "antecedentes_patologicos": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 14,
+    "fields": {
+      "nombre": "JUAN FRANCISCO",
+      "primer_apellido": "MARTINEZ",
+      "segundo_apellido": "5",
+      "fecha": "2019-01-16",
+      "edad": null,
+      "direccion": "",
+      "peso": null,
+      "temp": null,
+      "ta": null,
+      "fc": null,
+      "so2": null,
+      "otros": "",
+      "motivos_consulta": "",
+      "diagnostico": "",
+      "indicaciones": "",
+      "image": null,
+      "antecedentes_patologicos": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 15,
+    "fields": {
+      "nombre": "MARIA DE LA LUZ",
+      "primer_apellido": "OLVERA",
+      "segundo_apellido": "7",
+      "fecha": "2019-01-16",
+      "edad": null,
+      "direccion": "",
+      "peso": null,
+      "temp": null,
+      "ta": null,
+      "fc": null,
+      "so2": null,
+      "otros": "",
+      "motivos_consulta": "",
+      "diagnostico": "",
+      "indicaciones": "",
+      "image": null,
+      "antecedentes_patologicos": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "main.paciente",
+    "pk": 16,
+    "fields": {
+      "nombre": "LUIS ARMANDO",
+      "primer_apellido": "SALINAS",
+      "segundo_apellido": "GARCIA",
+      "fecha": "2019-01-21",
+      "edad": 35,
+      "direccion": "",
+      "peso": 68.0,
+      "temp": null,
+      "ta": null,
+      "fc": null,
+      "so2": null,
+      "otros": "",
+      "motivos_consulta": "",
+      "diagnostico": "",
+      "indicaciones": "",
+      "image": null,
+      "antecedentes_patologicos": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "main.antecendentespatologicos",
+    "pk": 1,
+    "fields": {
+      "nombre": "Ninguno",
+      "descripcion": ""
+    }
+  },
+  {
+    "model": "main.antecendentespatologicos",
+    "pk": 2,
+    "fields": {
+      "nombre": "Alergia",
+      "descripcion": ""
+    }
+  },
+  {
+    "model": "main.antecendentespatologicos",
+    "pk": 3,
+    "fields": {
+      "nombre": "Asma",
+      "descripcion": ""
+    }
+  },
+  {
+    "model": "main.antecendentespatologicos",
+    "pk": 4,
+    "fields": {
+      "nombre": "HTA",
+      "descripcion": ""
+    }
+  },
+  {
+    "model": "main.tipoconsulta",
+    "pk": 1,
+    "fields": {
+      "nombre": "Ozono inyectable",
+      "descripcion": ""
+    }
+  },
+  {
+    "model": "main.tipoconsulta",
+    "pk": 2,
+    "fields": {
+      "nombre": "Primera vez",
+      "descripcion": ""
+    }
+  },
+  {
+    "model": "main.tipoconsulta",
+    "pk": 3,
+    "fields": {
+      "nombre": "Reconsulta",
+      "descripcion": ""
+    }
+  },
+  {
+    "model": "main.consulta",
+    "pk": 38,
+    "fields": {
+      "paciente": 6,
+      "fecha": "2019-01-14",
+      "indicaciones": "vjdfhgksldgjslkgnamcvngkldfgjdiflg",
+      "doctor": 1,
+      "pagado": true,
+      "costo": 600.0,
+      "tipo_consulta": 2
+    }
+  },
+  {
+    "model": "main.consulta",
+    "pk": 39,
+    "fields": {
+      "paciente": 7,
+      "fecha": "2019-01-14",
+      "indicaciones": "5 ozono inyectables\r\nhiuiuoouupoo",
+      "doctor": 1,
+      "pagado": false,
+      "costo": 0.0,
+      "tipo_consulta": 3
+    }
+  },
+  {
+    "model": "main.consulta",
+    "pk": 40,
+    "fields": {
+      "paciente": 4,
+      "fecha": "2019-01-14",
+      "indicaciones": "TA / 120=100",
+      "doctor": 1,
+      "pagado": true,
+      "costo": 500.0,
+      "tipo_consulta": 3
+    }
+  },
+  {
+    "model": "main.consulta",
+    "pk": 41,
+    "fields": {
+      "paciente": 16,
+      "fecha": "2019-01-21",
+      "indicaciones": "",
+      "doctor": 1,
+      "pagado": false,
+      "costo": 0.0,
+      "tipo_consulta": 2
+    }
+  },
+  {
+    "model": "main.consulta",
+    "pk": 42,
+    "fields": {
+      "paciente": 8,
+      "fecha": "2019-02-19",
+      "indicaciones": "ponerle ozono",
+      "doctor": 2,
+      "pagado": false,
+      "costo": 300.0,
+      "tipo_consulta": 1
+    }
+  },
+  {
+    "model": "main.consulta",
+    "pk": 43,
+    "fields": {
+      "paciente": 8,
+      "fecha": "2019-02-19",
+      "indicaciones": "algoooasdad a sjdnaskdlasdla\u00f1 alksdjalksdj a\u00f1sldjad\u00f1lakjdakl\u00f1dj\u00f1slkjas\u00f1da d\u00f1lk jdklas akldja dadjal ajd ad alkaj lakdjald ajald jalaj ldkajd adjadlk jdalkdja daad d",
+      "doctor": 1,
+      "pagado": true,
+      "costo": 0.0,
+      "tipo_consulta": 3
+    }
+  },
+  {
+    "model": "main.citas",
+    "pk": 5,
+    "fields": {
+      "paciente": 4,
+      "fecha": "2019-01-18T08:30:37Z",
+      "estado": 1,
+      "doctor": 0,
+      "tipo_consulta": 1
+    }
+  },
+  {
+    "model": "main.citas",
+    "pk": 39,
+    "fields": {
+      "paciente": 6,
+      "fecha": "2019-01-14T07:44:37Z",
+      "estado": 1,
+      "doctor": 1,
+      "tipo_consulta": 2
+    }
+  },
+  {
+    "model": "main.citas",
+    "pk": 40,
+    "fields": {
+      "paciente": 4,
+      "fecha": "2019-01-23T07:45:36Z",
+      "estado": 2,
+      "doctor": 0,
+      "tipo_consulta": 3
+    }
+  },
+  {
+    "model": "main.citas",
+    "pk": 41,
+    "fields": {
+      "paciente": 6,
+      "fecha": "2019-01-23T10:00:14Z",
+      "estado": 0,
+      "doctor": 0,
+      "tipo_consulta": 3
+    }
+  },
+  {
+    "model": "main.citas",
+    "pk": 42,
+    "fields": {
+      "paciente": 7,
+      "fecha": "2019-01-24T10:00:35Z",
+      "estado": 0,
+      "doctor": 1,
+      "tipo_consulta": 2
+    }
+  },
+  {
+    "model": "main.citas",
+    "pk": 43,
+    "fields": {
+      "paciente": 16,
+      "fecha": "2019-01-21T09:00:28Z",
+      "estado": 1,
+      "doctor": 1,
+      "tipo_consulta": 2
+    }
+  }
+]

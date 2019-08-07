@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load cloudinary %}
+{% load staticfiles %}
+{% cloudinary_includes %}
+{% cloudinary_js_config %}
+{% block custom_style %}
+<link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+        <link rel="stylesheet" href="{% static 'vendors/chosen/chosen.css' %}">
+    <style>
+        #id_direccion {
+            height: 75px;
+        }
+
+        #id_otros {
+            height: 75px;
+        }
+    </style>
+{% endblock %}
+
+{% block container %}
+    <h2>Editar paciente</h2>
+    <hr>
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="row">
+            {% csrf_token %}
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    {{ form.nombre }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Primer Apellido</label>
+                    {{ form.primer_apellido }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Segundo Apellido</label>
+                    {{ form.segundo_apellido }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                    {{ form.fecha }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="foto">Foto</label>
+                    {{ form.image }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Edad</label>
+                    {{ form.edad }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Peso</label>
+                    {{ form.peso }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Dirección</label>
+                    {{ form.direccion }}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="nombre">Temp</label>
+                            {{ form.temp }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="nombre">TA</label>
+                            {{ form.ta }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="nombre">FC</label>
+                            {{ form.fc }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="nombre">%SO2</label>
+                            {{ form.so2 }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Antecedentes patológicos</label>
+                    {{ form.antecedentes_patologicos }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Otros</label>
+                    {{ form.otros }}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nombre">Motivos Consulta</label>
+                            {{ form.motivos_consulta }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nombre">Diagnóstico</label>
+                            {{ form.diagnostico }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nombre">Indicaciones</label>
+                            {{ form.indicaciones }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <button class="btn btn-info">Guardar</button>
+
+            </div>
+        </div>
+
+    </form>
+{% endblock %}
+
+{% block custom_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+    <script src="{% static 'vendors/chosen/chosen.jquery.js' %}"></script>
+
+    <script>
+        $(function () {
+            $('#id_fecha').datetimepicker({
+                format: 'Y-m-d',
+                step: 30
+            });
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,1207 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "main",
+    "model": "usuario"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "main",
+    "model": "antecendentespatologicos"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "main",
+    "model": "citas"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "main",
+    "model": "consulta"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "main",
+    "model": "tipoconsulta"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 11,
+  "fields": {
+    "app_label": "main",
+    "model": "paciente"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "30anhk515e5v9jkrmwpal2r3xvbhifhn",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-02-20T23:31:28.873Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3n8ylmwsvknn7u74j3s71ji0fghcjdl3",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-02T22:38:31.684Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "4rnrotug88ivh1lcqub3yyuoezldqy8f",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-17T02:48:09.749Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6z4s0ginn0gk13piirvkjve7gi9qaa9f",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2018-12-18T15:09:13.166Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8eg8k4wtsp909hxdwe9rtb60d0wxycjd",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-24T15:03:51.628Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9iylcntvorcmvhhqv1x581xoqnjm5cog",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-07T18:50:09.633Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9x4b6oe5am5heknc7a4j1t3119etrhn8",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-02T22:54:50.131Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "abo8titb0h9mtrdcp9lizaf1lqg1s8xy",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-18T14:18:12.496Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "bqth754hb9sly9xqpaj0o50lxs1x7d82",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-28T16:12:32.467Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "by187bl1cxcjsp9zdkrz8ex9fnrovn66",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2018-12-18T03:12:17.730Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fxn3w3ftkft7k8vb0auph5zuyi81r7dq",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-17T03:33:23.155Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "g8tlegr3zcl3dl1i0oai54rsdrp9o5zu",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2018-12-18T03:12:19.829Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "gwueosmysfit56uqu3h1nylujeei0gew",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-25T14:12:25.845Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "iv8cc5m613cajecoipocm8vor6dlz9d4",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-02T23:01:05.009Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "lzvtfe91y36lmcinnauz1u4vvi4eokm8",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-29T12:27:10.760Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "o9dqxk187vsctuj7djykfu8u7sbdwiu5",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2018-12-17T05:59:54.897Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "peynzg1bznyavolt3z2ansh0k52nn69q",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-17T04:11:37.126Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "pz30bo4no9f7e00nq6s18b0ks9xf56ms",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-28T16:10:38.640Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ryby0ri5tid1yzpqr0s73b147o2f1zk6",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-08T00:00:18.419Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "tzaa1zsegdmppf8a4xjcibj4ooyrd4qp",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-25T14:20:58.583Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "uruqc20cowy18glmh7ttq9wzoa13908m",
+  "fields": {
+    "session_data": "YjRhYWU3NjIxOWZlOWRhYWE2MGU4Y2UyYTM5MzE4MDczMTcxYTBiZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhYzZiMzdiNjMxZWVjYWYzOTcyNzUyZWEyNjI5M2VjZjcyNDQ1Y2I3In0=",
+    "expire_date": "2019-01-29T12:41:35.063Z"
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 4,
+  "fields": {
+    "nombre": "Batman",
+    "primer_apellido": "Lopez",
+    "segundo_apellido": "Perez",
+    "fecha": "2018-12-25",
+    "edad": 63,
+    "direccion": "Kza",
+    "peso": 63.0,
+    "temp": 25.0,
+    "ta": "76",
+    "fc": "76",
+    "so2": "76",
+    "otros": "",
+    "motivos_consulta": "Motivo",
+    "diagnostico": "Diagn\u00f3stico",
+    "indicaciones": "Indicaciones",
+    "image": "image/upload/v1545696190/mad1zaevnqgnemarumf0.jpg",
+    "antecedentes_patologicos": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 6,
+  "fields": {
+    "nombre": "lex 2r2",
+    "primer_apellido": "e3",
+    "segundo_apellido": "4r",
+    "fecha": "2019-01-14",
+    "edad": null,
+    "direccion": "",
+    "peso": null,
+    "temp": null,
+    "ta": null,
+    "fc": null,
+    "so2": null,
+    "otros": "",
+    "motivos_consulta": "",
+    "diagnostico": "",
+    "indicaciones": "",
+    "image": null,
+    "antecedentes_patologicos": [
+      1
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 7,
+  "fields": {
+    "nombre": "alex 2",
+    "primer_apellido": "qwq",
+    "segundo_apellido": "qsdq",
+    "fecha": "2019-01-14",
+    "edad": null,
+    "direccion": "",
+    "peso": null,
+    "temp": null,
+    "ta": null,
+    "fc": null,
+    "so2": null,
+    "otros": "",
+    "motivos_consulta": "",
+    "diagnostico": "",
+    "indicaciones": "",
+    "image": null,
+    "antecedentes_patologicos": [
+      1
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 8,
+  "fields": {
+    "nombre": "Juan",
+    "primer_apellido": "Lopez",
+    "segundo_apellido": "Perez",
+    "fecha": "2019-01-25",
+    "edad": 55,
+    "direccion": "donde vive",
+    "peso": 55.0,
+    "temp": 15.0,
+    "ta": "15",
+    "fc": "15",
+    "so2": "15",
+    "otros": "",
+    "motivos_consulta": "asd",
+    "diagnostico": "asd",
+    "indicaciones": "asd",
+    "image": "image/upload/v1547555649/x2rfbvsyuodfimk4gceg.jpg",
+    "antecedentes_patologicos": [
+      2,
+      3,
+      4
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 9,
+  "fields": {
+    "nombre": "ALICIA",
+    "primer_apellido": "VALDEZ",
+    "segundo_apellido": "1",
+    "fecha": "2019-01-16",
+    "edad": 40,
+    "direccion": "LUIS PASTEUR, UNIVERSO 2000",
+    "peso": 65.0,
+    "temp": 36.5,
+    "ta": "120'80",
+    "fc": null,
+    "so2": null,
+    "otros": "ANTIBIOTICOS",
+    "motivos_consulta": "DOLOR LUMBAR",
+    "diagnostico": "",
+    "indicaciones": "OZONO PARAVERTEBRAL",
+    "image": null,
+    "antecedentes_patologicos": [
+      2
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 10,
+  "fields": {
+    "nombre": "SERGIO",
+    "primer_apellido": "SANCHEZ",
+    "segundo_apellido": "2",
+    "fecha": null,
+    "edad": null,
+    "direccion": "",
+    "peso": null,
+    "temp": null,
+    "ta": null,
+    "fc": null,
+    "so2": null,
+    "otros": "",
+    "motivos_consulta": "",
+    "diagnostico": "",
+    "indicaciones": "",
+    "image": null,
+    "antecedentes_patologicos": [
+      4
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 11,
+  "fields": {
+    "nombre": "CANDELARIA",
+    "primer_apellido": "GUERRERO",
+    "segundo_apellido": "3",
+    "fecha": null,
+    "edad": null,
+    "direccion": "",
+    "peso": null,
+    "temp": null,
+    "ta": null,
+    "fc": null,
+    "so2": null,
+    "otros": "",
+    "motivos_consulta": "",
+    "diagnostico": "",
+    "indicaciones": "",
+    "image": null,
+    "antecedentes_patologicos": [
+      2
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 12,
+  "fields": {
+    "nombre": "MARTHA",
+    "primer_apellido": "RANGEL",
+    "segundo_apellido": "3",
+    "fecha": "2019-01-16",
+    "edad": null,
+    "direccion": "",
+    "peso": null,
+    "temp": null,
+    "ta": null,
+    "fc": null,
+    "so2": null,
+    "otros": "",
+    "motivos_consulta": "",
+    "diagnostico": "",
+    "indicaciones": "",
+    "image": null,
+    "antecedentes_patologicos": [
+      3
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 13,
+  "fields": {
+    "nombre": "GISELA",
+    "primer_apellido": "RAYI",
+    "segundo_apellido": "4",
+    "fecha": null,
+    "edad": null,
+    "direccion": "",
+    "peso": null,
+    "temp": null,
+    "ta": null,
+    "fc": null,
+    "so2": null,
+    "otros": "",
+    "motivos_consulta": "",
+    "diagnostico": "",
+    "indicaciones": "",
+    "image": null,
+    "antecedentes_patologicos": [
+      4
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 14,
+  "fields": {
+    "nombre": "JUAN FRANCISCO",
+    "primer_apellido": "MARTINEZ",
+    "segundo_apellido": "5",
+    "fecha": "2019-01-16",
+    "edad": null,
+    "direccion": "",
+    "peso": null,
+    "temp": null,
+    "ta": null,
+    "fc": null,
+    "so2": null,
+    "otros": "",
+    "motivos_consulta": "",
+    "diagnostico": "",
+    "indicaciones": "",
+    "image": null,
+    "antecedentes_patologicos": [
+      1
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 15,
+  "fields": {
+    "nombre": "MARIA DE LA LUZ",
+    "primer_apellido": "OLVERA",
+    "segundo_apellido": "7",
+    "fecha": "2019-01-16",
+    "edad": null,
+    "direccion": "",
+    "peso": null,
+    "temp": null,
+    "ta": null,
+    "fc": null,
+    "so2": null,
+    "otros": "",
+    "motivos_consulta": "",
+    "diagnostico": "",
+    "indicaciones": "",
+    "image": null,
+    "antecedentes_patologicos": [
+      1
+    ]
+  }
+},
+{
+  "model": "main.paciente",
+  "pk": 16,
+  "fields": {
+    "nombre": "LUIS ARMANDO",
+    "primer_apellido": "SALINAS",
+    "segundo_apellido": "GARCIA",
+    "fecha": "2019-01-21",
+    "edad": 35,
+    "direccion": "",
+    "peso": 68.0,
+    "temp": null,
+    "ta": null,
+    "fc": null,
+    "so2": null,
+    "otros": "",
+    "motivos_consulta": "",
+    "diagnostico": "",
+    "indicaciones": "",
+    "image": null,
+    "antecedentes_patologicos": [
+      1
+    ]
+  }
+},
+{
+  "model": "main.antecendentespatologicos",
+  "pk": 1,
+  "fields": {
+    "nombre": "Ninguno",
+    "descripcion": ""
+  }
+},
+{
+  "model": "main.antecendentespatologicos",
+  "pk": 2,
+  "fields": {
+    "nombre": "Alergia",
+    "descripcion": ""
+  }
+},
+{
+  "model": "main.antecendentespatologicos",
+  "pk": 3,
+  "fields": {
+    "nombre": "Asma",
+    "descripcion": ""
+  }
+},
+{
+  "model": "main.antecendentespatologicos",
+  "pk": 4,
+  "fields": {
+    "nombre": "HTA",
+    "descripcion": ""
+  }
+},
+{
+  "model": "main.tipoconsulta",
+  "pk": 1,
+  "fields": {
+    "nombre": "Ozono inyectable",
+    "descripcion": ""
+  }
+},
+{
+  "model": "main.tipoconsulta",
+  "pk": 2,
+  "fields": {
+    "nombre": "Primera vez",
+    "descripcion": ""
+  }
+},
+{
+  "model": "main.tipoconsulta",
+  "pk": 3,
+  "fields": {
+    "nombre": "Reconsulta",
+    "descripcion": ""
+  }
+},
+{
+  "model": "main.consulta",
+  "pk": 38,
+  "fields": {
+    "paciente": 6,
+    "fecha": "2019-01-14",
+    "indicaciones": "vjdfhgksldgjslkgnamcvngkldfgjdiflg",
+    "doctor": 1,
+    "pagado": true,
+    "costo": 600.0,
+    "tipo_consulta": 2
+  }
+},
+{
+  "model": "main.consulta",
+  "pk": 39,
+  "fields": {
+    "paciente": 7,
+    "fecha": "2019-01-14",
+    "indicaciones": "5 ozono inyectables\r\nhiuiuoouupoo",
+    "doctor": 1,
+    "pagado": false,
+    "costo": 0.0,
+    "tipo_consulta": 3
+  }
+},
+{
+  "model": "main.consulta",
+  "pk": 40,
+  "fields": {
+    "paciente": 4,
+    "fecha": "2019-01-14",
+    "indicaciones": "TA / 120=100",
+    "doctor": 1,
+    "pagado": true,
+    "costo": 500.0,
+    "tipo_consulta": 3
+  }
+},
+{
+  "model": "main.consulta",
+  "pk": 41,
+  "fields": {
+    "paciente": 16,
+    "fecha": "2019-01-21",
+    "indicaciones": "",
+    "doctor": 1,
+    "pagado": false,
+    "costo": 0.0,
+    "tipo_consulta": 2
+  }
+},
+{
+  "model": "main.citas",
+  "pk": 5,
+  "fields": {
+    "paciente": 4,
+    "fecha": "2019-01-18T08:30:37Z",
+    "estado": 1,
+    "doctor": 0,
+    "tipo_consulta": 1
+  }
+},
+{
+  "model": "main.citas",
+  "pk": 39,
+  "fields": {
+    "paciente": 6,
+    "fecha": "2019-01-14T07:44:37Z",
+    "estado": 1,
+    "doctor": 1,
+    "tipo_consulta": 2
+  }
+},
+{
+  "model": "main.citas",
+  "pk": 40,
+  "fields": {
+    "paciente": 4,
+    "fecha": "2019-01-23T07:45:36Z",
+    "estado": 2,
+    "doctor": 0,
+    "tipo_consulta": 3
+  }
+},
+{
+  "model": "main.citas",
+  "pk": 41,
+  "fields": {
+    "paciente": 6,
+    "fecha": "2019-01-23T10:00:14Z",
+    "estado": 0,
+    "doctor": 0,
+    "tipo_consulta": 3
+  }
+},
+{
+  "model": "main.citas",
+  "pk": 42,
+  "fields": {
+    "paciente": 7,
+    "fecha": "2019-01-24T10:00:35Z",
+    "estado": 0,
+    "doctor": 1,
+    "tipo_consulta": 2
+  }
+},
+{
+  "model": "main.citas",
+  "pk": 43,
+  "fields": {
+    "paciente": 16,
+    "fecha": "2019-01-21T09:00:28Z",
+    "estado": 1,
+    "doctor": 1,
+    "tipo_consulta": 2
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 4,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 4,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 4,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 5,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 5,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 5,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 6,
+    "codename": "add_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 6,
+    "codename": "change_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 6,
+    "codename": "delete_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can add antecendentes patologicos",
+    "content_type": 7,
+    "codename": "add_antecendentespatologicos"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can change antecendentes patologicos",
+    "content_type": 7,
+    "codename": "change_antecendentespatologicos"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can delete antecendentes patologicos",
+    "content_type": 7,
+    "codename": "delete_antecendentespatologicos"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can add citas",
+    "content_type": 8,
+    "codename": "add_citas"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can change citas",
+    "content_type": 8,
+    "codename": "change_citas"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can delete citas",
+    "content_type": 8,
+    "codename": "delete_citas"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add consulta",
+    "content_type": 9,
+    "codename": "add_consulta"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change consulta",
+    "content_type": 9,
+    "codename": "change_consulta"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete consulta",
+    "content_type": 9,
+    "codename": "delete_consulta"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can add tipo consulta",
+    "content_type": 10,
+    "codename": "add_tipoconsulta"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can change tipo consulta",
+    "content_type": 10,
+    "codename": "change_tipoconsulta"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can delete tipo consulta",
+    "content_type": 10,
+    "codename": "delete_tipoconsulta"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can add paciente",
+    "content_type": 11,
+    "codename": "add_paciente"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can change paciente",
+    "content_type": 11,
+    "codename": "change_paciente"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can delete paciente",
+    "content_type": 11,
+    "codename": "delete_paciente"
+  }
+},
+{
+  "model": "main.usuario",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$1JwptEXXe2EP$YhD8JKQAxRYcUfkqMxOjWs2skEDOTgRoWr47uSR1wMI=",
+    "last_login": "2019-02-06T23:31:28.865Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@local.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2018-12-03T05:38:21.109Z",
+    "telefono": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2018-12-03T05:40:47.762Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "Ninguno",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2018-12-03T05:41:15.568Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Ozono inyectable",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2018-12-12T14:56:26.122Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Alergia",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2018-12-12T14:56:32.742Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "Asma",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2018-12-12T14:57:14.892Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "2",
+    "object_repr": "Alex Rodriguez Perez",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"primer_apellido\", \"segundo_apellido\", \"direccion\", \"otros\", \"motivos_consulta\", \"diagnostico\", \"indicaciones\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2019-01-14T15:35:18.514Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Primera vez",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2019-01-14T15:35:26.659Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "3",
+    "object_repr": "Reconsulta",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2019-01-14T15:35:53.906Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "HTA",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2019-01-14T15:36:43.480Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "5",
+    "object_repr": "Alex1 Rod1 To1",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2019-01-14T15:36:43.495Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "3",
+    "object_repr": "Spiderman Perez Lopez",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2019-01-14T15:36:43.507Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "2",
+    "object_repr": "Alex Rodriguez Perez",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2019-01-14T15:36:43.517Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "1",
+    "object_repr": "Pedro Lopez Lopez",
+    "action_flag": 3,
+    "change_message": ""
+  }
+}
+]
