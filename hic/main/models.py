@@ -3,6 +3,11 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from cloudinary.models import CloudinaryField
 from django.conf import settings
 # Create your models here.
+DOCTORES = (
+    (0, 'Dr. Jose Luis Calunga'),
+    (1, 'Dra. Liliana García'),
+    (2, 'Lic. Carmen Rosa Corrales'),
+)
 
 ESTADO_CITAS = (
     (0, 'Agendada'),
@@ -62,7 +67,7 @@ class Consulta(models.Model):
     paciente = models.ForeignKey('main.Paciente', related_name='consultas')
     fecha = models.DateField(auto_now_add=True)
     indicaciones = models.TextField(null=True, blank=True)
-    doctor = models.IntegerField(choices=settings.DOCTORES)
+    doctor = models.IntegerField(choices=DOCTORES)
     pagado = models.BooleanField(default=False)
     costo = models.FloatField(default=0.0)
     tipo_consulta = models.ForeignKey('main.TipoConsulta', related_name='consultas')
@@ -72,6 +77,6 @@ class Citas(models.Model):
     paciente = models.ForeignKey('main.Paciente', related_name='citas')
     fecha = models.DateTimeField()
     estado = models.IntegerField(choices=ESTADO_CITAS, default=0)
-    doctor = models.IntegerField(choices=settings.DOCTORES)
+    doctor = models.IntegerField(choices=DOCTORES)
     tipo_consulta = models.ForeignKey('main.TipoConsulta', related_name='citas')
 
