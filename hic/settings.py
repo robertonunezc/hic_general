@@ -97,7 +97,7 @@ DATABASES = {
     }
 }
 
-HEROKU_SERVER = True
+HEROKU_SERVER = False
 HIC_DIR = "hic/hic_pdf/"
 
 if HEROKU_SERVER:
