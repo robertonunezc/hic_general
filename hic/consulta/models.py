@@ -13,7 +13,6 @@ class Consulta(models.Model):
     tipo = models.ForeignKey(TConsulta, on_delete=models.SET_NULL, null=True)
     historia_clinica = models.ForeignKey(HistoriaClinica, on_delete=models.SET_NULL, null=True)
     medico = models.ForeignKey(Medico, on_delete=models.SET_NULL, null=True)
-    paciente = models.ForeignKey(Paciente, on_delete=models.SET_NULL, null=True)
 
 
 class NotaPadecimiento(models.Model):

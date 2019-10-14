@@ -64,7 +64,6 @@ class TCita(models.Model):
 class Cita(models.Model):
     fecha = models.DateTimeField()
     paciente = models.ForeignKey(Paciente, on_delete=models.SET_NULL, null=True)
-    medico_especialidad = models.ForeignKey(EspecialidadMedico, on_delete=models.SET_NULL, null=True)
     estado = models.ForeignKey(ECita, on_delete=models.SET_NULL, null=True)
     tipo = models.ForeignKey(TCita, on_delete=models.SET_NULL, null=True)
     calendario = models.ForeignKey(Calendario, on_delete=models.SET_NULL, null=True)
