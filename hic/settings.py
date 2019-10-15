@@ -164,10 +164,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-DOCTORES = ()
-doctoresFiles = open(os.path.join(BASE_DIR, "hic/doctores"), "r")
-for line in doctoresFiles:
-    doc = (0, line.strip())
-    DOCTORES =doc + DOCTORES
-
-print(DOCTORES)

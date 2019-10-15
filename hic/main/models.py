@@ -2,29 +2,22 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from cloudinary.models import CloudinaryField
 from django.conf import settings
+
+
 # Create your models here.
-DOCTORES = (
-    (0, 'Dr. Jose Luis Calunga'),
-    (1, 'Dra. Liliana García'),
-    (2, 'Lic. Carmen Rosa Corrales'),
-)
-
-
-ESTADO_CITAS = (
-    (0, 'Agendada'),
-    (1, 'Confirmada'),
-    (2, 'Cancelada'),
-)
 
 
 class Usuario(AbstractUser):
-    MASCULINO=0
-    FEMENINO=1
-    GENERO=(
+    objects = UserManager()
+
+
+class Persona(models.Model):
+    MASCULINO = 0
+    FEMENINO = 1
+    GENERO = (
         (MASCULINO, "MASCULINO"),
         (FEMENINO, "FEMENINO")
     )
-    objects = UserManager()
     nombre = models.CharField(max_length=80)
     primer_apellido = models.CharField(max_length=80)
     segundo_apellido = models.CharField(max_length=80)
@@ -40,14 +33,14 @@ class Usuario(AbstractUser):
         return self.get_full_name().strip()
 
 
-class Paciente(models.Model):
+class Paciente(Persona):
     usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.usuario
 
 
-class Medico(models.Model):
+class Medico(Persona):
     usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
@@ -61,4 +54,3 @@ class TEspecialidad(models.Model):
 class EspecialidadMedico(models.Model):
     especialidad = models.ForeignKey(TEspecialidad, on_delete=models.CASCADE)
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
-
