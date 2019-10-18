@@ -4,150 +4,79 @@
 {% cloudinary_includes %}
 {% cloudinary_js_config %}
 {% block custom_style %}
-<link rel="stylesheet"
+    <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
-        <style>
-        #id_direccion {
-            height: 75px;
-        }
-
-        #id_otros {
-            height: 75px;
-        }
-    </style>
 {% endblock %}
 {% block container %}
-    <h2>Nuevo paciente</h2>
-    <hr>
-    <form action="" method="post" enctype="multipart/form-data">
-        <div class="row">
-            {% csrf_token %}
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    {{ form.nombre }}
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                 <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Nuevo Paciente</h6>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="nombre">Primer Apellido</label>
-                    {{ form.primer_apellido }}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="nombre">Segundo Apellido</label>
-                    {{ form.segundo_apellido }}
-                </div>
-            </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="id_nombre">Nombre</label>
+                                    {{ form.nombre }}
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="id_primer_apellido">Primer Apellido</label>
+                                    {{ form.primer_apellido }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="id_segundo_apellido">Segundo Apellido</label>
+                                    {{ form.segundo_apellido }}
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="id_telefono">Teléfono</label>
+                                    {{ form.telefono }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="id_genero">Género</label>
+                                    {{ form.genero }}
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="id_fecha">Fecha de Nacimiento</label>
+                                    {{ form.fecha_nacimiento }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-info">Guardar</button>
+                        </div>
 
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="fecha">Fecha</label>
-                    {{ form.fecha }}
+                    </form>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="foto">Foto</label>
-                    {{ form.image }}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="nombre">Edad</label>
-                    {{ form.edad }}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="nombre">Peso</label>
-                    {{ form.peso }}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="nombre">Dirección</label>
-                    {{ form.direccion }}
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="nombre">Temp</label>
-                            {{ form.temp }}
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="nombre">TA</label>
-                            {{ form.ta }}
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="nombre">FC</label>
-                            {{ form.fc }}
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="nombre">%SO2</label>
-                            {{ form.so2 }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="nombre">Antecedentes patológicos</label>
-                    {{ form.antecedentes_patologicos }}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="nombre">Otros</label>
-                    {{ form.otros }}
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="nombre">Motivos Consulta</label>
-                            {{ form.motivos_consulta }}
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="nombre">Diagnóstico</label>
-                            {{ form.diagnostico }}
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="nombre">Indicaciones</label>
-                            {{ form.indicaciones }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <button class="btn btn-info">Guardar</button>
-
             </div>
         </div>
+    </div>
 
-    </form>
 {% endblock %}
 
 {% block custom_js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
     <script>
         $(function () {
-            $('#id_fecha').datetimepicker({
+            $('input,select').addClass('form-control')
+            $('#id_fecha_nacimiento').datetimepicker({
                 format: 'Y-m-d',
                 step: 30
             });

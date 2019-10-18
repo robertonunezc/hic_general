@@ -2,58 +2,50 @@
 {% load cloudinary %}
 
 {% block container %}
-    <div class="row mt-4">
-        <div class="col-sm-6">
-            <h2>Listado de pacientes</h2>
-        </div>
-        <div class="col-sm-6">
-            <div class="flex flex-end">
-                <a href="{% url 'pacientes:nuevo_paciente' %}" class="btn btn-info"> Nuevo paciente</a>
-            </div>
-        </div>
-    </div>
+
     <div class="row">
         <div class="col-sm-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Listado de pacientes</h6>
+                    <a href="{% url 'pacientes:nuevo_paciente' %}" class="">
+                        Nuevo paciente
+                    </a>
 
-            <table class="table table-striped">
-                <thead>
-                <th>Foto</th>
-                <th>Nombre</th>
-                <th>Edad</th>
-                <th>Antecendentes</th>
-                <th>Dirección</th>
-                <th>Diagnóstico</th>
-                <th>Acciones</th>
-                </thead>
-                <tbody>
-                {% for paciente in pacientes %}
-                    <tr>
-                        <td>{% cloudinary paciente.image format="jpg" width=120 height=80 crop="fill" %}</td>
-                        <td>{{ paciente.get_full_name }}</td>
-                        <td>{{ paciente.edad }}</td>
-                        <td>
-                            <ul>
-                                {% for antecedente in paciente.antecedentes_patologicos.all %}
-                                    <li>{{ antecedente }}</li>
-                                {% endfor %}
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Género</th>
+                        <th>Fecha De Nacimiento</th>
+                        <th>Acciones</th>
+                        </thead>
+                        <tbody>
+                        {% for paciente in pacientes %}
+                            <tr>
+                                <td>{{ paciente.get_full_name }}</td>
+                                <td>{{ paciente.telefono }}</td>
+                                <td>{{ paciente.genero }}</td>
+                                <td>{{ paciente.fecha_nacimiento| date:"d-M-Y" }}</td>
+                                <td class="flex">
 
-                            </ul>
-                        </td>
-                        <td>{{ paciente.direccion }}</td>
-                        <td>{{ paciente.diagnostico|truncatechars:"60" }}</td>
-                        <td class="flex">
+                                    <a href="{% url 'pacientes:historia_clinica' paciente_id=paciente.pk %}"
+                                       class="btn btn-sm btn-success mr-2">Ver historia</a>
+                                    <a href="{% url 'pacientes:editar_paceinte' paciente_id=paciente.pk %}"
+                                       class="btn btn-sm btn-info mr-2">Editar</a>
+                                    <a href="{% url 'pacientes:ver_pdf_historia' paciente_id=paciente.pk %}"
+                                       class="btn btn-warning btn-sm">Imprimir</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
 
-                            <a href="{% url 'pacientes:historia_clinica' paciente_id=paciente.pk %}"
-                               class="btn btn-sm btn-success mr-2">Ver historia</a>
-                            <a href="{% url 'pacientes:editar_paceinte' paciente_id=paciente.pk %}"
-                               class="btn btn-sm btn-info mr-2">Editar</a>
-                            <a href="{% url 'pacientes:ver_pdf_historia' paciente_id=paciente.pk %}" class="btn btn-warning btn-sm">Imprimir</a>
-                        </td>
-                    </tr>
-                {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                </tbody>
-            </table>
         </div>
     </div>
 {% endblock %}

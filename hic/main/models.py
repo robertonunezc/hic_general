@@ -21,7 +21,7 @@ class Persona(models.Model):
     nombre = models.CharField(max_length=80)
     primer_apellido = models.CharField(max_length=80)
     segundo_apellido = models.CharField(max_length=80)
-    telefono = models.IntegerField(blank=False, null=False)
+    telefono = models.CharField(max_length=16, blank=False, null=False)
     genero = models.IntegerField(choices=GENERO)
     fecha_nacimiento = models.DateField(null=False, blank=False)
 
@@ -34,7 +34,7 @@ class Persona(models.Model):
 
 
 class Paciente(Persona):
-    usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True)
+    usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.usuario

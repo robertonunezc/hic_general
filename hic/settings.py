@@ -88,12 +88,12 @@ WSGI_APPLICATION = 'hic.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hic_cub',
-        'USER': 'hic_cub',
-        'PASSWORD': 'Hic123.',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hic',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
-        'PORT': '',  # Set to empty string for default.
+        'PORT': 5432,
     }
 }
 
