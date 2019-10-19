@@ -27,8 +27,8 @@
                             <tr>
                                 <td>{{ paciente.get_full_name }}</td>
                                 <td>{{ paciente.telefono }}</td>
-                                <td>{{ paciente.genero }}</td>
-                                <td>{{ paciente.fecha_nacimiento| date:"d-M-Y" }}</td>
+                                <td>{% if paciente.genero == 0 %} M {% else %} F {% endif %}</td>
+                                <td>{{ paciente.fecha_nacimiento| date:"d/M/Y" }}</td>
                                 <td class="flex">
 
                                     <a href="{% url 'pacientes:historia_clinica' paciente_id=paciente.pk %}"
