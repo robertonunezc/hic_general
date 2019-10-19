@@ -12,7 +12,7 @@
         <div class="col">
             <div class="card shadow">
                  <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Nueva Cita</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Nuevo Médico</h6>
                 </div>
                 <div class="card-body">
                     <form action="" method="post" enctype="multipart/form-data">
@@ -20,28 +20,50 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="id_fecha">Fecha</label>
-                                    {{ form.fecha }}
+                                    <label for="id_nombre">Nombre</label>
+                                    {{ form.nombre }}
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="id_paciente">Paciente</label>
-                                    {{ form.paciente }}
+                                    <label for="id_primer_apellido">Primer Apellido</label>
+                                    {{ form.primer_apellido }}
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="id_tipo">Tipo</label>
-                                    {{ form.tipo }}
+                                    <label for="id_segundo_apellido">Segundo Apellido</label>
+                                    {{ form.segundo_apellido }}
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="id_calendario">Médicos</label>
-                                    {{ form.calendario }}
+                                    <label for="id_telefono">Teléfono</label>
+                                    {{ form.telefono }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="id_genero">Género</label>
+                                    {{ form.genero }}
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="id_fecha">Fecha de Nacimiento</label>
+                                    {{ form.fecha_nacimiento }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="id_especialidades">Especialidades</label>
+                                    {{ form.especialidades }}
                                 </div>
                             </div>
                         </div>
@@ -61,8 +83,8 @@
     <script>
         $(function () {
             $('input,select').addClass('form-control')
-            $('#id_fecha').datetimepicker({
-                format: 'Y-m-d H:m',
+            $('#id_fecha_nacimiento').datetimepicker({
+                format: 'Y-m-d',
                 step: 30
             });
         })

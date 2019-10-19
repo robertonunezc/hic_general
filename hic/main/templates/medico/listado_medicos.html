@@ -2,34 +2,37 @@
 {% load cloudinary %}
 
 {% block container %}
+
     <div class="row">
         <div class="col-sm-12">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Listado de citas</h6>
-                    <a href="{% url 'citas:nueva_cita' %}" class="">
-                        Nueva cita
+                    <h6 class="m-0 font-weight-bold text-primary">Listado de Médicos</h6>
+                    <a href="{% url 'main:nuevo_medico' %}" class="">
+                        Nuevo Médico
                     </a>
 
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
-                        <th>Fecha</th>
-                        <th>Paciente</th>
-                        <th>Estado</th>
-                        <th>Tipo</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Especialidad</th>
                         <th>Acciones</th>
                         </thead>
                         <tbody>
-                        {% for cita in citas %}
+                        {% for medico in medicos %}
                             <tr>
-                                <td>{{ cita.fecha| date:"d/M/Y"  }}</td>
-                                <td>{{ cita.paciente }}</td>
-                                <td>{{ cita.estado}}</td>
-                                <td>{{ cita.tipo }}</td>
+                                <td>{{ medico.get_full_name }}</td>
+                                <td>{{ medico.telefono }}</td>
+                                <td>
+                                    {% for especialidad in medico.especialidades.all %}
+                                        <li> {{ especialidad.especialidad }} </li>
+                                    {% endfor%}
+                                </td>
                                 <td class="flex">
-                                    <a href="{% url 'citas:editar_cita' cita_id=cita.pk %}"
+                                    <a href=""
                                        class="btn btn-sm btn-info mr-2">Editar</a>
                                     <a href=""
                                        class="btn btn-warning btn-sm">Imprimir</a>

@@ -7,4 +7,4 @@ class CitaForm(forms.ModelForm):
 
     class Meta:
         model = Cita
-        fields = '__all__'
+        fields = ('fecha', 'paciente', 'tipo', 'calendario')

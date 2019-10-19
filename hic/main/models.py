@@ -36,21 +36,18 @@ class Persona(models.Model):
 class Paciente(Persona):
     usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
-    def __str__(self):
-        return self.usuario
-
 
 class Medico(Persona):
-    usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True)
-
-    def __str__(self):
-        return self.usuario
+    usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class TEspecialidad(models.Model):
     nombre = models.CharField(null=False, unique=True, max_length=80)
 
+    def __str__(self):
+        return self.nombre
+
 
 class EspecialidadMedico(models.Model):
     especialidad = models.ForeignKey(TEspecialidad, on_delete=models.CASCADE)
-    medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
+    medico = models.ForeignKey(Medico, on_delete=models.CASCADE, related_name='especialidades')

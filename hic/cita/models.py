@@ -6,6 +6,9 @@ from hic.main.models import Medico, Paciente, EspecialidadMedico
 class Calendario(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.SET_NULL, null=True)
 
+    def __str__(self):
+        return self.medico.__str__()
+
 
 class TFrecuenciaRepeticion(models.Model):
     NO_REPETIR = 0
@@ -48,6 +51,12 @@ class ECita(models.Model):
 
     estado = models.IntegerField(choices=ESTADO, unique=True)
 
+    def __str__(self):
+        for item in self.ESTADO:
+            if item[0] == self.estado:
+                return item[1]
+        return self.estado
+
 
 class TCita(models.Model):
     INICIAL = 1
@@ -59,6 +68,12 @@ class TCita(models.Model):
     )
 
     tipo = models.IntegerField(choices=TIPO, unique=True)
+
+    def __str__(self):
+        for item in self.TIPO:
+            if item[0] == self.tipo:
+                return item[1]
+        return self.tipo
 
 
 class Cita(models.Model):
