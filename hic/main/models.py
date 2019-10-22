@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from cloudinary.models import CloudinaryField
@@ -21,7 +22,7 @@ class Persona(models.Model):
     nombre = models.CharField(max_length=80)
     primer_apellido = models.CharField(max_length=80)
     segundo_apellido = models.CharField(max_length=80)
-    telefono = models.CharField(max_length=80, blank=False, null=False)
+    telefono = models.CharField(max_length=80, unique=True)
     genero = models.IntegerField(choices=GENERO)
     fecha_nacimiento = models.DateField(null=False, blank=False)
 
@@ -37,11 +38,17 @@ class Paciente(Persona):
     usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
 
+class Institucion(models.Model):
+    nombre = models.CharField(max_length=200, unique=True)
+
+
 class Medico(Persona):
     usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
+    cedula = models.CharField(max_length=80, unique=True)
+    institucion = models.ForeignKey(Institucion, on_delete=models.SET_NULL, null=True)
 
 
-class TEspecialidad(models.Model):
+class Especialidad(models.Model):
     nombre = models.CharField(null=False, unique=True, max_length=80)
 
     def __str__(self):
@@ -49,5 +56,36 @@ class TEspecialidad(models.Model):
 
 
 class EspecialidadMedico(models.Model):
-    especialidad = models.ForeignKey(TEspecialidad, on_delete=models.CASCADE)
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE)
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE, related_name='especialidades')
+
+
+class TEstado(models.Model):
+    nombre = models.CharField(max_length=80, unique=True)
+    activo = models.BooleanField(default=True)
+
+
+class NMunicipio(models.Model):
+    nombre = models.CharField(max_length=80, unique=True)
+    activo = models.BooleanField(default=True)
+
+
+class Direccion(models.Model):
+    calle = models.CharField(max_length=250)
+    numero_ext = models.CharField(max_length=250)
+    numero_int = models.CharField(max_length=250, null=True, blank=True)
+    colonia = models.CharField(max_length=250, null=True, blank=True)
+    codigo_postal = models.IntegerField(validators=[
+        MinValueValidator(0, "CP inválido"),
+        MaxValueValidator(99999, "CP inválido")
+    ])
+    municipio = models.ForeignKey(NMunicipio, on_delete=models.SET_NULL, null=True)
+    active = models.BooleanField(default=True)
+
+
+class Consultorio(models.Model):
+    nombre = models.CharField(max_length=80)
+    direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, null=True)
+    telefono = models.CharField(max_length=80)
+    medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
+

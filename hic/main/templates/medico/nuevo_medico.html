@@ -4,83 +4,133 @@
 {% cloudinary_includes %}
 {% cloudinary_js_config %}
 {% block custom_style %}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
 {% endblock %}
 {% block container %}
-    <div class="row">
-        <div class="col">
-            <div class="card shadow">
-                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Nuevo Médico</h6>
-                </div>
-                <div class="card-body">
-                    <form action="" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_nombre">Nombre</label>
-                                    {{ form.nombre }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_primer_apellido">Primer Apellido</label>
-                                    {{ form.primer_apellido }}
-                                </div>
+<div class="row">
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Nuevo Médico</h6>
+            </div>
+            <div class="card-body">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_nombre">Nombre</label>
+                                {{ form.nombre }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_segundo_apellido">Segundo Apellido</label>
-                                    {{ form.segundo_apellido }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_telefono">Teléfono</label>
-                                    {{ form.telefono }}
-                                </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_primer_apellido">Primer Apellido</label>
+                                {{ form.primer_apellido }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_genero">Género</label>
-                                    {{ form.genero }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_fecha">Fecha de Nacimiento</label>
-                                    {{ form.fecha_nacimiento }}
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_segundo_apellido">Segundo Apellido</label>
+                                {{ form.segundo_apellido }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_especialidades">Especialidades</label>
-                                    {{ form.especialidades }}
-                                </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_telefono">Teléfono</label>
+                                {{ form.telefono }}
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-info">Guardar</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_genero">Género</label>
+                                {{ form.genero }}
+                            </div>
                         </div>
-                    </form>
-                </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_fecha">Fecha de Nacimiento</label>
+                                {{ form.fecha_nacimiento }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_especialidades">Especialidades</label>
+                                {{ form.especialidades }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_consultorio_nombre">Nombre Consultorio</label>
+                                {{ consultorio_form.nombre }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_direccion_calle">Calle</label>
+                                {{ direccion_form.calle }}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_direccion_numero_ext">No.Ext</label>
+                                {{ direccion_form.numero_ext }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_direccion_numero_int">No.Int</label>
+                                {{ direccion_form.numero_int }}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_direccion_colonia">Colonia</label>
+                                {{ direccion_form.colonia }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_direccion_numero_codigo_postal">CP</label>
+                                {{ direccion_form.codigo_postal }}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_consultorio_telefono">Telefono</label>
+                                {{ consultorio_form.telefono }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-info">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
 {% endblock %}
 
 {% block custom_js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-    <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
         $(function () {
             $('input,select').addClass('form-control')
             $('#id_fecha_nacimiento').datetimepicker({
@@ -88,5 +138,12 @@
                 step: 30
             });
         })
-    </script>
+
+
+
+
+
+
+
+</script>
 {% endblock %}

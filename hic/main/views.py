@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 # @login_required
 from hic.cita.models import Calendario
-from hic.main.models import Medico, Usuario, TEspecialidad, EspecialidadMedico
-from hic.paciente.forms import MedicoForm
+from hic.main.models import Medico, Usuario, Especialidad, EspecialidadMedico
+from hic.paciente.forms import MedicoForm, ConsultorioForm, DireccionForm
 
 
 @login_required
@@ -27,9 +27,13 @@ def listado_medicos(request):
 @login_required
 def nuevo_medico(request):
     form = MedicoForm()
+    consultorio_form = ConsultorioForm()
+    direccion_form = DireccionForm()
     if request.method == 'POST':
         form = MedicoForm(request.POST)
-        if form.is_valid():
+        consultorio_form = ConsultorioForm(request.POST)
+        direccion_form = DireccionForm(request.POST)
+        if form.is_valid() and consultorio_form.is_valid() and direccion_form.is_valid():
             medico = form.save()
             calendario = Calendario()
             calendario.medico = medico
@@ -37,16 +41,23 @@ def nuevo_medico(request):
             especialidades = form.cleaned_data.get('especialidades')
             for id in especialidades:
                 try:
-                    especialidad = TEspecialidad.objects.get(pk=id)
+                    especialidad = Especialidad.objects.get(pk=id)
                     especialidad_medico = EspecialidadMedico()
                     especialidad_medico.especialidad = especialidad
                     especialidad_medico.medico = medico
                     especialidad_medico.save()
-                except TEspecialidad.DoesNotExist:
+                except Especialidad.DoesNotExist:
                     continue
+            consultorio = consultorio_form.save(commit=False)
+            direccion = direccion_form.save()
+            consultorio.medico = medico
+            consultorio.direccion = direccion
+            consultorio.save()
             return redirect('main:listado_medicos')
     context = {
-        'form': form
+        'form': form,
+        'consultorio_form': consultorio_form,
+        'direccion_form': direccion_form
     }
     return render(request, 'medico/nuevo_medico.html', context=context)
 

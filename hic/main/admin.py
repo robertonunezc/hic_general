@@ -5,5 +5,5 @@ from hic.main.models import *
 admin.site.register(Usuario)
 admin.site.register(Paciente)
 admin.site.register(Medico)
-admin.site.register(TEspecialidad)
+admin.site.register(Especialidad)
 admin.site.register(EspecialidadMedico)

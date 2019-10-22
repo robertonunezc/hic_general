@@ -1,13 +1,54 @@
 from django.db import models
 
-from hic.main.models import Medico, Paciente, EspecialidadMedico
+from hic.main.models import Medico, Paciente
+
+
+class SHorarioConsulta(models.Model):
+    duracion = models.IntegerField()
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
 
 
 class Calendario(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.SET_NULL, null=True)
+    horario_consulta = models.OneToOneField(SHorarioConsulta)
 
     def __str__(self):
         return self.medico.__str__()
+
+
+class TDia(models.Model):
+    DOMINGO = 0
+    LUNES = 1
+    MARTES = 2
+    MIERCOLES = 3
+    JUEVES = 4
+    VIERNES = 5
+    SABADO = 6
+
+    SEMANA = (
+        (DOMINGO, "DOMINGO"),
+        (LUNES, "LUNES"),
+        (MARTES, "MARTES"),
+        (MIERCOLES, "MIERCOLES"),
+        (JUEVES, "JUEVES"),
+        (VIERNES, "VIERNES"),
+        (SABADO, "SABADO"),
+    )
+
+    dia = models.IntegerField(choices=SEMANA, unique=True)
+
+    def __str__(self):
+        for item in self.SEMANA:
+            if item[0] == self.dia:
+                return item[1]
+        return self.dia
+
+
+class SHorarioConsultaDias(models.Model):
+    s_horario_consulta = models.ForeignKey(SHorarioConsulta, on_delete=models.CASCADE)
+    dia = models.ForeignKey(TDia, on_delete=models.CASCADE)
+    active = models.BooleanField(default=False)
 
 
 class TFrecuenciaRepeticion(models.Model):
