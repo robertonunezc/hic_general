@@ -1,8 +1,8 @@
-from django.conf.urls import url
+from django.urls import path
 from hic.consulta import views
-
+app_name = 'consulta'
 urlpatterns = [
-     url(r'^nueva/$', views.nueva_consulta, name='nueva_consulta'),
-     url(r'^listado/$', views.listado_consultas, name='listado_consultas'),
-     url(r'^editar/(?P<consulta_id>.+)$', views.editar_consulta, name='editar_consulta'),
+    path('nueva/', views.nueva_consulta, name='nueva_consulta'),
+    path('listado/', views.listado_consultas, name='listado_consultas'),
+    path('editar/<int:consulta_id>', views.editar_consulta, name='editar_consulta'),
  ]

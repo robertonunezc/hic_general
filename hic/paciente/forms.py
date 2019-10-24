@@ -9,7 +9,8 @@ class PacienteForm(forms.ModelForm):
 
 
 class MedicoForm(forms.ModelForm):
-    CHOICES = [[x.id, x.nombre] for x in Especialidad.objects.all()]
+    # CHOICES = [[x.id, x.nombre] for x in Especialidad.objects.all()]
+    CHOICES = []
 
     especialidades = forms.MultipleChoiceField(choices=CHOICES, required=True, widget=forms.SelectMultiple)
 

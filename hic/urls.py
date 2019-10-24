@@ -13,21 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import path
 from django.contrib.auth import views
+from django.urls.conf import include
 
 urlpatterns = [
-    url('admin/', admin.site.urls),
-    url(r'^inicio/', include('hic.main.url', namespace="main")),
-    url(r'^pacientes/', include('hic.paciente.url', namespace="pacientes")),
-    url(r'^citas/', include('hic.cita.url', namespace="citas")),
-    url(r'^consultas/', include('hic.consulta.url', namespace="consultas")),
-    url(r'^$', views.login,
-        {'template_name': 'registration/login.html'}, name='auth_login'),
-    url(r'^accounts/login/$', views.login,
-        {'template_name': 'registration/login.html'}, name='auth_login'),
-    url(r'^accounts/logout/$', views.logout,
-        {'template_name': 'registration/logout.html', 'next_page': 'auth_login'},
-        name='auth_logout', )
+    path('admin/', admin.site.urls),
+    path('inicio/', include('hic.main.url', namespace="main")),
+    path('pacientes/', include('hic.paciente.url', namespace="pacientes")),
+    path('citas/', include('hic.cita.url', namespace="citas")),
+    path('consultas/', include('hic.consulta.url', namespace="consultas")),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

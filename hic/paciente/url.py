@@ -1,10 +1,10 @@
-from django.conf.urls import url
+from django.urls import path
 from hic.paciente import views
-
+app_name = 'pacientes'
 urlpatterns = [
-     url(r'^listado/$', views.listado_paciente, name='listado_pacientes'),
-     url(r'^nuevo/$', views.nuevo_paciente, name='nuevo_paciente'),
-     url(r'^editar/(?P<paciente_id>.+)$', views.editar_paciente, name='editar_paceinte'),
-     url(r'^pdf/(?P<paciente_id>.+)$', views.ver_pdf_historia, name='ver_pdf_historia'),
-     url(r'^historia/(?P<paciente_id>.+)$', views.historia_clinica, name='historia_clinica'),
+     path('listado/', views.listado_paciente, name='listado_pacientes'),
+     path('nuevo/', views.nuevo_paciente, name='nuevo_paciente'),
+     path('editar/<int:paciente_id>', views.editar_paciente, name='editar_paceinte'),
+     path('pdf/<int:paciente_id>', views.ver_pdf_historia, name='ver_pdf_historia'),
+     path('historia/<int:paciente_id>', views.historia_clinica, name='historia_clinica'),
  ]

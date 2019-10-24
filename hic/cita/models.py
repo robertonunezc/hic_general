@@ -11,7 +11,7 @@ class SHorarioConsulta(models.Model):
 
 class Calendario(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.SET_NULL, null=True)
-    horario_consulta = models.OneToOneField(SHorarioConsulta)
+    horario_consulta = models.OneToOneField(SHorarioConsulta, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.medico.__str__()
