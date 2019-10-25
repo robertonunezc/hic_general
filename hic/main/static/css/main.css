@@ -3,4 +3,7 @@
 }
 .hour-available:hover {
     cursor: pointer;
+    border:solid 1px #36b9cc;
+    background-color: white;
+    color: #36b9cc;
 }
