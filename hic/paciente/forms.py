@@ -1,5 +1,5 @@
 from django import forms
-from hic.main.models import Paciente, Medico, Especialidad, Consultorio, Direccion
+from hic.main.models import Paciente, Medico, Especialidad, Consultorio, Direccion, TEstado
 
 
 class PacienteForm(forms.ModelForm):
@@ -19,13 +19,15 @@ class MedicoForm(forms.ModelForm):
 
 
 class ConsultorioForm(forms.ModelForm):
-
     class Meta:
         model = Consultorio
         exclude = ('medico', 'direccion',)
 
 
 class DireccionForm(forms.ModelForm):
+    estado = forms.ModelChoiceField(queryset=TEstado.objects.filter(activo=True), empty_label='--selecciona--',
+                                    label='Estado',
+                                    required=False)
 
     class Meta:
         model = Direccion

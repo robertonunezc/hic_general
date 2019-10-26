@@ -4,575 +4,595 @@
 {% cloudinary_includes %}
 {% cloudinary_js_config %}
 {% block custom_style %}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
 {% endblock %}
 {% block container %}
-    <div class="row">
-        <div class="col">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Nuevo Médico</h6>
-                </div>
-                <div class="card-body">
-                    <form action="" method="post" class="doctor-form" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-12">
-                                <h4>Datos Personales</h4>
-                                <hr>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_nombre">Nombre</label>
-                                    {{ form.nombre }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_primer_apellido">Primer Apellido</label>
-                                    {{ form.primer_apellido }}
-                                </div>
+<div class="row">
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Nuevo Médico</h6>
+            </div>
+            <div class="card-body">
+                <form action="" method="post" class="doctor-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Datos Personales</h4>
+                            <hr>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_nombre">Nombre</label>
+                                {{ form.nombre }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_segundo_apellido">Segundo Apellido</label>
-                                    {{ form.segundo_apellido }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_telefono">Teléfono</label>
-                                    {{ form.telefono }}
-                                </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_primer_apellido">Primer Apellido</label>
+                                {{ form.primer_apellido }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_genero">Género</label>
-                                    {{ form.genero }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_fecha">Fecha de Nacimiento</label>
-                                    {{ form.fecha_nacimiento }}
-                                </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_segundo_apellido">Segundo Apellido</label>
+                                {{ form.segundo_apellido }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h4>Datos médicos</h4>
-                                <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_fecha">Fecha de Nacimiento</label>
+                                {{ form.fecha_nacimiento }}
                             </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_genero">Género</label>
+                                {{ form.genero }}
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_telefono">Teléfono</label>
+                                {{ form.telefono }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Datos Médicos</h4>
+                            <hr>
+                        </div>
 
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_especialidades">Especialidades</label>
-                                    {{ form.especialidades }}
-                                </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_especialidades">Especialidades</label>
+                                {{ form.especialidades }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h4>Datos Consultorio</h4>
-                                <hr>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_consultorio_nombre">Nombre Consultorio</label>
-                                    {{ consultorio_form.nombre }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_consultorio_telefono">Telefono</label>
-                                    {{ consultorio_form.telefono }}
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Datos Consultorio</h4>
+                            <hr>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_consultorio_nombre">Nombre Consultorio</label>
+                                {{ consultorio_form.nombre }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_direccion_calle">Calle</label>
-                                    {{ direccion_form.calle }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_direccion_numero_ext">No.Ext</label>
-                                    {{ direccion_form.numero_ext }}
-                                </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_consultorio_telefono">Telefono</label>
+                                {{ consultorio_form.telefono }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_direccion_numero_int">No.Int</label>
-                                    {{ direccion_form.numero_int }}
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_direccion_colonia">Colonia</label>
-                                    {{ direccion_form.colonia }}
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_direccion_calle">Calle</label>
+                                {{ direccion_form.calle }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="id_direccion_numero_codigo_postal">CP</label>
-                                    {{ direccion_form.codigo_postal }}
-                                </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_direccion_numero_ext">No.Ext</label>
+                                {{ direccion_form.numero_ext }}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h4>Disponibilidad para consultas</h4>
-                                <hr>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_direccion_numero_int">No.Int</label>
+                                {{ direccion_form.numero_int }}
                             </div>
-                            <div class="col-12">
-                                <p class="text-success">Seleccione las horas disponibles para consulta</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                       <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_direccion_numero_codigo_postal">CP</label>
+                                {{ direccion_form.codigo_postal }}
                             </div>
-                            <div class="col-12">
-                                <table class="table table-doctor-calendar">
-                                    <thead>
-                                    <th>Lunes</th>
-                                    <th>Martes</th>
-                                    <th>Miercoles</th>
-                                    <th>Jueves</th>
-                                    <th>Viernes</th>
-                                    <th>Sábado</th>
-                                    <th>Domingo</th>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td align="center">
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="id_direccion_colonia">Colonia</label>
+                                {{ direccion_form.colonia }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>Datos Consulta</h4>
+                            <hr>
+                        </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_consulta_duracion">Duración(Min.)</label>
+                                    {{ consulta_form.duracion }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_consulta_hora_inicio">Hora Inicio
+                                        <i class="fas fa-fw fa-question-circle"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Inicio de la primera consulta del día"></i></label>
+                                    {{ consulta_form.hora_inicio }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="id_consulta_hora_fin">Hora Fin
+                                            <i class="fas fa-fw fa-question-circle"
+                                                data-toggle="tooltip" data-placement="top"
+                                                title="Término de la ultima consulta del día"></i></label>
+                                        {{ consulta_form.hora_inicio }}
+                                    </div>
+                                </div>
+                        <div class="col-12">
+                            <p class="text-success">Seleccione las horas NO disponibles para consulta. Ej.: Horas de comida</p>
+                        </div>
+                        <div class="col-12">
+                            <table class="table table-doctor-calendar">
+                                <thead>
+                                <th>Lunes</th>
+                                <th>Martes</th>
+                                <th>Miercoles</th>
+                                <th>Jueves</th>
+                                <th>Viernes</th>
+                                <th>Sábado</th>
+                                <th>Domingo</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">8:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">8:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">8:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">8:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">8:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">8:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">8:00am</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">9:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">9:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">9:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">9:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">9:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">9:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">9:00am</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
+                                </tr>
 
-                                    <tr>
-                                        <td align="center">
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">10:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">10:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">10:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">10:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">10:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">10:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">10:00am</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">11:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">11:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">11:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">11:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">11:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">11:00am</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">11:00am</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">12:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">12:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">12:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">12:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">12:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">12:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">12:00pm</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">1:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">1:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">1:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">1:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">1:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">1:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">1:00pm</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">2:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">2:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">2:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">2:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">2:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">2:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">2:00pm</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">3:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">3:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">3:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">3:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">3:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">3:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">3:00pm</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">4:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">4:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">4:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">4:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">4:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">4:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">4:00pm</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">5:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">5:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">5:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">5:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">5:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">5:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">5:00pm</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">6:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">6:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">6:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">6:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">6:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">6:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">6:00pm</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">7:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">7:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">7:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">7:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">7:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">7:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">7:00pm</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td align="center">
+                                </tr>
+                                <tr>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="monday">8:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Tuesday">8:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Wednesday">8:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Thursday">8:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Friday">8:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Saturday">8:00pm</span>
-                                        </td>
-                                        <td align="center">
+                                    </td>
+                                    <td align="center">
                                             <span class="badge badge-info hour-available"
                                                   data-day="Sunday">8:00pm</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
+                                </tr>
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-info btn-save-doctor">Guardar</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-info btn-save-doctor">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
 {% endblock %}
 
 {% block custom_js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-    <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script>
         $(function () {
             let blockedDays = [];
             $('input,select').addClass('form-control');
@@ -624,5 +644,8 @@
         })
 
 
-    </script>
+
+
+
+</script>
 {% endblock %}

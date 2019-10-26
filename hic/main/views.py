@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 # @login_required
+from hic.cita.forms import SHorarioConsultaForm
 from hic.cita.models import Calendario
 from hic.main.models import Medico, Usuario, Especialidad, EspecialidadMedico
 from hic.paciente.forms import MedicoForm, ConsultorioForm, DireccionForm
@@ -29,14 +30,18 @@ def nuevo_medico(request):
     form = MedicoForm()
     consultorio_form = ConsultorioForm()
     direccion_form = DireccionForm()
+    consulta_form = SHorarioConsultaForm()
     if request.method == 'POST':
         form = MedicoForm(request.POST)
         consultorio_form = ConsultorioForm(request.POST)
         direccion_form = DireccionForm(request.POST)
+        consulta_form = SHorarioConsultaForm(request.POST)
         if form.is_valid() and consultorio_form.is_valid() and direccion_form.is_valid():
             medico = form.save()
             calendario = Calendario()
             calendario.medico = medico
+            consulta = consulta_form.save()
+            calendario.horario_consulta = consulta
             calendario.save()
             especialidades = form.cleaned_data.get('especialidades')
             for id in especialidades:
@@ -57,7 +62,8 @@ def nuevo_medico(request):
     context = {
         'form': form,
         'consultorio_form': consultorio_form,
-        'direccion_form': direccion_form
+        'direccion_form': direccion_form,
+        'consulta_form': consulta_form
     }
     return render(request, 'medico/nuevo_medico.html', context=context)
 

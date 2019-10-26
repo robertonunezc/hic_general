@@ -122,4 +122,5 @@ class Cita(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.SET_NULL, null=True)
     estado = models.ForeignKey(ECita, on_delete=models.SET_NULL, null=True)
     tipo = models.ForeignKey(TCita, on_delete=models.SET_NULL, null=True)
+    observaciones = models.CharField(max_length=250, null=True)
     calendario = models.ForeignKey(Calendario, on_delete=models.SET_NULL, null=True)
