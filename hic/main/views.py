@@ -1,3 +1,4 @@
+import openpyxl
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 # @login_required
 from hic.cita.forms import SHorarioConsultaForm
 from hic.cita.models import Calendario
-from hic.main.models import Medico, Usuario, Especialidad, EspecialidadMedico
+from hic.main.models import Medico, Usuario, Especialidad, EspecialidadMedico, NEstado, NMunicipio, NCodigoPostal, \
+    NColonia
 from hic.paciente.forms import MedicoForm, ConsultorioForm, DireccionForm
 
 
@@ -84,4 +86,26 @@ def editar_medico(request, medico_id):
         'msg': msg
     }
     return render(request, 'cita/editar_cita.html', context=context)
+
+
+#cargar colonias(dev)
+def cargar_colonias(request):
+    if request.method == 'POST':
+        file = request.FILES["excel_file"]
+        work_box = openpyxl.load_workbook(file)
+        sheets = work_box.sheetnames
+        for i in range(24, len(sheets)):
+            work_sheet = work_box[sheets[i]]
+            row_list = list(work_sheet.rows)
+            for j in range(1, len(row_list)):
+                cp = str(row_list[j][0].value).strip()
+                colonia = str(row_list[j][1].value).strip()
+                municipio = str(row_list[j][3].value).strip()
+                estado = str(row_list[j][4].value).strip()
+
+                obj_estado, created = NEstado.objects.get_or_create(nombre=estado)
+                obj_municipio, created = NMunicipio.objects.get_or_create(estado=obj_estado, nombre=municipio)
+                obj_cp, created = NCodigoPostal.objects.get_or_create(municipio=obj_municipio, codigo=cp)
+                obj_colonia, created = NColonia.objects.get_or_create(codigo_postal=obj_cp, nombre=colonia)
+    return render(request, 'carga.html')
 

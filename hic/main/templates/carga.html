@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="{% url 'main:carga' %}" method="post" enctype="multipart/form-data"
+                              class="form-horizontal">
+                            {% csrf_token %}
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h2>Carga Masiva de Usuario</h2>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Subir fichero </label>
+                                            <div class="col-md-9 m-b-25">
+                                                <input type="file"
+                                                       title="Upload excel file"
+                                                       name="excel_file"
+                                                       required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-info m-r-10">Guardar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+</body>
+</html>

@@ -60,14 +60,39 @@ class EspecialidadMedico(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE, related_name='especialidades')
 
 
-class TEstado(models.Model):
+class NEstado(models.Model):
     nombre = models.CharField(max_length=80, unique=True)
     activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
 
 
 class NMunicipio(models.Model):
-    nombre = models.CharField(max_length=80, unique=True)
+    nombre = models.CharField(max_length=80)
+    estado = models.ForeignKey(NEstado, on_delete=models.CASCADE)
     activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+
+class NCodigoPostal(models.Model):
+    codigo = models.CharField(max_length=80, unique=True)
+    municipio = models.ForeignKey(NMunicipio, on_delete=models.CASCADE)
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.codigo
+
+
+class NColonia(models.Model):
+    nombre = models.CharField(max_length=80)
+    codigo_postal = models.ForeignKey(NCodigoPostal, on_delete=models.CASCADE)
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
 
 
 class Direccion(models.Model):
@@ -75,11 +100,7 @@ class Direccion(models.Model):
     numero_ext = models.CharField(max_length=250)
     numero_int = models.CharField(max_length=250, null=True, blank=True)
     colonia = models.CharField(max_length=250, null=True, blank=True)
-    codigo_postal = models.IntegerField(validators=[
-        MinValueValidator(0, "CP inválido"),
-        MaxValueValidator(99999, "CP inválido")
-    ])
-    municipio = models.ForeignKey(NMunicipio, on_delete=models.SET_NULL, null=True)
+    codigo_postal = models.ForeignKey(NColonia, on_delete=models.SET_NULL, null=True)
     active = models.BooleanField(default=True)
 
 
@@ -88,4 +109,3 @@ class Consultorio(models.Model):
     direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, null=True)
     telefono = models.CharField(max_length=80)
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
-
