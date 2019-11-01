@@ -2,8 +2,9 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-from hic.cita.forms import CitaForm
+from hic.cita.forms import CitaForm, PrimeraCitaForm
 from hic.cita.models import Cita, ECita
+from hic.paciente.forms import PacienteForm
 
 
 @login_required
@@ -20,6 +21,25 @@ def nueva_cita(request):
         'form': form
     }
     return render(request, 'cita/nueva_cita.html', context=context)
+
+
+@login_required
+def primera_nueva_cita(request):
+    form = PrimeraCitaForm()
+    paciente_form = PacienteForm()
+    if request.method == 'POST':
+        form = CitaForm(request.POST)
+        paciente_form = PacienteForm(request.POST)
+        if form.is_valid():
+            cita = form.save(commit=False)
+            cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
+            cita.save()
+            return redirect('citas:listado_citas')
+    context = {
+        'form': form,
+        'form_paciente': paciente_form
+    }
+    return render(request, 'cita/primera_nueva_cita.html', context=context)
 
 
 @login_required
