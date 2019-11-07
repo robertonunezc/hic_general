@@ -6,6 +6,19 @@ from hic.cita.forms import CitaForm, PrimeraCitaForm
 from hic.cita.models import Cita, ECita
 from hic.paciente.forms import PacienteForm
 
+@login_required
+def seleccionar_horario(request):
+    return render(request,'cita/seleccionar_horario.html')
+
+@login_required
+def seleccionar_tipo_cita(request,horario_id):
+    request.session.pop('horario_cita', horario_id)
+    return render(request,'cita/seleccionar_tipo_cita.html')
+
+@login_required
+def primera_cita(request):
+
+    return render(request,'cita/primera_cita.html')
 
 @login_required
 def nueva_cita(request):
@@ -36,10 +49,10 @@ def primera_nueva_cita(request):
             cita.save()
             return redirect('citas:listado_citas')
     context = {
-        'form': form,
-        'form_paciente': paciente_form
+        'cita_form': form,
+        'paciente_form': paciente_form
     }
-    return render(request, 'cita/primera_nueva_cita.html', context=context)
+    return render(request, 'cita/primera_cita.html', context=context)
 
 
 @login_required

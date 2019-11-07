@@ -5,7 +5,7 @@ from hic.main.models import Paciente, Medico, Especialidad, Consultorio, Direcci
 class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = '__all__'
+        exclude = ('usuario',)
 
 
 class MedicoForm(forms.ModelForm):

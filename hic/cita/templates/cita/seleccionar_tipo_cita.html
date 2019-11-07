@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block container %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <img class="img-responsive" style="display:  block;margin: 15px auto"
+                         src="{% static 'img/new.png' %}" alt="NUEVA_CITA">
+                    <h5 class="card-title">Paciente Nuevo</h5>
+                    <a href="{% url 'citas:primera_cita' %}" class="btn btn-primary btn-block">Crear Cita</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <img class="img-responsive" style="display:  block;margin: 15px auto"
+                         src="{% static 'img/appoint.png' %}" alt="NUEVA_CITA">
+                    <h5 class="card-title">Paciente Registrado</h5>
+                    <a href="{% url 'citas:nueva_cita' %}" class="btn btn-primary btn-block">Crear Cita</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

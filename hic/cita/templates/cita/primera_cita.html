@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block container %}
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Nueva Cita</h6>
+                </div>
+                <div class="card-body">
+                    <form action="">
+                        {% csrf_token %}
+
+                        {{ paciente_form.as_p }}
+                        {{ cita_form.as_p }}
+                        <div class="col-md-12">
+                            <button class="btn btn-info btn-save-doctor">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
