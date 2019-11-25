@@ -106,7 +106,7 @@ class Direccion(models.Model):
 
 
 class Consultorio(models.Model):
-    nombre = models.CharField(max_length=80)
+    nombre_consultorio = models.CharField(max_length=80)
     direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, null=True)
     telefono = models.CharField(max_length=80)
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
