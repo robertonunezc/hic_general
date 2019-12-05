@@ -1,4 +1,4 @@
-Django==2.2.6
+Django==2.2.8
 mysqlclient
 djangorestframework==3.3.3
 cloudinary
