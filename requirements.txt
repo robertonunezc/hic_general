@@ -1,6 +1,6 @@
 Django==2.2.6
 mysqlclient
-djangorestframework==3.3.3
+djangorestframework==3.9.1
 cloudinary
 openpyxl==2.6.2
 pdfkit
