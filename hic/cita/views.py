@@ -8,10 +8,10 @@ from hic.paciente.forms import PacienteForm
 
 @login_required
 def seleccionar_horario(request):
-    return render(request,'cita/seleccionar_horario.html')
+    return render(request, 'cita/seleccionar_horario.html')
 
 @login_required
-def seleccionar_tipo_cita(request,horario_id):
+def seleccionar_tipo_cita(request, horario_id):
     request.session.pop('horario_cita', horario_id)
     return render(request,'cita/seleccionar_tipo_cita.html')
 
