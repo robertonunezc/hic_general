@@ -3,78 +3,21 @@ from django.db import models
 from hic.main.models import Medico, Paciente
 
 
-class SHorarioConsulta(models.Model):
-    duracion = models.IntegerField()
-    hora_inicio = models.TimeField()
-    hora_fin = models.TimeField()
-
-
 class Calendario(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.SET_NULL, null=True)
-    horario_consulta = models.OneToOneField(SHorarioConsulta, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.medico.__str__()
 
 
-class TDia(models.Model):
-    DOMINGO = 0
-    LUNES = 1
-    MARTES = 2
-    MIERCOLES = 3
-    JUEVES = 4
-    VIERNES = 5
-    SABADO = 6
-
-    SEMANA = (
-        (DOMINGO, "DOMINGO"),
-        (LUNES, "LUNES"),
-        (MARTES, "MARTES"),
-        (MIERCOLES, "MIERCOLES"),
-        (JUEVES, "JUEVES"),
-        (VIERNES, "VIERNES"),
-        (SABADO, "SABADO"),
-    )
-
-    dia = models.IntegerField(choices=SEMANA, unique=True)
-
-    def __str__(self):
-        for item in self.SEMANA:
-            if item[0] == self.dia:
-                return item[1]
-        return self.dia
-
-
-class SHorarioConsultaDias(models.Model):
-    s_horario_consulta = models.ForeignKey(SHorarioConsulta, on_delete=models.CASCADE)
-    dia = models.ForeignKey(TDia, on_delete=models.CASCADE)
-    active = models.BooleanField(default=False)
-
-
-class TFrecuenciaRepeticion(models.Model):
-    NO_REPETIR = 0
-    DIARIA = 1
-    SEMANAL = 2
-    MENSUAL = 3
-    ANUAL = 4
-
-    FRECUENCIA = (
-        (NO_REPETIR, "NO REPETIR"),
-        (DIARIA, "TODOS LOS DIAS"),
-        (SEMANAL, "SEMANALMENTE"),
-        (MENSUAL, "MENSUALMENTE"),
-        (ANUAL, "ANUALMENTE")
-    )
-
-    frecuencia = models.IntegerField(choices=FRECUENCIA, unique=True)
-
-
-class SlotBloqueado(models.Model):
-    fecha = models.DateField()
-    hora_inicio = models.TimeField()
-    hora_fin = models.TimeField()
-    frecuencia = models.ForeignKey(TFrecuenciaRepeticion, on_delete=models.SET_NULL, null=True)
-    calendario = models.ForeignKey(Calendario, on_delete=models.CASCADE)
+class Events(models.Model):
+    titulo = models.CharField(max_length=100, default="No Consulta")
+    hora_inicio = models.DateTimeField()
+    hora_fin = models.DateTimeField()
+    dia_semana = models.IntegerField()
+    # 0 Block event, 1 Pacient date event
+    tipo = models.IntegerField(default=0)
+    calenario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
 
 
 class ECita(models.Model):

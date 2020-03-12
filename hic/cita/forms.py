@@ -1,6 +1,6 @@
 from django import forms
 
-from hic.cita.models import Cita, SHorarioConsulta
+from hic.cita.models import Cita
 
 
 class PrimeraCitaForm(forms.ModelForm):
@@ -17,9 +17,3 @@ class CitaForm(forms.ModelForm):
     class Meta:
         model = Cita
         fields = ('paciente', 'observaciones')
-
-
-class SHorarioConsultaForm(forms.ModelForm):
-    class Meta:
-        model = SHorarioConsulta
-        fields = '__all__'
