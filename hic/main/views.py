@@ -33,6 +33,7 @@ def nuevo_medico(request):
     consultorio_form = ConsultorioForm()
     direccion_form = DireccionForm()
     consulta_form = SHorarioConsultaForm()
+    print(request.POST.get('calendar'))
     if request.method == 'POST':
         form = MedicoForm(request.POST)
         consultorio_form = ConsultorioForm(request.POST)

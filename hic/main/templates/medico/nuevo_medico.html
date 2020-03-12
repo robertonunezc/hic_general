@@ -16,9 +16,9 @@
     <script src="{% static 'vendor/fullcalendar/packages/interaction/main.js' %}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('availability-calendar');
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            let calendarEl = document.getElementById('availability-calendar');
+            let blockEvents = [];
+            let calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'timeGrid'],
                 selectable: true,
                 defaultView: 'timeGridWeek',
@@ -34,6 +34,8 @@
                     sessionStorage.setItem('startTime', startTime);
                     sessionStorage.setItem('endTime', endTime);
                     modal.style.display = "block";
+                    document.getElementById('start-time').innerHTML = new Date(startTime).toLocaleTimeString('es-MX');
+                    document.getElementById('end-time').innerHTML = new Date(endTime).toLocaleTimeString('es-MX');
                     console.log(`Event time start ${startTime} end ${endTime}`);
                 }
             });
@@ -45,18 +47,27 @@
                 modal.style.display = "none";
                 let actualStartTime = new Date(sessionStorage.getItem('startTime'));
                 let actualEndTime = new Date(sessionStorage.getItem('endTime'));
-                console.log(actualStartTime.toLocaleTimeString('es-MX'))
+                console.log(actualStartTime.toLocaleTimeString('es-MX'));
                 //TODO validate if is allWeekDays
                 if (actualStartTime && actualEndTime) { // valid?
                     calendar.addEvent({
                         title: 'No Consulta',
-                        groupId:'blockEvents',
+                        groupId: 'blockEvents',
                         allDay: false,
-                        daysOfWeek: [0,1,2,3,4,5,6],
-                        startTime:actualStartTime.toLocaleTimeString('es-MX'),
-                        endTime:actualEndTime.toLocaleTimeString('es-MX'),
-                        color:'white'
+                        daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+                        startTime: actualStartTime.toLocaleTimeString('es-MX'),
+                        endTime: actualEndTime.toLocaleTimeString('es-MX'),
+                        color: 'white'
                     });
+                    let newEvent = {
+                        title: 'No Consulta',
+                        daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+                        startTime: actualStartTime.toLocaleTimeString('es-MX'),
+                        endTime: actualEndTime.toLocaleTimeString('es-MX'),
+                        type: 'block'
+                    };
+                    blockEvents.push(newEvent);
+                    sessionStorage.setItem('blockEvents', JSON.stringify(blockEvents));
                     alert('Great. Now, update your local array...');
                 } else {
                     alert('Invalid date.');
@@ -127,7 +138,7 @@
                                 <hr>
                             </div>
 
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <label for="id_especialidades">Especialidades</label>
                                     {{ form.especialidades }}
@@ -142,7 +153,7 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_consultorio_nombre">Nombre Consultorio</label>
-                                    {{ consultorio_form.nombre }}
+                                    {{ consultorio_form.nombre_consultorio }}
                                 </div>
                             </div>
                             <div class="col-4">
@@ -151,14 +162,14 @@
                                     {{ consultorio_form.telefono }}
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_direccion_calle">Calle</label>
                                     {{ direccion_form.calle }}
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_direccion_numero_ext">No.Ext</label>
@@ -171,14 +182,15 @@
                                     {{ direccion_form.numero_int }}
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_direccion_numero_codigo_postal">CP</label>
                                     {{ direccion_form.codigo_postal }}
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_direccion_colonia">Colonia</label>
@@ -227,7 +239,8 @@
                 event.preventDefault()
                 let doctorForm = document.getElementById('doctor-form');
                 let formData = new FormData(doctorForm);
-                formData.append('calendar', JSON.stringify(blockedDays));
+                let blockEvents = sessionStorage.getItem('blockEvents');
+                formData.append('calendar', JSON.stringify(blockEvents));
                 axios.post("{% url 'main:nuevo_medico' %}", formData)
                         .then(function (response) {
                             console.log(response)
