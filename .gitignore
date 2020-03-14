@@ -65,7 +65,6 @@ target/
 dump.rdb
 celerybeat-schedule
 .DS_Store
-packages
 packages.zip
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
