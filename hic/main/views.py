@@ -1,12 +1,13 @@
 import openpyxl
 import  json
+import dateutil.parser
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 # @login_required
-from hic.cita.models import Calendario
+from hic.cita.models import Calendario, Event
 from hic.main.models import Medico, Usuario, Especialidad, EspecialidadMedico, NEstado, NMunicipio, NCodigoPostal, \
     NColonia
 from hic.paciente.forms import MedicoForm, ConsultorioForm, DireccionForm
@@ -31,31 +32,43 @@ def nuevo_medico(request):
     form = MedicoForm()
     consultorio_form = ConsultorioForm()
     direccion_form = DireccionForm()
-    print(request.POST.get('calendar'))
     if request.method == 'POST':
-        # form = MedicoForm(request.POST)
-        # consultorio_form = ConsultorioForm(request.POST)
-        # direccion_form = DireccionForm(request.POST)
-        # if form.is_valid() and consultorio_form.is_valid() and direccion_form.is_valid():
-        #     medico = form.save()
-        #     calendario = Calendario()
-        #     calendario.medico = medico
-        #     calendario.save()
-        #     especialidades = form.cleaned_data.get('especialidades')
-        #     for id in especialidades:
-        #         try:
-        #             especialidad = Especialidad.objects.get(pk=id)
-        #             especialidad_medico = EspecialidadMedico()
-        #             especialidad_medico.especialidad = especialidad
-        #             especialidad_medico.medico = medico
-        #             especialidad_medico.save()
-        #         except Especialidad.DoesNotExist:
-        #             continue
-        #     consultorio = consultorio_form.save(commit=False)
-        #     direccion = direccion_form.save()
-        #     consultorio.medico = medico
-        #     consultorio.direccion = direccion
-        #     consultorio.save()
+        form = MedicoForm(request.POST)
+        consultorio_form = ConsultorioForm(request.POST)
+        direccion_form = DireccionForm(request.POST)
+        if form.is_valid() and consultorio_form.is_valid() and direccion_form.is_valid():
+            medico = form.save()
+            calendario = Calendario()
+            calendario.medico = medico
+            calendario.save()
+            especialidades = form.cleaned_data.get('especialidades')
+            for id in especialidades:
+                try:
+                    especialidad = Especialidad.objects.get(pk=id)
+                    especialidad_medico = EspecialidadMedico()
+                    especialidad_medico.especialidad = especialidad
+                    especialidad_medico.medico = medico
+                    especialidad_medico.save()
+                except Especialidad.DoesNotExist:
+                    continue
+            consultorio = consultorio_form.save(commit=False)
+            direccion = direccion_form.save()
+            consultorio.medico = medico
+            consultorio.direccion = direccion
+            consultorio.save()
+
+            #events
+            jdata = json.loads(json.loads(request.POST.get('calendar')))
+            for val in jdata:
+                for day in val['daysOfWeek']:
+                    event = Event()
+                    event.titulo = val['title']
+                    event.tipo = 0 if val['type'] == 'block' else 1
+                    event.hora_inicio = dateutil.parser.parse(val['startTime'])
+                    event.hora_fin = dateutil.parser.parse(val['endTime'])
+                    event.dia_semana = day
+                    event.calendario = calendario
+                    event.save()
             return redirect('main:listado_medicos')
     context = {
         'form': form,

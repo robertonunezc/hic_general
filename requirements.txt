@@ -4,3 +4,4 @@ djangorestframework==3.3.3
 cloudinary
 openpyxl==2.6.2
 pdfkit
+python-dateutil

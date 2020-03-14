@@ -10,14 +10,14 @@ class Calendario(models.Model):
         return self.medico.__str__()
 
 
-class Events(models.Model):
+class Event(models.Model):
     titulo = models.CharField(max_length=100, default="No Consulta")
     hora_inicio = models.DateTimeField()
     hora_fin = models.DateTimeField()
     dia_semana = models.IntegerField()
     # 0 Block event, 1 Pacient date event
     tipo = models.IntegerField(default=0)
-    calenario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
+    calendario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
 
 
 class ECita(models.Model):
