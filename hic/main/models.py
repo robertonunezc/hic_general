@@ -104,7 +104,7 @@ class Direccion(models.Model):
     numero_ext = models.CharField(max_length=250)
     numero_int = models.CharField(max_length=250, null=True, blank=True)
     colonia = models.CharField(max_length=250, null=True, blank=True)
-    codigo_postal = models.ForeignKey(NColonia, on_delete=models.SET_NULL, null=True)
+    codigo_postal = models.CharField(blank=True,null=True, max_length=10)
     active = models.BooleanField(default=True)
 
 

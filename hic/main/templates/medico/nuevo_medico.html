@@ -2,19 +2,19 @@
 {% load staticfiles %}
 
 {% block custom_style %}
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
-<link rel="stylesheet" href="{% static 'vendor/fullcalendar/packages/core/main.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/fullcalendar/packages/daygrid/main.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/fullcalendar/packages/timegrid/main.css' %}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+    <link rel="stylesheet" href="{% static 'vendor/fullcalendar/packages/core/main.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/fullcalendar/packages/daygrid/main.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/fullcalendar/packages/timegrid/main.css' %}">
 {% endblock %}
 
 {% block head_js %}
-<script src="{% static 'vendor/fullcalendar/packages/core/main.js' %}"></script>
-<script src="{% static 'vendor/fullcalendar/packages/daygrid/main.js' %}"></script>
-<script src="{% static 'vendor/fullcalendar/packages/timegrid/main.js' %}"></script>
-<script src="{% static 'vendor/fullcalendar/packages/interaction/main.js' %}"></script>
-<script>
+    <script src="{% static 'vendor/fullcalendar/packages/core/main.js' %}"></script>
+    <script src="{% static 'vendor/fullcalendar/packages/daygrid/main.js' %}"></script>
+    <script src="{% static 'vendor/fullcalendar/packages/timegrid/main.js' %}"></script>
+    <script src="{% static 'vendor/fullcalendar/packages/interaction/main.js' %}"></script>
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             let calendarEl = document.getElementById('availability-calendar');
             let blockEvents = [];
@@ -68,7 +68,6 @@
                     };
                     blockEvents.push(newEvent);
                     sessionStorage.setItem('blockEvents', JSON.stringify(blockEvents));
-                    alert('Great. Now, update your local array...');
                 } else {
                     alert('Invalid date.');
                 }
@@ -76,180 +75,182 @@
         });
 
 
-
-</script>
+    </script>
 {% endblock %}
 
 {% block container %}
-{% include 'crear_evento.html' %}
-<div class="row">
-    <div class="col">
-        <div class="card shadow">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Nuevo Médico</h6>
-            </div>
-            <div class="card-body">
-                <form action="" method="post" name="doctor-form" id="doctor-form">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-12">
-                            <h4>Datos Personales</h4>
-                            <hr>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_nombre">Nombre</label>
-                                {{ form.nombre }}
+    {% include 'crear_evento.html' %}
+    <div class="alert text-white">
+    </div>
+    <div class="alert d-none text-white"></div>
+    <div class="doctor-form row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Nuevo Médico</h6>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" name="doctor-form" id="doctor-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Datos Personales</h4>
+                                <hr>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_nombre">Nombre</label>
+                                    {{ form.nombre }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_primer_apellido">Primer Apellido</label>
+                                    {{ form.primer_apellido }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_segundo_apellido">Segundo Apellido</label>
+                                    {{ form.segundo_apellido }}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_primer_apellido">Primer Apellido</label>
-                                {{ form.primer_apellido }}
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_fecha">Fecha de Nacimiento</label>
+                                    {{ form.fecha_nacimiento }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_genero">Género</label>
+                                    {{ form.genero }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_telefono">Teléfono</label>
+                                    {{ form.telefono }}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_segundo_apellido">Segundo Apellido</label>
-                                {{ form.segundo_apellido }}
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_email">e-Mail</label>
+                                    {{ form.email }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_fecha">Fecha de Nacimiento</label>
-                                {{ form.fecha_nacimiento }}
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Datos Médicos</h4>
+                                <hr>
                             </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_genero">Género</label>
-                                {{ form.genero }}
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_telefono">Teléfono</label>
-                                {{ form.telefono }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_email">e-Mail</label>
-                                {{ form.email }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <h4>Datos Médicos</h4>
-                            <hr>
-                        </div>
 
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_especialidades">Especialidades</label>
-                                {{ form.especialidades }}
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_especialidades">Especialidades</label>
+                                    {{ form.especialidades }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_institucion">Institucion</label>
+                                    {{ form.institucion }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_cedula">Cedula</label>
+                                    {{ form.cedula }}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_institucion">Institucion</label>
-                                {{ form.institucion }}
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Datos Consultorio</h4>
+                                <hr>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_consultorio_nombre">Nombre Consultorio</label>
+                                    {{ consultorio_form.nombre_consultorio }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_consultorio_telefono">Telefono</label>
+                                    {{ consultorio_form.telefono }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_direccion_calle">Calle</label>
+                                    {{ direccion_form.calle }}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_cedula">Cedula</label>
-                                {{ form.cedula }}
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_direccion_numero_ext">No.Ext</label>
+                                    {{ direccion_form.numero_ext }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_direccion_numero_int">No.Int</label>
+                                    {{ direccion_form.numero_int }}
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_direccion_numero_codigo_postal">CP</label>
+                                    {{ direccion_form.codigo_postal }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <h4>Datos Consultorio</h4>
-                            <hr>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_consultorio_nombre">Nombre Consultorio</label>
-                                {{ consultorio_form.nombre_consultorio }}
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_consultorio_telefono">Telefono</label>
-                                {{ consultorio_form.telefono }}
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_direccion_calle">Calle</label>
-                                {{ direccion_form.calle }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_direccion_numero_ext">No.Ext</label>
-                                {{ direccion_form.numero_ext }}
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_direccion_numero_int">No.Int</label>
-                                {{ direccion_form.numero_int }}
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_direccion_numero_codigo_postal">CP</label>
-                                {{ direccion_form.codigo_postal }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
+                        <div class="row">
 
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="id_direccion_colonia">Colonia</label>
-                                {{ direccion_form.colonia }}
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_direccion_colonia">Colonia</label>
+                                    {{ direccion_form.colonia }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <h4>Datos Consulta</h4>
-                            <hr>
-                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Datos Consulta</h4>
+                                <hr>
+                            </div>
 
-                        <div class="col-12">
-                            <p class="text-success">Seleccione las horas NO disponibles para consulta. Ej.: Horas de
-                                comida</p>
+                            <div class="col-12">
+                                <p class="text-success">Seleccione las horas NO disponibles para consulta. Ej.: Horas de
+                                    comida</p>
+                            </div>
+                            <div class="col-12">
+                                <div id="availability-calendar"></div>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <div id="availability-calendar"></div>
+                        <div class="col-md-12">
+                            <button class="btn btn-info btn-save-doctor">Guardar</button>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <button class="btn btn-info btn-save-doctor">Guardar</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}
 
 {% block custom_js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
-<script>
+    <script>
         $(function () {
 
             $('select').select2()
@@ -266,6 +267,20 @@
                 formData.append('calendar', JSON.stringify(blockEvents));
                 axios.post("{% url 'main:nuevo_medico' %}", formData)
                         .then(function (response) {
+                            const alertMsg = document.querySelector('.alert');
+
+                            if (response.data.rc == 200) {
+                                document.querySelector('.doctor-form').classList.add('d-none');
+                                alertMsg.classList.remove('d-none');
+                                alertMsg.classList.remove('bg-danger');
+                                alertMsg.classList.add('bg-success');
+                            } else {
+                                alertMsg.classList.remove('d-flex');
+                                alertMsg.classList.remove('bg-success');
+                                alertMsg.classList.add('bg-danger');
+                            }
+                            alertMsg.innerHTML = response.data.msg;
+
                             console.log(response)
                         })
                         .catch(function (error) {
@@ -278,8 +293,5 @@
         })
 
 
-
-
-
-</script>
+    </script>
 {% endblock %}

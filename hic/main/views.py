@@ -1,7 +1,7 @@
 import openpyxl
 import  json
 import dateutil.parser
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
@@ -11,7 +11,7 @@ from hic.cita.models import Calendario, Event
 from hic.main.models import Medico, Usuario, Especialidad, EspecialidadMedico, NEstado, NMunicipio, NCodigoPostal, \
     NColonia
 from hic.paciente.forms import MedicoForm, ConsultorioForm, DireccionForm
-
+import json
 
 @login_required
 def inicio(request):
@@ -32,6 +32,7 @@ def nuevo_medico(request):
     form = MedicoForm()
     consultorio_form = ConsultorioForm()
     direccion_form = DireccionForm()
+    error= None
     if request.method == 'POST':
         form = MedicoForm(request.POST)
         consultorio_form = ConsultorioForm(request.POST)
@@ -69,11 +70,17 @@ def nuevo_medico(request):
                     event.dia_semana = day
                     event.calendario = calendario
                     event.save()
-            return redirect('main:listado_medicos')
+            response = {'rc': 200, 'msg': 'Medico guardado', 'data': {}}
+            return HttpResponse(json.dumps(response), content_type='application/json')
+        else:
+            error = "Por favor revise los datos proporcionados algunos son incorrectos"
+            response = {'rc': 500, 'msg': error, 'data': {}}
+            return HttpResponse(json.dumps(response), content_type='application/json')
     context = {
         'form': form,
         'consultorio_form': consultorio_form,
         'direccion_form': direccion_form,
+        'error': error
     }
     return render(request, 'medico/nuevo_medico.html', context=context)
 
