@@ -108,33 +108,35 @@ DATABASES = {
     }
 }
 
-HEROKU_SERVER = False
+# HEROKU_SERVER = False
 HIC_DIR = "hic/hic_pdf/"
-
-if HEROKU_SERVER:
-    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2',
-    DATABASES['default']['HOST'] = 'ec2-54-204-37-92.compute-1.amazonaws.com'
-    DATABASES['default']['NAME'] = 'd7d24no9il8lab'
-    DATABASES['default']['USER'] = 'xfmhcrrcfkfqhd'
-    DATABASES['default']['PASSWORD'] = '20c6d0dde4247ee6fafebde54be72db4b191feec35218a6d77139b6641d83379'
-    DATABASES['default']['PORT'] = 5432
-    HIC_HOST = 'https://sichic.herokuapp.com/'
-    HIC_LOCAL_DIR = '/home/h3dx0/Dev/nreed/'
-
-DIGITAL_SERVER = False
-
-if DIGITAL_SERVER:
-    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2',
-    DATABASES['default']['HOST'] = 'localhost'
-    DATABASES['default']['NAME'] = 'hic_cub'
-    DATABASES['default']['USER'] = 'hic_cub'
-    DATABASES['default']['PASSWORD'] = 'Hic123.'
-    DATABASES['default']['PORT'] = 5432
-    HIC_HOST = 'http://cmdcuba.com.mx/'
-    HIC_LOCAL_DIR = '/home/h3dx0/python_projects/hic_cuba/'
-else:
-    HIC_HOST = 'http://localhost:8000/'
-    HIC_LOCAL_DIR = '/home/h3dx0/Dev/hic/'  # Password validation
+HIC_HOST = 'http://localhost:8000/'
+HIC_LOCAL_DIR = '/home/h3dx0/Dev/hic_general/'  # Password validation
+#
+# if HEROKU_SERVER:
+#     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2',
+#     DATABASES['default']['HOST'] = 'ec2-54-204-37-92.compute-1.amazonaws.com'
+#     DATABASES['default']['NAME'] = 'd7d24no9il8lab'
+#     DATABASES['default']['USER'] = 'xfmhcrrcfkfqhd'
+#     DATABASES['default']['PASSWORD'] = '20c6d0dde4247ee6fafebde54be72db4b191feec35218a6d77139b6641d83379'
+#     DATABASES['default']['PORT'] = 5432
+#     HIC_HOST = 'https://sichic.herokuapp.com/'
+#     HIC_LOCAL_DIR = '/home/h3dx0/Dev/nreed/'
+#
+# DIGITAL_SERVER = False
+#
+# if DIGITAL_SERVER:
+#     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2',
+#     DATABASES['default']['HOST'] = 'localhost'
+#     DATABASES['default']['NAME'] = 'hic_cub'
+#     DATABASES['default']['USER'] = 'hic_cub'
+#     DATABASES['default']['PASSWORD'] = 'Hic123.'
+#     DATABASES['default']['PORT'] = 5432
+#     HIC_HOST = 'http://cmdcuba.com.mx/'
+#     HIC_LOCAL_DIR = '/home/h3dx0/python_projects/hic_cuba/'
+# else:
+#     HIC_HOST = 'http://localhost:8000/'
+#     HIC_LOCAL_DIR = '/home/h3dx0/Dev/hic/'  # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -171,7 +173,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# # Extra places for collectstatic to find static files.
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
