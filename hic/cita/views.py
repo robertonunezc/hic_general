@@ -3,12 +3,19 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from hic.cita.forms import CitaForm, PrimeraCitaForm
-from hic.cita.models import Cita, ECita
+from hic.cita.models import Cita, ECita, Event
+from hic.cita.serializer import EventoSerializer
 from hic.paciente.forms import PacienteForm
-
+import json
 @login_required
 def seleccionar_horario(request):
-    return render(request, 'cita/seleccionar_horario.html')
+    eventos = Event.objects.all() #TODO only load the current month
+    serializer = EventoSerializer(eventos, many=True)
+    context = {
+        'eventos': json.dumps(serializer.data)
+    }
+    print(context)
+    return render(request, 'cita/seleccionar_horario.html', context=context)
 
 @login_required
 def seleccionar_tipo_cita(request, horario_id):

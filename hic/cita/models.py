@@ -4,21 +4,11 @@ from hic.main.models import Medico, Paciente
 
 
 class Calendario(models.Model):
-    medico = models.ForeignKey(Medico, on_delete=models.SET_NULL, null=True)
+    nombre = models.CharField(max_length=200, default="Clínica General")
+    medico = models.ForeignKey(Medico, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return self.medico.__str__()
-
-
-class Event(models.Model):
-    titulo = models.CharField(max_length=100, default="No Consulta")
-    hora_inicio = models.DateTimeField()
-    hora_fin = models.DateTimeField()
-    dia_semana = models.IntegerField()
-    # 0 Block event, 1 Pacient date event
-    tipo = models.IntegerField(default=0)
-    calendario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
-
+        return self.nombre.__str__()
 
 class ECita(models.Model):
     CANCELADA = -1
@@ -62,8 +52,33 @@ class TCita(models.Model):
 
 class Cita(models.Model):
     fecha = models.DateTimeField()
-    paciente = models.ForeignKey(Paciente, on_delete=models.SET_NULL, null=True)
-    estado = models.ForeignKey(ECita, on_delete=models.SET_NULL, null=True)
-    tipo = models.ForeignKey(TCita, on_delete=models.SET_NULL, null=True)
-    observaciones = models.CharField(max_length=250, null=True)
-    calendario = models.ForeignKey(Calendario, on_delete=models.SET_NULL, null=True)
+    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT)
+    estado = models.ForeignKey(ECita, on_delete=models.PROTECT)
+    tipo = models.ForeignKey(TCita, on_delete=models.PROTECT)
+    observaciones = models.CharField(max_length=250, null=True, blank=True)
+    calendario = models.ForeignKey(Calendario, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "{} {} {} {} ".format(self.fecha, self.paciente, self.estado, self.tipo)
+
+
+class Event(models.Model):
+    titulo = models.CharField(max_length=100, default="Horario de Consulta")
+    descripcion = models.CharField(max_length=200, default="")
+    hora_inicio = models.DateTimeField()
+    hora_fin = models.DateTimeField()
+    dia_semana = models.IntegerField()
+    # 0 Block event, 1 Pacient date event
+    # tipo = models.IntegerField(default=0)
+    medico = models.ForeignKey(Medico, on_delete=models.PROTECT)
+    cita = models.ForeignKey(Cita, on_delete=models.SET_NULL, null=True, blank=True)
+    calendario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
+    color = models.CharField(max_length=20, default="#3788d8")
+
+    def __str__(self):
+        return "{} {}".format(self.titulo, self.medico.nombre)
+
+    def save(self, *args, **kwargs):
+        if self.cita is not None:
+            self.color = "#2cb67d"
+        super(Event, self).save(*args, **kwargs)
