@@ -1,18 +1,23 @@
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from hic.cita.forms import CitaForm, PrimeraCitaForm
-from hic.cita.models import Cita, ECita, Event
+from hic.cita.models import Cita, ECita, Event, TCita, Calendario
 from hic.cita.serializer import EventoSerializer
+from hic.main.models import Paciente, Medico
 from hic.paciente.forms import PacienteForm
 import json
 @login_required
 def seleccionar_horario(request):
     eventos = Event.objects.all() #TODO only load the current month
     serializer = EventoSerializer(eventos, many=True)
+    pacientes = Paciente.objects.all()
+    # serializer.data['extendedProps'] = serializer.data['extended_props']
+    print(serializer.data)
     context = {
-        'eventos': json.dumps(serializer.data)
+        'eventos': json.dumps(serializer.data),
+        'pacientes': pacientes
     }
     print(context)
     return render(request, 'cita/seleccionar_horario.html', context=context)
@@ -21,6 +26,27 @@ def seleccionar_horario(request):
 def seleccionar_tipo_cita(request, horario_id):
     request.session.pop('horario_cita', horario_id)
     return render(request,'cita/seleccionar_tipo_cita.html')
+
+@login_required
+def calendario_registrar_cita(request):
+    if request.method == "POST":
+        doctor = request.POST.get('doctor-cita')
+        observaciones = request.POST.get('observaciones')
+        inicio = request.POST.get('inicio-cita')
+        paciente = request.POST.get('paciente')
+
+        cita = Cita()
+        cita.medico = Medico.objects.get(pk=doctor)
+        cita.paciente = Paciente.objects.get(pk=paciente)
+        cita.estado =  ECita.objects.get(estado=ECita.RESERVADA)
+        cita.tipo = TCita.objects.get(tipo=TCita.INICIAL)
+        cita.observaciones = observaciones
+        cita.calendario = Calendario.objects.first()
+        cita.fecha = inicio
+        cita.save()
+        return redirect('citas:listado_citas')
+
+    return HttpResponse("Acceso denegado")
 
 @login_required
 def primera_cita(request):

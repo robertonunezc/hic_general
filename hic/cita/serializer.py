@@ -1,6 +1,11 @@
 from rest_framework import serializers
 
-from hic.cita.models import Event
+from hic.cita.models import Event, EventExtendedProp
+
+# class EventExtendedPropSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = EventExtendedProp
+#         fields = '__all__'
 
 
 class EventoSerializer(serializers.ModelSerializer):
@@ -10,4 +15,5 @@ class EventoSerializer(serializers.ModelSerializer):
     backgroundColor = serializers.CharField(source='color')
     class Meta:
         model = Event
-        fields = ['title', 'start', 'end', 'backgroundColor']
+        fields = ['title', 'start', 'end', 'backgroundColor', 'extendedProps']
+        depth = 1

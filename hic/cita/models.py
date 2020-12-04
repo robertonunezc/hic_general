@@ -1,6 +1,7 @@
 from django.db import models
 
 from hic.main.models import Medico, Paciente
+import json
 
 
 class Calendario(models.Model):
@@ -9,6 +10,7 @@ class Calendario(models.Model):
 
     def __str__(self):
         return self.nombre.__str__()
+
 
 class ECita(models.Model):
     CANCELADA = -1
@@ -52,7 +54,8 @@ class TCita(models.Model):
 
 class Cita(models.Model):
     fecha = models.DateTimeField()
-    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT)
+    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT, related_name='citas')
+    medico = models.ForeignKey(Medico, on_delete=models.PROTECT, related_name='citas')
     estado = models.ForeignKey(ECita, on_delete=models.PROTECT)
     tipo = models.ForeignKey(TCita, on_delete=models.PROTECT)
     observaciones = models.CharField(max_length=250, null=True, blank=True)
@@ -64,7 +67,7 @@ class Cita(models.Model):
 
 class Event(models.Model):
     titulo = models.CharField(max_length=100, default="Horario de Consulta")
-    descripcion = models.CharField(max_length=200, default="")
+    descripcion = models.CharField(max_length=200, null=True, blank=True)
     hora_inicio = models.DateTimeField()
     hora_fin = models.DateTimeField()
     dia_semana = models.IntegerField()
@@ -74,6 +77,8 @@ class Event(models.Model):
     cita = models.ForeignKey(Cita, on_delete=models.SET_NULL, null=True, blank=True)
     calendario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
     color = models.CharField(max_length=20, default="#3788d8")
+    extendedProps = models.ForeignKey('cita.EventExtendedProp', null=True, blank=True,
+                                       related_name='events', on_delete=models.PROTECT)
 
     def __str__(self):
         return "{} {}".format(self.titulo, self.medico.nombre)
@@ -81,4 +86,10 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         if self.cita is not None:
             self.color = "#2cb67d"
+            self.extendedProps.cita = self.cita.pk
+            self.extendedProps.save()
         super(Event, self).save(*args, **kwargs)
+
+class EventExtendedProp(models.Model):
+    doctor = models.IntegerField()
+    cita = models.IntegerField(null=True, blank=True)

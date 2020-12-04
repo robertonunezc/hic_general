@@ -23,6 +23,16 @@
 
                 select: function (info) {
                     alert('selected ' + info.startStr + ' to ' + info.endStr);
+                },
+                eventClick: function (info) {
+                    const extendedProps = info.event.extendedProps;
+                    const doctor = document.getElementById('doctor-cita');
+                    const inicio = document.getElementById('inicio-cita');
+                    const btnShowModal = document.getElementById('btn-show-modal');
+                    btnShowModal.click();
+                    doctor.value = extendedProps.doctor;
+                    inicio.value = info.event.startStr;
+                    console.log(info.event.startStr)
                 }
 
             });
@@ -34,5 +44,54 @@
 {% block container %}
     <div class="col-12">
         <div id="calendar"></div>
+    </div>
+    <button type="button" id="btn-show-modal" class="btn btn-primary d-none" data-toggle="modal"
+            data-target="#createDateModal">
+        Launch demo modal
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="createDateModal" tabindex="-1" aria-labelledby="createDateModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createDateModalLabel">Crear cita</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="{% url 'citas:calendario_registrar_cita' %}" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="doctor-cita" id="doctor-cita">
+                        <input type="hidden" name="inicio-cita" id="inicio-cita">
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label for="pacienteNombre">Paciente</label>
+                                <select name="paciente" id="paciente" class="form-control">
+                                    <option value="-1">seleccione</option>
+                                    {% for paciente in pacientes %}
+                                        <option value="{{ paciente.pk }}">{{ paciente }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-12">
+                                <label for="observaciones">Observaciones</label>
+                                <textarea name="observaciones" id="observaciones" cols="30" rows="5"
+                                          class="form-control"></textarea>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Crear cita</button>
+                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                    {% csrf_token %}
+
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}
