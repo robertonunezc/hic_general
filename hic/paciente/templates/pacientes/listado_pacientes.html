@@ -32,11 +32,11 @@
                                 <td class="flex">
 
                                     <a href="{% url 'pacientes:historia_clinica' paciente_id=paciente.pk %}"
-                                       class="btn btn-sm btn-success mr-2">Ver historia</a>
+                                       class="btn btn-sm btn-success mr-2">Ver historial</a>
                                     <a href="{% url 'pacientes:editar_paceinte' paciente_id=paciente.pk %}"
                                        class="btn btn-sm btn-info mr-2">Editar</a>
-                                    <a href="{% url 'pacientes:ver_pdf_historia' paciente_id=paciente.pk %}"
-                                       class="btn btn-warning btn-sm">Imprimir</a>
+{#                                    <a href="{% url 'pacientes:ver_pdf_historia' paciente_id=paciente.pk %}"#}
+{#                                       class="btn btn-warning btn-sm">Imprimir</a>#}
                                 </td>
                             </tr>
                         {% endfor %}

@@ -1,0 +1,44 @@
+<button type="button" id="btn-show-doctor-time" class="btn btn-primary d-none" data-toggle="modal"
+        data-target="#assignDoctorTimeModal">
+    Launch demo modal
+</button>
+<!-- Modal -->
+<div class="modal fade" id="assignDoctorTimeModal" tabindex="-1" aria-labelledby="assignDoctorTimeModal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createDateModalLabel">Asignar hora de consulta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form action="{% url 'citas:assing_specialist_consult_time' %}" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="inicio-cita-especialista" id="inicio-cita-especialista">
+                    <input type="hidden" name="fin-cita-especialista" id="fin-cita-especialista">
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label for="doctorNombre">Especialistas</label>
+                            <select name="doctor" id="doctor" class="form-control">
+                                <option value="-1">seleccione</option>
+                                {% for especialista in especialistas %}
+                                    <option value="{{ especialista.pk }}">{{ especialista }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Asignar</button>
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+                {% csrf_token %}
+
+            </form>
+        </div>
+    </div>
+</div>

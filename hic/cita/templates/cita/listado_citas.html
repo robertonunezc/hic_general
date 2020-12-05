@@ -17,6 +17,7 @@
                         <thead>
                         <th>Fecha</th>
                         <th>Paciente</th>
+                        <th>Especialista</th>
                         <th>Estado</th>
                         <th>Tipo</th>
                         <th>Acciones</th>
@@ -24,8 +25,9 @@
                         <tbody>
                         {% for cita in citas %}
                             <tr>
-                                <td>{{ cita.fecha| date:"d/M/Y"  }}</td>
+                                <td>{{ cita.fecha| date:"d/M/Y H:i:s"  }}</td>
                                 <td>{{ cita.paciente }}</td>
+                                <td>{{ cita.medico}}</td>
                                 <td>{{ cita.estado}}</td>
                                 <td>{{ cita.tipo }}</td>
                                 <td class="flex">

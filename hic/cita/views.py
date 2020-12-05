@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from hic.cita.forms import CitaForm, PrimeraCitaForm
-from hic.cita.models import Cita, ECita, Event, TCita, Calendario
+from hic.cita.models import Cita, ECita, Event, TCita, Calendario, EventExtendedProp
 from hic.cita.serializer import EventoSerializer
 from hic.main.models import Paciente, Medico
 from hic.paciente.forms import PacienteForm
@@ -13,14 +13,45 @@ def seleccionar_horario(request):
     eventos = Event.objects.all() #TODO only load the current month
     serializer = EventoSerializer(eventos, many=True)
     pacientes = Paciente.objects.all()
+    especialistas = Medico.objects.all()
     # serializer.data['extendedProps'] = serializer.data['extended_props']
     print(serializer.data)
     context = {
         'eventos': json.dumps(serializer.data),
-        'pacientes': pacientes
+        'pacientes': pacientes,
+        'especialistas':especialistas
     }
     print(context)
     return render(request, 'cita/seleccionar_horario.html', context=context)
+
+@login_required
+def assing_specialist_consult_time(request):
+    if request.method == "POST":
+        specialist_id = request.POST.get('doctor')
+        start_time = request.POST.get('inicio-cita-especialista')
+        end_time = request.POST.get('fin-cita-especialista')
+
+        specialist = Medico.objects.get(pk=specialist_id)
+        event = Event()
+        event.titulo = "Disponible-{}". format(specialist.nombre)
+        event.hora_inicio = start_time
+        event.hora_fin = end_time
+        event.calendario = Calendario.objects.first()
+        event.medico = specialist
+        event.save()
+        extended_props = EventExtendedProp()
+        extended_props.evento = event.pk
+        extended_props.doctor = specialist.pk
+        extended_props.save()
+
+        event.extendedProps = extended_props
+        event.save()
+
+        return redirect('citas:seleccionar_horario')
+
+    return HttpResponse("Acceso denegado")
+
+
 
 @login_required
 def seleccionar_tipo_cita(request, horario_id):
@@ -34,6 +65,7 @@ def calendario_registrar_cita(request):
         observaciones = request.POST.get('observaciones')
         inicio = request.POST.get('inicio-cita')
         paciente = request.POST.get('paciente')
+        evento_id = request.POST.get('evento-cita')
 
         cita = Cita()
         cita.medico = Medico.objects.get(pk=doctor)
@@ -44,6 +76,12 @@ def calendario_registrar_cita(request):
         cita.calendario = Calendario.objects.first()
         cita.fecha = inicio
         cita.save()
+
+        evento = Event.objects.get(pk=evento_id)
+        evento.cita = cita
+        evento.titulo = "Asignado - {}".format(evento.medico.nombre)
+        evento.save()
+
         return redirect('citas:listado_citas')
 
     return HttpResponse("Acceso denegado")

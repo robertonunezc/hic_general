@@ -70,11 +70,10 @@ class Event(models.Model):
     descripcion = models.CharField(max_length=200, null=True, blank=True)
     hora_inicio = models.DateTimeField()
     hora_fin = models.DateTimeField()
-    dia_semana = models.IntegerField()
     # 0 Block event, 1 Pacient date event
     # tipo = models.IntegerField(default=0)
     medico = models.ForeignKey(Medico, on_delete=models.PROTECT)
-    cita = models.ForeignKey(Cita, on_delete=models.SET_NULL, null=True, blank=True)
+    cita = models.ForeignKey(Cita, on_delete=models.SET_NULL, null=True, blank=True, related_name='events')
     calendario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
     color = models.CharField(max_length=20, default="#3788d8")
     extendedProps = models.ForeignKey('cita.EventExtendedProp', null=True, blank=True,
@@ -88,8 +87,14 @@ class Event(models.Model):
             self.color = "#2cb67d"
             self.extendedProps.cita = self.cita.pk
             self.extendedProps.save()
+        # extendedProp = EventExtendedProp()
+        # extendedProp.doctor = self.medico_id
+        # extendedProp.evento = self.pk
+        # extendedProp.save()
+        # self.extendedProps = extendedProp
         super(Event, self).save(*args, **kwargs)
 
 class EventExtendedProp(models.Model):
     doctor = models.IntegerField()
     cita = models.IntegerField(null=True, blank=True)
+    evento = models.IntegerField(null=True, blank=True)

@@ -5,6 +5,7 @@ app_name = 'cita'
 urlpatterns = [
     path('horario/', views.seleccionar_horario, name='seleccionar_horario'),
     path('calendario/registrar/cita/', views.calendario_registrar_cita, name='calendario_registrar_cita'),
+    path('calendario/asignar/especialista/', views.assing_specialist_consult_time, name='assing_specialist_consult_time'),
     path('tipo-cita/<int:horario_id>', views.seleccionar_tipo_cita, name='seleccionar_tipo_cita'),
     path('nueva/', views.nueva_cita, name='nueva_cita'),
     path('primera/', views.primera_nueva_cita, name='primera_cita'),
