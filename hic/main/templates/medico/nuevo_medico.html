@@ -4,84 +4,23 @@
 {% block custom_style %}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
-    <link rel="stylesheet" href="{% static 'vendor/fullcalendar/packages/core/main.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/fullcalendar/packages/daygrid/main.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/fullcalendar/packages/timegrid/main.css' %}">
-{% endblock %}
-
-{% block head_js %}
-    <script src="{% static 'vendor/fullcalendar/packages/core/main.js' %}"></script>
-    <script src="{% static 'vendor/fullcalendar/packages/daygrid/main.js' %}"></script>
-    <script src="{% static 'vendor/fullcalendar/packages/timegrid/main.js' %}"></script>
-    <script src="{% static 'vendor/fullcalendar/packages/interaction/main.js' %}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let calendarEl = document.getElementById('availability-calendar');
-            let blockEvents = [];
-            let calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ['interaction', 'dayGrid', 'timeGrid'],
-                selectable: true,
-                defaultView: 'timeGridWeek',
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                select: function (info) {
-                    let startTime = info.startStr;
-                    let endTime = info.endStr;
-                    let modal = document.getElementById("event-create");
-                    sessionStorage.setItem('startTime', startTime);
-                    sessionStorage.setItem('endTime', endTime);
-                    modal.style.display = "block";
-                    document.getElementById('start-time').innerHTML = new Date(startTime).toLocaleTimeString('es-MX');
-                    document.getElementById('end-time').innerHTML = new Date(endTime).toLocaleTimeString('es-MX');
-                    console.log(`Event time start ${startTime} end ${endTime}`);
-                }
-            });
-            calendar.render();
-            //Add event
-
-            let btnAceptEvent = document.querySelector(".btn-acept-event");
-            btnAceptEvent.onclick = function () {
-                modal.style.display = "none";
-                let actualStartTime = new Date(sessionStorage.getItem('startTime'));
-                let actualEndTime = new Date(sessionStorage.getItem('endTime'));
-                console.log(actualStartTime.toLocaleTimeString('es-MX'));
-                //TODO validate if is allWeekDays
-                if (actualStartTime && actualEndTime) { // valid?
-                    calendar.addEvent({
-                        title: 'No Consulta',
-                        groupId: 'blockEvents',
-                        allDay: false,
-                        daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
-                        startTime: actualStartTime.toLocaleTimeString('es-MX'),
-                        endTime: actualEndTime.toLocaleTimeString('es-MX'),
-                        color: 'white'
-                    });
-                    let newEvent = {
-                        title: 'No Consulta',
-                        daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
-                        startTime: actualStartTime.toLocaleTimeString('es-MX'),
-                        endTime: actualEndTime.toLocaleTimeString('es-MX'),
-                        type: 'block'
-                    };
-                    blockEvents.push(newEvent);
-                    sessionStorage.setItem('blockEvents', JSON.stringify(blockEvents));
-                } else {
-                    alert('Invalid date.');
-                }
-            };
-        });
-
-
-    </script>
 {% endblock %}
 
 {% block container %}
-    {% include 'crear_evento.html' %}
-    <div class="alert text-white">
-    </div>
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="alert d-none text-white"></div>
     <div class="doctor-form row">
         <div class="col">
@@ -169,75 +108,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h4>Datos Consultorio</h4>
-                                <hr>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="id_consultorio_nombre">Nombre Consultorio</label>
-                                    {{ consultorio_form.nombre_consultorio }}
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="id_consultorio_telefono">Telefono</label>
-                                    {{ consultorio_form.telefono }}
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="id_direccion_calle">Calle</label>
-                                    {{ direccion_form.calle }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="id_direccion_numero_ext">No.Ext</label>
-                                    {{ direccion_form.numero_ext }}
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="id_direccion_numero_int">No.Int</label>
-                                    {{ direccion_form.numero_int }}
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="id_direccion_numero_codigo_postal">CP</label>
-                                    {{ direccion_form.codigo_postal }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
 
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="id_direccion_colonia">Colonia</label>
-                                    {{ direccion_form.colonia }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h4>Datos Consulta</h4>
-                                <hr>
-                            </div>
-
-                            <div class="col-12">
-                                <p class="text-success">Seleccione las horas NO disponibles para consulta. Ej.: Horas de
-                                    comida</p>
-                            </div>
-                            <div class="col-12">
-                                <div id="availability-calendar"></div>
-                            </div>
-                        </div>
                         <div class="col-md-12">
-                            <button class="btn btn-info btn-save-doctor">Guardar</button>
+                            <button type="submit" class="btn btn-info btn-save-doctor">Guardar</button>
                         </div>
                     </form>
                 </div>
@@ -248,7 +121,6 @@
 {% endblock %}
 
 {% block custom_js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
     <script>
         $(function () {
@@ -258,38 +130,6 @@
                 format: 'Y-m-d',
                 step: 30
             });
-
-            $('.btn-save-doctor').click(function (event) {
-                event.preventDefault()
-                let doctorForm = document.getElementById('doctor-form');
-                let formData = new FormData(doctorForm);
-                let blockEvents = sessionStorage.getItem('blockEvents');
-                formData.append('calendar', JSON.stringify(blockEvents));
-                axios.post("{% url 'main:nuevo_medico' %}", formData)
-                        .then(function (response) {
-                            const alertMsg = document.querySelector('.alert');
-
-                            if (response.data.rc == 200) {
-                                document.querySelector('.doctor-form').classList.add('d-none');
-                                alertMsg.classList.remove('d-none');
-                                alertMsg.classList.remove('bg-danger');
-                                alertMsg.classList.add('bg-success');
-                            } else {
-                                alertMsg.classList.remove('d-flex');
-                                alertMsg.classList.remove('bg-success');
-                                alertMsg.classList.add('bg-danger');
-                            }
-                            alertMsg.innerHTML = response.data.msg;
-
-                            console.log(response)
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-
-
-            });
-
         })
 
 

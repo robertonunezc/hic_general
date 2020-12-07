@@ -8,8 +8,8 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 # @login_required
 from hic.cita.models import Calendario, Event
-from hic.main.models import Medico, Usuario, Especialidad, EspecialidadMedico, NEstado, NMunicipio, NCodigoPostal, \
-    NColonia
+from hic.main.models import Medico, Usuario, Especialidad, NEstado, NMunicipio, NCodigoPostal, \
+    NColonia, EspecialidadMedico
 from hic.paciente.forms import MedicoForm, ConsultorioForm, DireccionForm
 import json
 
@@ -30,18 +30,11 @@ def listado_medicos(request):
 @login_required
 def nuevo_medico(request):
     form = MedicoForm()
-    consultorio_form = ConsultorioForm()
-    direccion_form = DireccionForm()
     error= None
     if request.method == 'POST':
         form = MedicoForm(request.POST)
-        consultorio_form = ConsultorioForm(request.POST)
-        direccion_form = DireccionForm(request.POST)
-        if form.is_valid() and consultorio_form.is_valid() and direccion_form.is_valid():
+        if form.is_valid():
             medico = form.save()
-            calendario = Calendario()
-            calendario.medico = medico
-            calendario.save()
             especialidades = form.cleaned_data.get('especialidades')
             for id in especialidades:
                 try:
@@ -52,34 +45,12 @@ def nuevo_medico(request):
                     especialidad_medico.save()
                 except Especialidad.DoesNotExist:
                     continue
-            consultorio = consultorio_form.save(commit=False)
-            direccion = direccion_form.save()
-            consultorio.medico = medico
-            consultorio.direccion = direccion
-            consultorio.save()
+            return HttpResponseRedirect('/inicio/medicos/listado/')
 
-            #events
-            jdata = json.loads(json.loads(request.POST.get('calendar')))
-            for val in jdata:
-                for day in val['daysOfWeek']:
-                    event = Event()
-                    event.titulo = val['title']
-                    event.tipo = 0 if val['type'] == 'block' else 1
-                    event.hora_inicio = dateutil.parser.parse(val['startTime'])
-                    event.hora_fin = dateutil.parser.parse(val['endTime'])
-                    event.dia_semana = day
-                    event.calendario = calendario
-                    event.save()
-            response = {'rc': 200, 'msg': 'Medico guardado', 'data': {}}
-            return HttpResponse(json.dumps(response), content_type='application/json')
         else:
             error = "Por favor revise los datos proporcionados algunos son incorrectos"
-            response = {'rc': 500, 'msg': error, 'data': {}}
-            return HttpResponse(json.dumps(response), content_type='application/json')
     context = {
         'form': form,
-        'consultorio_form': consultorio_form,
-        'direccion_form': direccion_form,
         'error': error
     }
     return render(request, 'medico/nuevo_medico.html', context=context)
