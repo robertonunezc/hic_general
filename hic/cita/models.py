@@ -82,7 +82,9 @@ class Event(models.Model):
     def __str__(self):
         if self.tipo == 0:
             return "{} {}".format(self.titulo, self.medico.nombre)
-        return "{} {}".format(self.titulo, self.cita.paciente.nombre)
+        if self.tipo == 1 and self.cita is not None:
+            return "{} {}".format(self.titulo, self.cita.paciente.nombre)
+        return self.titulo
 
 class EventExtendedProp(models.Model):
     doctor = models.IntegerField()

@@ -30,9 +30,11 @@ def listado_medicos(request):
 @login_required
 def get_specialists_by_date(request):
     try:
+        print(request.POST.get('date'))
+
         date = datetime.datetime.strptime(request.POST.get('date'),"%Y-%m-%dT%H:%M:%S%z").date()
+
         date_end = date + datetime.timedelta(days=1)
-        print(date)
         events = Event.objects.filter(hora_inicio__gte=date, hora_fin__lte=date_end, tipo=0)
         specilists = []
         for event in events:
@@ -46,7 +48,7 @@ def get_specialists_by_date(request):
 
 @login_required
 def configurar_horario_medico(request):
-    eventos = Event.objects.all()  # TODO only load the current month
+    eventos = Event.objects.filter(tipo=0)  # TODO only load the current month
     serializer = EventoSerializer(eventos, many=True)
     especialistas = Medico.objects.all()
     # serializer.data['extendedProps'] = serializer.data['extended_props']

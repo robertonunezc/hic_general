@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from hic.cita.forms import CitaForm, PrimeraCitaForm
 from hic.cita.models import Cita, ECita, Event, TCita, Calendario, EventExtendedProp
 from hic.cita.serializer import EventoSerializer
-from hic.main.models import Paciente, Medico
+from hic.main.models import Paciente, Medico, Especialidad
 from hic.paciente.forms import PacienteForm
 import json
 @login_required
@@ -14,12 +14,14 @@ def seleccionar_horario(request):
     serializer = EventoSerializer(eventos, many=True)
     pacientes = Paciente.objects.all()
     especialistas = Medico.objects.all()
+    leyenda_especialidades = Especialidad.objects.all()
     # serializer.data['extendedProps'] = serializer.data['extended_props']
     print(serializer.data)
     context = {
         'eventos': json.dumps(serializer.data),
         'pacientes': pacientes,
-        'especialistas':especialistas
+        'especialistas':especialistas,
+        'leyenda_especialidades': leyenda_especialidades
     }
     print(context)
     return render(request, 'cita/seleccionar_horario.html', context=context)
@@ -33,15 +35,17 @@ def seleccionar_tipo_cita(request, horario_id):
 @login_required
 def calendario_registrar_cita(request):
     if request.method == "POST":
-        doctor = request.POST.get('especialista')
+        especialista_id = request.POST.get('especialista')
         observaciones = request.POST.get('observaciones')
         inicio = request.POST.get('fecha-inicio-cita')
         fin = request.POST.get('fecha-fin-cita')
         paciente = request.POST.get('paciente')
 
+        medico = Medico.objects.get(pk=especialista_id)
+        paciente = Paciente.objects.get(pk=paciente)
         cita = Cita()
-        cita.medico = Medico.objects.get(pk=doctor)
-        cita.paciente = Paciente.objects.get(pk=paciente)
+        cita.medico = medico
+        cita.paciente = paciente
         cita.estado =  ECita.objects.get(estado=ECita.RESERVADA)
         cita.tipo = TCita.objects.get(tipo=TCita.INICIAL)
         cita.observaciones = observaciones
@@ -51,12 +55,13 @@ def calendario_registrar_cita(request):
 
         evento = Event()
         evento.cita = cita
-        evento.medico = cita.medico
+        evento.medico = medico
         evento.hora_inicio = inicio
         evento.hora_fin = fin
         evento.tipo = 1
+        evento.color = medico.especialidades.first().especialidad.color
         evento.calendario = Calendario.objects.first()
-        evento.titulo = "Cita-{}".format(cita.paciente.nombre)
+        evento.titulo = "{}-RES".format(paciente.nombre)
         evento.save()
 
         return redirect('citas:listado_citas')

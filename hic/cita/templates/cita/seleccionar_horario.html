@@ -44,7 +44,7 @@
         function loadingSpecialist(date) {
             const formData = new FormData();
             const specialistSelect = document.getElementById('especialista');
-{#            specialistSelect.innerHTML = "";#}
+            {#            specialistSelect.innerHTML = "";#}
             formData.append('date', date);
             axios.post("{% url 'main:specialist_by_date' %}", formData).then(function (response) {
                 console.log(response)
@@ -60,9 +60,21 @@
     </script>
 {% endblock %}
 {% block container %}
-    <div class="col-12">
-        <div id="calendar"></div>
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                {% for especialidad in leyenda_especialidades %}
+                    <div class="col-3 m-2" style="background-color: {{ especialidad.color }}; color:white">
+                        {{ especialidad.nombre }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-12">
+            <div id="calendar"></div>
+        </div>
     </div>
+
     {% include 'cita/modals/crear_cita_paciente.html' %}
     {#    {% include 'cita/modals/asignar_tiempo_medico.html' %}#}
 {% endblock %}
