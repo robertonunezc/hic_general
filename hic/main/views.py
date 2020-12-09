@@ -33,7 +33,7 @@ def get_specialists_by_date(request):
         date = datetime.datetime.strptime(request.POST.get('date'),"%Y-%m-%dT%H:%M:%S%z").date()
         date_end = date + datetime.timedelta(days=1)
         print(date)
-        events = Event.objects.filter(hora_inicio__gte=date, hora_fin__lte=date_end)
+        events = Event.objects.filter(hora_inicio__gte=date, hora_fin__lte=date_end, tipo=0)
         specilists = []
         for event in events:
             specilists.append(event.medico)
@@ -73,6 +73,7 @@ def assing_specialist_consult_time(request):
         event.hora_fin = end_time
         event.calendario = Calendario.objects.first()
         event.medico = specialist
+        event.tipo = 0
         event.save()
         extended_props = EventExtendedProp()
         extended_props.evento = event.pk

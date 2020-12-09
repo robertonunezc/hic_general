@@ -16,9 +16,10 @@
 
             <form action="{% url 'citas:calendario_registrar_cita' %}" method="post">
                 <div class="modal-body">
-                    <input type="hidden" name="doctor-cita" id="doctor-cita">
-                    <input type="hidden" name="inicio-cita" id="inicio-cita">
                     <input type="hidden" name="evento-cita" id="evento-cita">
+                    <input type="hidden" name="fecha-inicio-cita" id="fecha-inicio-cita">
+                    <input type="hidden" name="fecha-fin-cita" id="fecha-fin-cita">
+
                     <div class="form-row">
                         <div class="form-group col-12">
                             <label for="pacienteNombre">Paciente</label>
@@ -34,12 +35,6 @@
                             <select name="especialista" id="especialista" class="form-control">
                                 <option value="-1">seleccione</option>
                             </select>
-                        </div>
-                        <div class="form-group col-6">
-                            <input type="time" id="hora-inicio-cita" name="hora-inicio-cita" class="form-control">
-                        </div>
-                        <div class="form-group col-6">
-                            <input type="time" id="hora-fin-cita" name="hora-fin-cita" class="form-control">
                         </div>
                         <div class="form-group col-12">
                             <label for="observaciones">Observaciones</label>

@@ -22,18 +22,14 @@
                 {% endautoescape %}
 
                 select: function (info) {
-                    {#                   const extendedProps = info.event.extendedProps;#}
-                    const doctor = document.getElementById('doctor-cita');
-                    const inicio = document.getElementById('inicio-cita');
+                    const fechaInicio = document.getElementById('fecha-inicio-cita');
+                    const fechaFin = document.getElementById('fecha-fin-cita');
                     const evento = document.getElementById('evento-cita');
                     const btnShowModal = document.getElementById('btn-show-modal');
                     btnShowModal.click();
-                    loadingSpecialist(info.startStr)
-
-                    {#                    doctor.value = extendedProps.doctor;#}
-                    {#                    evento.value = extendedProps.evento;#}
-                    {#                    inicio.value = info.event.startStr;#}
-                    {#                    console.log(info.event.startStr)#}
+                    fechaInicio.value = info.startStr;
+                    fechaFin.value = info.endStr;
+                    loadingSpecialist(info.startStr);
 
                 },
                 eventClick: function (info) {
@@ -44,16 +40,18 @@
 
             calendar.render();
         });
+
         function loadingSpecialist(date) {
             const formData = new FormData();
+            const specialistSelect = document.getElementById('especialista');
+{#            specialistSelect.innerHTML = "";#}
             formData.append('date', date);
             axios.post("{% url 'main:specialist_by_date' %}", formData).then(function (response) {
                 console.log(response)
-                const specialistSelect = document.getElementById('especialista');
                 const specialistsData = response.data.data;
-                specialistSelect.innerHTML = specialistsData.map(function(specialist){
-                    return `<option id="${specialist.id}">${specialist.nombre}</option>`
-                });
+                specialistSelect.innerHTML = specialistsData.map(function (specialist) {
+                    return `<option value="${specialist.id}">${specialist.nombre}</option>`
+                }).join('');
             }).catch(function (error) {
                 console.log(error)
             })
@@ -66,5 +64,5 @@
         <div id="calendar"></div>
     </div>
     {% include 'cita/modals/crear_cita_paciente.html' %}
-{#    {% include 'cita/modals/asignar_tiempo_medico.html' %}#}
+    {#    {% include 'cita/modals/asignar_tiempo_medico.html' %}#}
 {% endblock %}

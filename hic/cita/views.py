@@ -10,7 +10,7 @@ from hic.paciente.forms import PacienteForm
 import json
 @login_required
 def seleccionar_horario(request):
-    eventos = Event.objects.exclude(cita__isnull=True) #TODO only load the current month
+    eventos = Event.objects.filter(tipo=1) #TODO only load the current month
     serializer = EventoSerializer(eventos, many=True)
     pacientes = Paciente.objects.all()
     especialistas = Medico.objects.all()
@@ -33,11 +33,11 @@ def seleccionar_tipo_cita(request, horario_id):
 @login_required
 def calendario_registrar_cita(request):
     if request.method == "POST":
-        doctor = request.POST.get('doctor-cita')
+        doctor = request.POST.get('especialista')
         observaciones = request.POST.get('observaciones')
-        inicio = request.POST.get('inicio-cita')
+        inicio = request.POST.get('fecha-inicio-cita')
+        fin = request.POST.get('fecha-fin-cita')
         paciente = request.POST.get('paciente')
-        evento_id = request.POST.get('evento-cita')
 
         cita = Cita()
         cita.medico = Medico.objects.get(pk=doctor)
@@ -49,9 +49,14 @@ def calendario_registrar_cita(request):
         cita.fecha = inicio
         cita.save()
 
-        evento = Event.objects.get(pk=evento_id)
+        evento = Event()
         evento.cita = cita
-        evento.titulo = "Asignado - {}".format(evento.medico.nombre)
+        evento.medico = cita.medico
+        evento.hora_inicio = inicio
+        evento.hora_fin = fin
+        evento.tipo = 1
+        evento.calendario = Calendario.objects.first()
+        evento.titulo = "Cita-{}".format(cita.paciente.nombre)
         evento.save()
 
         return redirect('citas:listado_citas')
