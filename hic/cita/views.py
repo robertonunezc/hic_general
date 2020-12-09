@@ -10,7 +10,7 @@ from hic.paciente.forms import PacienteForm
 import json
 @login_required
 def seleccionar_horario(request):
-    eventos = Event.objects.all() #TODO only load the current month
+    eventos = Event.objects.exclude(cita__isnull=True) #TODO only load the current month
     serializer = EventoSerializer(eventos, many=True)
     pacientes = Paciente.objects.all()
     especialistas = Medico.objects.all()
@@ -23,34 +23,6 @@ def seleccionar_horario(request):
     }
     print(context)
     return render(request, 'cita/seleccionar_horario.html', context=context)
-
-@login_required
-def assing_specialist_consult_time(request):
-    if request.method == "POST":
-        specialist_id = request.POST.get('doctor')
-        start_time = request.POST.get('inicio-cita-especialista')
-        end_time = request.POST.get('fin-cita-especialista')
-
-        specialist = Medico.objects.get(pk=specialist_id)
-        event = Event()
-        event.titulo = "Disponible-{}". format(specialist.nombre)
-        event.hora_inicio = start_time
-        event.hora_fin = end_time
-        event.calendario = Calendario.objects.first()
-        event.medico = specialist
-        event.save()
-        extended_props = EventExtendedProp()
-        extended_props.evento = event.pk
-        extended_props.doctor = specialist.pk
-        extended_props.save()
-
-        event.extendedProps = extended_props
-        event.save()
-
-        return redirect('citas:seleccionar_horario')
-
-    return HttpResponse("Acceso denegado")
-
 
 
 @login_required

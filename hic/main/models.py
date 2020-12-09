@@ -51,9 +51,13 @@ class Medico(Persona):
     cedula = models.CharField(max_length=80, unique=True)
     institucion = models.ForeignKey(Institucion, on_delete=models.SET_NULL, null=True)
 
+    def __str__(self):
+        return self.nombre
+
 
 class Especialidad(models.Model):
     nombre = models.CharField(null=False, unique=True, max_length=80)
+    color = models.CharField(max_length=20, default="#3788d8")
 
     def __str__(self):
         return self.nombre

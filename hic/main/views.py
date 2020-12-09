@@ -1,17 +1,17 @@
-import openpyxl
-import  json
-import dateutil.parser
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-
-# Create your views here.
-# @login_required
-from hic.cita.models import Calendario, Event
-from hic.main.models import Medico, Usuario, Especialidad, NEstado, NMunicipio, NCodigoPostal, \
+from hic.cita.models import Event, Calendario, EventExtendedProp
+from hic.cita.serializer import EventoSerializer
+from hic.main.models import Medico, Especialidad, NEstado, NMunicipio, NCodigoPostal, \
     NColonia, EspecialidadMedico
-from hic.paciente.forms import MedicoForm, ConsultorioForm, DireccionForm
+from hic.main.serializer import SpecialistSerializer
+from hic.paciente.forms import MedicoForm
+from django.views.decorators.csrf import csrf_exempt
 import json
+import openpyxl
+import datetime
+import pytz
 
 @login_required
 def inicio(request):
@@ -25,6 +25,68 @@ def listado_medicos(request):
         'medicos': medicos
     }
     return render(request, 'medico/listado_medicos.html', context=context)
+
+@csrf_exempt
+@login_required
+def get_specialists_by_date(request):
+    try:
+        date = datetime.datetime.strptime(request.POST.get('date'),"%Y-%m-%dT%H:%M:%S%z").date()
+        date_end = date + datetime.timedelta(days=1)
+        print(date)
+        events = Event.objects.filter(hora_inicio__gte=date, hora_fin__lte=date_end)
+        specilists = []
+        for event in events:
+            specilists.append(event.medico)
+        serializer = SpecialistSerializer(specilists, many=True)
+        response = {'rc': 200, 'msg': 'Specialists', 'data': serializer.data}
+    except Exception as e:
+        print(e)
+        response = {'rc': 500, 'msg': 'Error loading Specialists', 'data': None}
+    return HttpResponse(json.dumps(response), content_type='application/json')
+
+@login_required
+def configurar_horario_medico(request):
+    eventos = Event.objects.all()  # TODO only load the current month
+    serializer = EventoSerializer(eventos, many=True)
+    especialistas = Medico.objects.all()
+    # serializer.data['extendedProps'] = serializer.data['extended_props']
+    print(serializer.data)
+    context = {
+        'eventos': json.dumps(serializer.data),
+        'especialistas': especialistas
+    }
+    print(context)
+    return render(request, 'medico/seleccionar_horario.html', context=context)
+
+
+@login_required
+def assing_specialist_consult_time(request):
+    if request.method == "POST":
+        specialist_id = request.POST.get('doctor')
+        start_time = request.POST.get('inicio-cita-especialista')
+        end_time = request.POST.get('fin-cita-especialista')
+
+        specialist = Medico.objects.get(pk=specialist_id)
+        event = Event()
+        event.titulo = "Disponible-{}". format(specialist.nombre)
+        event.hora_inicio = start_time
+        event.hora_fin = end_time
+        event.calendario = Calendario.objects.first()
+        event.medico = specialist
+        event.save()
+        extended_props = EventExtendedProp()
+        extended_props.evento = event.pk
+        extended_props.doctor = specialist.pk
+        extended_props.save()
+
+        event.extendedProps = extended_props
+        event.save()
+
+        return redirect('main:horarios_especialista')
+
+    return HttpResponse("Acceso denegado")
+
+
 
 
 @login_required
