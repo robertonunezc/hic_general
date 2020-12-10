@@ -4,10 +4,11 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 from hic.cita.forms import CitaForm, PrimeraCitaForm
 from hic.cita.models import Cita, ECita, Event, TCita, Calendario, EventExtendedProp
-from hic.cita.serializer import EventoSerializer
+from hic.cita.serializer import EventoSerializer, CitaSerializer
 from hic.main.models import Paciente, Medico, Especialidad
 from hic.paciente.forms import PacienteForm
 import json
+
 @login_required
 def seleccionar_horario(request):
     eventos = Event.objects.filter(tipo=1) #TODO only load the current month
@@ -26,7 +27,6 @@ def seleccionar_horario(request):
     print(context)
     return render(request, 'cita/seleccionar_horario.html', context=context)
 
-
 @login_required
 def seleccionar_tipo_cita(request, horario_id):
     request.session.pop('horario_cita', horario_id)
@@ -40,33 +40,70 @@ def calendario_registrar_cita(request):
         inicio = request.POST.get('fecha-inicio-cita')
         fin = request.POST.get('fecha-fin-cita')
         paciente = request.POST.get('paciente')
-
         medico = Medico.objects.get(pk=especialista_id)
         paciente = Paciente.objects.get(pk=paciente)
-        cita = Cita()
-        cita.medico = medico
-        cita.paciente = paciente
-        cita.estado =  ECita.objects.get(estado=ECita.RESERVADA)
-        cita.tipo = TCita.objects.get(tipo=TCita.INICIAL)
-        cita.observaciones = observaciones
-        cita.calendario = Calendario.objects.first()
-        cita.fecha = inicio
-        cita.save()
 
-        evento = Event()
-        evento.cita = cita
-        evento.medico = medico
-        evento.hora_inicio = inicio
-        evento.hora_fin = fin
-        evento.tipo = 1
-        evento.color = medico.especialidades.first().especialidad.color
-        evento.calendario = Calendario.objects.first()
-        evento.titulo = "{}-RES".format(paciente.nombre)
-        evento.save()
+        try:
+            cita = Cita()
+            cita.medico = medico
+            cita.paciente = paciente
+            cita.estado =  ECita.objects.get(estado=ECita.RESERVADA)
+            cita.tipo = TCita.objects.get(tipo=TCita.INICIAL)
+            cita.observaciones = observaciones
+            cita.calendario = Calendario.objects.first()
+            cita.fecha = inicio
+            cita.save()
+        except Exception as e:
+            print(e)
+            return redirect('citas:listado_citas')
+
+        try:
+            evento = Event()
+            evento.cita = cita
+            evento.medico = medico
+            evento.hora_inicio = inicio
+            evento.hora_fin = fin
+            evento.tipo = 1
+            evento.color = medico.especialidades.first().especialidad.color
+            evento.calendario = Calendario.objects.first()
+            evento.titulo = "{}-RES".format(paciente.nombre)
+            evento.save()
+        except Exception as e:
+            print(e)
+            cita.delete()
+            return redirect('citas:listado_citas')
+
+        try:
+            extendedProp = EventExtendedProp()
+            extendedProp.doctor = medico.pk
+            extendedProp.evento = evento.pk
+            extendedProp.cita = cita.pk
+            extendedProp.save()
+            evento.extendedProps = extendedProp
+            evento.save()
+        except Exception as e:
+            print(e)
+            cita.delete()
+            evento.delete()
+            return redirect('citas:listado_citas')
 
         return redirect('citas:listado_citas')
 
     return HttpResponse("Acceso denegado")
+
+@login_required
+def detalle_cita(request, cita_id):
+    try:
+        cita = Cita.objects.get(pk=cita_id)
+        serializer = CitaSerializer(cita)
+        response = {'rc': 200, 'msg': 'Specialists', 'data': serializer.data}
+    except Cita.DoesNotExist:
+        print("Cita does not exist")
+        response = {'rc': 500, 'msg': 'Error loading Specialists', 'data': None}
+
+    return HttpResponse(json.dumps(response), content_type='application/json')
+
+
 
 @login_required
 def primera_cita(request):

@@ -33,7 +33,10 @@
 
                 },
                 eventClick: function (info) {
-
+                    const btnShowModal = document.getElementById('btn-show-detail-modal');
+                    btnShowModal.click();
+                    console.log(info.event.extendedProps)
+                    loadDateDetails(info.event.extendedProps.cita)
                 }
 
             });
@@ -52,6 +55,30 @@
                 specialistSelect.innerHTML = specialistsData.map(function (specialist) {
                     return `<option value="${specialist.id}">${specialist.nombre}</option>`
                 }).join('');
+            }).catch(function (error) {
+                console.log(error)
+            })
+        }
+
+        function loadDateDetails(dateId) {
+            const url = `/citas/detalle/${dateId}`;
+            axios.get(url).then(function (response) {
+                console.log(response);
+                const dateDetails= response.data.data;
+                const pacienteName = document.getElementById('nombre-paciente');
+                const specialistName = document.getElementById('nombre-especialista');
+                const dateTime = document.getElementById('fecha-cita');
+                const dateText = document.getElementById('observaciones-cita');
+                const dateStatus = document.getElementById('estado-cita');
+
+                const formatDate = dateDetails.fecha.split("T");
+
+                pacienteName.innerHTML = `${dateDetails.paciente.nombre} ${dateDetails.paciente.primer_apellido}`;
+                specialistName.innerHTML = `${dateDetails.medico.nombre} ${dateDetails.medico.primer_apellido}`;
+                dateTime.innerHTML = `${formatDate[0]} ${formatDate[1].split("-")[0]}`;
+                dateText.innerHTML = dateDetails.observaciones == ""? "NO TIENE": dateDetails.observaciones;
+                dateStatus.innerHTML = dateDetails.estado.estado == 0? "RESERVADA": "CANCELADA";
+
             }).catch(function (error) {
                 console.log(error)
             })
@@ -76,5 +103,5 @@
     </div>
 
     {% include 'cita/modals/crear_cita_paciente.html' %}
-    {#    {% include 'cita/modals/asignar_tiempo_medico.html' %}#}
+        {% include 'cita/modals/detalle_cita_paciente.html' %}
 {% endblock %}
