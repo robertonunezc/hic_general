@@ -11,7 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import openpyxl
 import datetime
-import pytz
 
 @login_required
 def inicio(request):

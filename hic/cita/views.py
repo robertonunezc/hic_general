@@ -3,13 +3,15 @@ from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 # Create your views here.
+from hic import settings
 from hic.cita.forms import CitaForm, PrimeraCitaForm
 from hic.cita.models import Cita, ECita, Event, TCita, Calendario, EventExtendedProp
 from hic.cita.serializer import EventoSerializer, CitaSerializer
 from hic.main.models import Paciente, Medico, Especialidad
 from hic.paciente.forms import PacienteForm
+from django.utils.timezone import localtime
 import json
-
+import pytz
 
 @login_required
 def seleccionar_horario(request):
@@ -30,16 +32,17 @@ def cargar_eventos(request):
     try:
         response = []
         eventos = Event.objects.filter(tipo=1)  # TODO only load the current month
+
         for evento in eventos:
             if evento.recurrente:
-                # TODO: fix the timezone
-                print(evento.hora_inicio)
-                print(datetime.datetime.strftime(evento.hora_inicio, "%H:%M:%S"))
+                print( str(evento.hora_inicio.time()))
                 evento_dict = {
                     'startRecur': datetime.datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
                     'daysOfWeek': [evento.dia_semana],
-                    'startTime': datetime.datetime.strftime(evento.hora_inicio, "%H:%M:%S%Z"),
-                    'endTime': datetime.datetime.strftime(evento.hora_fin, '%H:%M:S')
+                    'startTime': str(evento.hora_inicio.time()),
+                    'endTime': str(evento.hora_fin.time()),
+                    'title': evento.titulo,
+                    'backgroundColor': evento.color
                 }
             else:
                 evento_dict = {
