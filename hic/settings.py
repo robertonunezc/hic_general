@@ -24,13 +24,39 @@ SECRET_KEY = '_%q)@_kgh_n(uim74u3d4=2_c0(u-ga)eqb2271)4z%3vdfkf^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'sichic.herokuapp.com', 'cmdcuba.com.mx', '165.227.59.59']
+ALLOWED_HOSTS = ['*']
 
-AUTH_USER_MODEL = 'main.Usuario'
+# AUTH_USER_MODEL = 'main.User'
 LOGIN_REDIRECT_URL = '/inicio/'
+
 # Application definition
+# Estas son las app que se comparten publicamente
+SHARED_APPS = [
+    'tenant_schemas',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'customer'
+]
+
+TENANT_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'hic.main',
+    'hic.paciente',
+    'hic.consulta',
+    'hic.cita',
+]
 
 INSTALLED_APPS = [
+    'tenant_schemas',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cloudinary',
+    'customer',
     'hic.main',
     'hic.paciente',
     'hic.consulta',
@@ -45,6 +72,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'tenant_schemas.middleware.TenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -110,10 +138,20 @@ WSGI_APPLICATION = 'hic.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'tenant_schemas.postgresql_backend',
+        'NAME': 'hic_multi',
+        'USER': 'hic_multi',
+        'PASSWORD': 'Hic123.',
+        'HOST': '127.0.0.1',
+        'PORT': 5432,
     }
 }
+DATABASE_ROUTERS = (
+    'tenant_schemas.routers.TenantSyncRouter',
+)
+
+TENANT_MODEL = "customer.Client"# app.Model
 
 # HEROKU_SERVER = False
 HIC_DIR = "hic/hic_pdf/"

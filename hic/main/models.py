@@ -1,6 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, UserManager, User
 from cloudinary.models import CloudinaryField
 from django.conf import settings
 
@@ -8,8 +8,11 @@ from django.conf import settings
 # Create your models here.
 
 
-class Usuario(AbstractUser):
-    objects = UserManager()
+class Usuario(models.Model):
+    admin_user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.admin_user.first_name
 
 
 class Persona(models.Model):

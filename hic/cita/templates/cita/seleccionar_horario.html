@@ -17,9 +17,12 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                {% autoescape off %}
-                    events: {{ eventos }},
-                {% endautoescape %}
+                events: {
+                    url: '{% url 'citas:cargar_eventos' %}',
+                },
+                {#                {% autoescape off %}#}
+                {#                    events: {{ eventos }},#}
+                {#                {% endautoescape %}#}
 
                 select: function (info) {
                     const fechaInicio = document.getElementById('fecha-inicio-cita');
@@ -64,7 +67,7 @@
             const url = `/citas/detalle/${dateId}`;
             axios.get(url).then(function (response) {
                 console.log(response);
-                const dateDetails= response.data.data;
+                const dateDetails = response.data.data;
                 const pacienteName = document.getElementById('nombre-paciente');
                 const specialistName = document.getElementById('nombre-especialista');
                 const dateTime = document.getElementById('fecha-cita');
@@ -76,8 +79,8 @@
                 pacienteName.innerHTML = `${dateDetails.paciente.nombre} ${dateDetails.paciente.primer_apellido}`;
                 specialistName.innerHTML = `${dateDetails.medico.nombre} ${dateDetails.medico.primer_apellido}`;
                 dateTime.innerHTML = `${formatDate[0]} ${formatDate[1].split("-")[0]}`;
-                dateText.innerHTML = dateDetails.observaciones == ""? "NO TIENE": dateDetails.observaciones;
-                dateStatus.innerHTML = dateDetails.estado.estado == 0? "RESERVADA": "CANCELADA";
+                dateText.innerHTML = dateDetails.observaciones == "" ? "NO TIENE" : dateDetails.observaciones;
+                dateStatus.innerHTML = dateDetails.estado.estado == 0 ? "RESERVADA" : "CANCELADA";
 
             }).catch(function (error) {
                 console.log(error)
@@ -103,5 +106,5 @@
     </div>
 
     {% include 'cita/modals/crear_cita_paciente.html' %}
-        {% include 'cita/modals/detalle_cita_paciente.html' %}
+    {% include 'cita/modals/detalle_cita_paciente.html' %}
 {% endblock %}

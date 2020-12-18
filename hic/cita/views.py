@@ -1,3 +1,4 @@
+from django.db.models.functions import datetime
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -9,28 +10,55 @@ from hic.main.models import Paciente, Medico, Especialidad
 from hic.paciente.forms import PacienteForm
 import json
 
+
 @login_required
 def seleccionar_horario(request):
-    eventos = Event.objects.filter(tipo=1) #TODO only load the current month
-    serializer = EventoSerializer(eventos, many=True)
     pacientes = Paciente.objects.all()
     especialistas = Medico.objects.all()
     leyenda_especialidades = Especialidad.objects.all()
     # serializer.data['extendedProps'] = serializer.data['extended_props']
-    print(serializer.data)
     context = {
-        'eventos': json.dumps(serializer.data),
         'pacientes': pacientes,
-        'especialistas':especialistas,
+        'especialistas': especialistas,
         'leyenda_especialidades': leyenda_especialidades
     }
     print(context)
     return render(request, 'cita/seleccionar_horario.html', context=context)
 
+
+def cargar_eventos(request):
+    try:
+        response = []
+        eventos = Event.objects.filter(tipo=1)  # TODO only load the current month
+        for evento in eventos:
+            if evento.recurrente:
+                # TODO: fix the timezone
+                print(evento.hora_inicio)
+                print(datetime.datetime.strftime(evento.hora_inicio, "%H:%M:%S"))
+                evento_dict = {
+                    'startRecur': datetime.datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
+                    'daysOfWeek': [evento.dia_semana],
+                    'startTime': datetime.datetime.strftime(evento.hora_inicio, "%H:%M:%S%Z"),
+                    'endTime': datetime.datetime.strftime(evento.hora_fin, '%H:%M:S')
+                }
+            else:
+                evento_dict = {
+
+                }
+            response.append(evento_dict)
+
+    except Cita.DoesNotExist:
+        print("Cita does not exist")
+        response = {'rc': 500, 'msg': 'Error loading Specialists', 'data': None}
+
+    return HttpResponse(json.dumps(response), content_type='application/json')
+
+
 @login_required
 def seleccionar_tipo_cita(request, horario_id):
     request.session.pop('horario_cita', horario_id)
-    return render(request,'cita/seleccionar_tipo_cita.html')
+    return render(request, 'cita/seleccionar_tipo_cita.html')
+
 
 @login_required
 def calendario_registrar_cita(request):
@@ -47,7 +75,7 @@ def calendario_registrar_cita(request):
             cita = Cita()
             cita.medico = medico
             cita.paciente = paciente
-            cita.estado =  ECita.objects.get(estado=ECita.RESERVADA)
+            cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
             cita.tipo = TCita.objects.get(tipo=TCita.INICIAL)
             cita.observaciones = observaciones
             cita.calendario = Calendario.objects.first()
@@ -91,6 +119,7 @@ def calendario_registrar_cita(request):
 
     return HttpResponse("Acceso denegado")
 
+
 @login_required
 def detalle_cita(request, cita_id):
     try:
@@ -104,11 +133,10 @@ def detalle_cita(request, cita_id):
     return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-
 @login_required
 def primera_cita(request):
+    return render(request, 'cita/primera_cita.html')
 
-    return render(request,'cita/primera_cita.html')
 
 @login_required
 def nueva_cita(request):

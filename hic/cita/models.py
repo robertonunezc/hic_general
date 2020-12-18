@@ -72,6 +72,8 @@ class Event(models.Model):
     hora_fin = models.DateTimeField()
     # 0 Specialist event, 1 Pacient date event
     tipo = models.IntegerField(default=0)
+    recurrente = models.BooleanField(default=0) #1 recurrent, 0 not
+    dia_semana = models.IntegerField(null=True, blank=True) # 0 = Sunday, 1= Monday ....
     medico = models.ForeignKey(Medico, on_delete=models.PROTECT)
     cita = models.ForeignKey(Cita, on_delete=models.SET_NULL, null=True, blank=True, related_name='events')
     calendario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
