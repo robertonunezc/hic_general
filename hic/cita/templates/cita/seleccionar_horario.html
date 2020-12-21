@@ -21,9 +21,6 @@
                 events: {
                     url: '{% url 'citas:cargar_eventos' %}',
                 },
-                {#                {% autoescape off %}#}
-                {#                    events: {{ eventos }},#}
-                {#                {% endautoescape %}#}
 
                 select: function (info) {
                     const fechaInicio = document.getElementById('fecha-inicio-cita');
@@ -33,6 +30,7 @@
                     btnShowModal.click();
                     fechaInicio.value = info.startStr;
                     fechaFin.value = info.endStr;
+                    console.log(info.start.getDate());
                     loadingSpecialist(info.startStr);
 
                 },

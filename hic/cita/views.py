@@ -13,6 +13,7 @@ from django.utils.timezone import localtime
 import json
 import pytz
 
+
 @login_required
 def seleccionar_horario(request):
     pacientes = Paciente.objects.all()
@@ -27,15 +28,23 @@ def seleccionar_horario(request):
     print(context)
     return render(request, 'cita/seleccionar_horario.html', context=context)
 
+@login_required
+def borrar_evento(request, event_id):
+    try:
+        evento = Event.objects.get(pk=event_id)
+        evento.deshabilitado = True
+        evento.save()
+    except Event.DoesNotExist:
+        ""
+    return render()
 
 def cargar_eventos(request):
     try:
         response = []
-        eventos = Event.objects.filter(tipo=1)  # TODO only load the current month
+        eventos = Event.objects.filter(tipo=1, dehabilitado=0)  # TODO only load the current month
 
         for evento in eventos:
             if evento.recurrente:
-                print( str(evento.hora_inicio.time()))
                 evento_dict = {
                     'startRecur': datetime.datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
                     'daysOfWeek': [evento.dia_semana],
@@ -45,7 +54,12 @@ def cargar_eventos(request):
                     'backgroundColor': evento.color
                 }
             else:
+                # TODO falta el cargar eventos sencillo
                 evento_dict = {
+                    'title': evento.titulo,
+                    'backgroundColor': evento.color,
+                    'start': str(evento.hora_inicio),
+                    'end': str(evento.hora_fin),
 
                 }
             response.append(evento_dict)
@@ -71,9 +85,16 @@ def calendario_registrar_cita(request):
         inicio = request.POST.get('fecha-inicio-cita')
         fin = request.POST.get('fecha-fin-cita')
         paciente = request.POST.get('paciente')
+        recuerrente_si = request.POST.get('eventoRecurrente')
+        print(recuerrente_si)
         medico = Medico.objects.get(pk=especialista_id)
         paciente = Paciente.objects.get(pk=paciente)
-
+        recuerrente = True if recuerrente_si == "recurrente" else False
+        dia_semana = datetime.datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S%z").date().weekday()
+        if dia_semana == 6:
+            dia_semana = 0
+        else:
+            dia_semana += 1
         try:
             cita = Cita()
             cita.medico = medico
@@ -98,11 +119,13 @@ def calendario_registrar_cita(request):
             evento.color = medico.especialidades.first().especialidad.color
             evento.calendario = Calendario.objects.first()
             evento.titulo = "{}-RES".format(paciente.nombre)
+            evento.recurrente = recuerrente
+            evento.dia_semana = dia_semana
             evento.save()
         except Exception as e:
             print(e)
             cita.delete()
-            return redirect('citas:listado_citas')
+            return redirect('citas:seleccionar_horario')
 
         try:
             extendedProp = EventExtendedProp()
@@ -116,9 +139,9 @@ def calendario_registrar_cita(request):
             print(e)
             cita.delete()
             evento.delete()
-            return redirect('citas:listado_citas')
+            return redirect('citas:seleccionar_horario')
 
-        return redirect('citas:listado_citas')
+        return redirect('citas:seleccionar_horario')
 
     return HttpResponse("Acceso denegado")
 

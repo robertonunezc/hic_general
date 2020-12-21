@@ -80,6 +80,7 @@ class Event(models.Model):
     color = models.CharField(max_length=20, default="#3788d8")
     extendedProps = models.ForeignKey('cita.EventExtendedProp', null=True, blank=True,
                                        related_name='events', on_delete=models.PROTECT)
+    deshabilitado = models.BooleanField(default=0) #0 habilitado, 1 dehabilitado
 
     def __str__(self):
         if self.tipo == 0:
