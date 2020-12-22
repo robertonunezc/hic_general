@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from hic import settings
 from hic.cita.forms import CitaForm, PrimeraCitaForm
 from hic.cita.models import Cita, ECita, Event, TCita, Calendario, EventExtendedProp
-from hic.cita.serializer import EventoSerializer, CitaSerializer
+from hic.cita.serializer import EventoSerializer, CitaSerializer, EventExtendedPropSerializer
 from hic.main.models import Paciente, Medico, Especialidad
 from hic.paciente.forms import PacienteForm
 from django.utils.timezone import localtime
@@ -29,19 +29,26 @@ def seleccionar_horario(request):
     return render(request, 'cita/seleccionar_horario.html', context=context)
 
 @login_required
-def borrar_evento(request, event_id):
-    try:
-        evento = Event.objects.get(pk=event_id)
-        evento.deshabilitado = True
-        evento.save()
-    except Event.DoesNotExist:
-        ""
-    return render()
+def borrar_cita(request, cita_id):
+    if request.method == 'POST':
+        try:
+            cita = Cita.objects.get(pk=cita_id)
+            cita.deshabilitado = True
+            cita.save()
+            for evento in cita.events.all():
+                evento.deshabilitado = True
+                evento.save()
+            return HttpResponseRedirect('/citas/horario')
+        except Cita.DoesNotExist:
+            print("No existe")
+        except Exception as e:
+            print(e)
+    return render(request,'cita/confirmacion_borrar.html')
 
 def cargar_eventos(request):
     try:
         response = []
-        eventos = Event.objects.filter(tipo=1, dehabilitado=0)  # TODO only load the current month
+        eventos = Event.objects.filter(tipo=1, deshabilitado=0)  # TODO only load the current month
 
         for evento in eventos:
             if evento.recurrente:
@@ -51,7 +58,8 @@ def cargar_eventos(request):
                     'startTime': str(evento.hora_inicio.time()),
                     'endTime': str(evento.hora_fin.time()),
                     'title': evento.titulo,
-                    'backgroundColor': evento.color
+                    'backgroundColor': evento.color,
+                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
                 }
             else:
                 # TODO falta el cargar eventos sencillo
@@ -60,6 +68,7 @@ def cargar_eventos(request):
                     'backgroundColor': evento.color,
                     'start': str(evento.hora_inicio),
                     'end': str(evento.hora_fin),
+                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
 
                 }
             response.append(evento_dict)

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block container %}
+    <div class="card shadow mb-4" xmlns="http://www.w3.org/1999/html">
+        <div class="card-header py-3 d-flex justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Confirmación de borrado</h6>
+        </div>
+        <div class="card-body">
+            <form method="post" action="#">
+                {% csrf_token %}
+                <div class="alert alert-danger">¿Confirma que quiere borrar esta cita?</div>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-danger" type="submit">Si, Seguro</button>
+                        <div class="btn btn-outline-primary ml-5" onclick=" window.history.back();">No, quiero regresar</div>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

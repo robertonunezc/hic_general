@@ -11,7 +11,7 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'timeGridWeek',
-{#                timeZone: 'America/Mexico_City',#}
+                {#                timeZone: 'America/Mexico_City',#}
                 selectable: true,
                 headerToolbar: {
                     left: 'prev,next today',
@@ -64,6 +64,9 @@
 
         function loadDateDetails(dateId) {
             const url = `/citas/detalle/${dateId}`;
+            const btnDelete = document.getElementById('btn-borrar-cita');
+            btnDelete.setAttribute('href', `/citas/borrar/${dateId}`);
+
             axios.get(url).then(function (response) {
                 console.log(response);
                 const dateDetails = response.data.data;

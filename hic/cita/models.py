@@ -60,6 +60,7 @@ class Cita(models.Model):
     tipo = models.ForeignKey(TCita, on_delete=models.PROTECT)
     observaciones = models.CharField(max_length=250, null=True, blank=True)
     calendario = models.ForeignKey(Calendario, on_delete=models.PROTECT)
+    deshabilitado = models.BooleanField(default=0) #0 habilitado, 1 dehabilitado
 
     def __str__(self):
         return "{} {} {} {} ".format(self.fecha, self.paciente, self.estado, self.tipo)

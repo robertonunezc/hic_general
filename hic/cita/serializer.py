@@ -3,10 +3,10 @@ from rest_framework import serializers
 from hic.cita.models import Event, EventExtendedProp, Cita
 
 
-# class EventExtendedPropSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = EventExtendedProp
-#         fields = '__all__'
+class EventExtendedPropSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventExtendedProp
+        fields = '__all__'
 
 
 class EventoSerializer(serializers.ModelSerializer):
