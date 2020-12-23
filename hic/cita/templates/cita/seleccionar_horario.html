@@ -93,6 +93,15 @@
 {% endblock %}
 {% block container %}
     <div class="row">
+        {% if messages %}
+            <ul class="alert-danger alert">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="row">
         <div class="col-12">
             <div class="row">
                 {% for especialidad in leyenda_especialidades %}

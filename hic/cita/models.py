@@ -35,20 +35,16 @@ class ECita(models.Model):
 
 
 class TCita(models.Model):
-    INICIAL = 1
-    SEGUIMIENTO = 2
 
     TIPO = (
-        (INICIAL, "INICIAL"),
-        (SEGUIMIENTO, "SEGUIMIENTO"),
+        ("PSICOLOGIA", "PSICOLOGIA"),
+        ("AUTISMO", "AUTISMO"),
     )
 
-    tipo = models.IntegerField(choices=TIPO, unique=True)
+    tipo = models.CharField(choices=TIPO, max_length=50)
+    color = models.CharField(max_length=20, default="#3788d8")
 
     def __str__(self):
-        for item in self.TIPO:
-            if item[0] == self.tipo:
-                return item[1]
         return self.tipo
 
 

@@ -2,16 +2,13 @@ from django.db.models.functions import datetime
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-# Create your views here.
-from hic import settings
+from django.contrib import messages
 from hic.cita.forms import CitaForm, PrimeraCitaForm
 from hic.cita.models import Cita, ECita, Event, TCita, Calendario, EventExtendedProp
 from hic.cita.serializer import EventoSerializer, CitaSerializer, EventExtendedPropSerializer
 from hic.main.models import Paciente, Medico, Especialidad
 from hic.paciente.forms import PacienteForm
-from django.utils.timezone import localtime
 import json
-import pytz
 
 
 @login_required
@@ -19,10 +16,12 @@ def seleccionar_horario(request):
     pacientes = Paciente.objects.all()
     especialistas = Medico.objects.all()
     leyenda_especialidades = Especialidad.objects.all()
+    tipo_citas = TCita.objects.all()
     # serializer.data['extendedProps'] = serializer.data['extended_props']
     context = {
         'pacientes': pacientes,
         'especialistas': especialistas,
+        'tipo_citas': tipo_citas,
         'leyenda_especialidades': leyenda_especialidades
     }
     print(context)
@@ -45,6 +44,7 @@ def borrar_cita(request, cita_id):
             print(e)
     return render(request,'cita/confirmacion_borrar.html')
 
+@login_required
 def cargar_eventos(request):
     try:
         response = []
@@ -89,34 +89,37 @@ def seleccionar_tipo_cita(request, horario_id):
 @login_required
 def calendario_registrar_cita(request):
     if request.method == "POST":
-        especialista_id = request.POST.get('especialista')
-        observaciones = request.POST.get('observaciones')
-        inicio = request.POST.get('fecha-inicio-cita')
-        fin = request.POST.get('fecha-fin-cita')
-        paciente = request.POST.get('paciente')
-        recuerrente_si = request.POST.get('eventoRecurrente')
-        print(recuerrente_si)
-        medico = Medico.objects.get(pk=especialista_id)
-        paciente = Paciente.objects.get(pk=paciente)
-        recuerrente = True if recuerrente_si == "recurrente" else False
-        dia_semana = datetime.datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S%z").date().weekday()
-        if dia_semana == 6:
-            dia_semana = 0
-        else:
-            dia_semana += 1
         try:
-            cita = Cita()
-            cita.medico = medico
-            cita.paciente = paciente
-            cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
-            cita.tipo = TCita.objects.get(tipo=TCita.INICIAL)
-            cita.observaciones = observaciones
-            cita.calendario = Calendario.objects.first()
-            cita.fecha = inicio
-            cita.save()
+            especialista_id = request.POST.get('especialista')
+            observaciones = request.POST.get('observaciones')
+            inicio = request.POST.get('fecha-inicio-cita')
+            fin = request.POST.get('fecha-fin-cita')
+            paciente = request.POST.get('paciente')
+            tipo_cita = request.POST.get('tipoCita')
+            recuerrente_si = request.POST.get('eventoRecurrente')
+
+            medico = Medico.objects.get(pk=especialista_id)
+            paciente = Paciente.objects.get(pk=paciente)
+            recuerrente = True if recuerrente_si == "recurrente" else False
+            dia_semana = datetime.datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S%z").date().weekday()
+
+            if dia_semana == 6:
+                dia_semana = 0
+            else:
+                dia_semana += 1
+                cita = Cita()
+                cita.medico = medico
+                cita.paciente = paciente
+                cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
+                cita.tipo = TCita.objects.get(pk=tipo_cita)
+                cita.observaciones = observaciones
+                cita.calendario = Calendario.objects.first()
+                cita.fecha = inicio
+                cita.save()
         except Exception as e:
             print(e)
-            return redirect('citas:listado_citas')
+            messages.add_message(request=request,level=messages.ERROR,message="Error creando la cita. Todos los datos son obligatorios")
+            return redirect('citas:seleccionar_horario')
 
         try:
             evento = Event()
@@ -125,13 +128,14 @@ def calendario_registrar_cita(request):
             evento.hora_inicio = inicio
             evento.hora_fin = fin
             evento.tipo = 1
-            evento.color = medico.especialidades.first().especialidad.color
+            evento.color = cita.tipo.color
             evento.calendario = Calendario.objects.first()
             evento.titulo = "{}-RES".format(paciente.nombre)
             evento.recurrente = recuerrente
             evento.dia_semana = dia_semana
             evento.save()
         except Exception as e:
+            # TODO create flash message when an error ocurred
             print(e)
             cita.delete()
             return redirect('citas:seleccionar_horario')
