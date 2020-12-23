@@ -107,15 +107,16 @@ def calendario_registrar_cita(request):
                 dia_semana = 0
             else:
                 dia_semana += 1
-                cita = Cita()
-                cita.medico = medico
-                cita.paciente = paciente
-                cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
-                cita.tipo = TCita.objects.get(pk=tipo_cita)
-                cita.observaciones = observaciones
-                cita.calendario = Calendario.objects.first()
-                cita.fecha = inicio
-                cita.save()
+            cita = Cita()
+            cita.medico = medico
+            cita.paciente = paciente
+            cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
+            cita.tipo = TCita.objects.get(pk=tipo_cita)
+            cita.observaciones = observaciones
+            cita.calendario = Calendario.objects.first()
+            cita.fecha = inicio
+            cita.save()
+
         except Exception as e:
             print(e)
             messages.add_message(request=request,level=messages.ERROR,message="Error creando la cita. Todos los datos son obligatorios")

@@ -2,7 +2,7 @@ from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from hic.cita.models import Event, Calendario, EventExtendedProp
-from hic.cita.serializer import EventoSerializer
+from hic.cita.serializer import EventoSerializer, EventExtendedPropSerializer
 from hic.main.models import Medico, Especialidad, NEstado, NMunicipio, NCodigoPostal, \
     NColonia, EspecialidadMedico
 from hic.main.serializer import SpecialistSerializer
@@ -31,10 +31,15 @@ def get_specialists_by_date(request):
     try:
         print(request.POST.get('date'))
 
-        date = datetime.datetime.strptime(request.POST.get('date'),"%Y-%m-%dT%H:%M:%S%z").date()
+        dia_semana = datetime.datetime.strptime(request.POST.get('date'), "%Y-%m-%dT%H:%M:%S%z").date().weekday()
 
-        date_end = date + datetime.timedelta(days=1)
-        events = Event.objects.filter(hora_inicio__gte=date, hora_fin__lte=date_end, tipo=0, deshabilitado=0)
+        if dia_semana == 6:
+            dia_semana = 0
+        else:
+            dia_semana += 1
+        print(dia_semana)
+        # date_end = date + datetime.timedelta(days=1)
+        events = Event.objects.filter(dia_semana=dia_semana, tipo=0, deshabilitado=0)
         specilists = []
         for event in events:
             specilists.append(event.medico)
@@ -66,6 +71,14 @@ def assing_specialist_consult_time(request):
         specialist_id = request.POST.get('doctor')
         start_time = request.POST.get('inicio-cita-especialista')
         end_time = request.POST.get('fin-cita-especialista')
+        recuerrente_si = request.POST.get('eventoRecurrente')
+        recuerrente = True if recuerrente_si == "recurrente" else False
+        dia_semana = datetime.datetime.strptime(start_time, "%Y-%m-%d").date().weekday()
+
+        if dia_semana == 6:
+            dia_semana = 0
+        else:
+            dia_semana += 1
 
         specialist = Medico.objects.get(pk=specialist_id)
         event = Event()
@@ -74,6 +87,8 @@ def assing_specialist_consult_time(request):
         event.hora_fin = end_time
         event.calendario = Calendario.objects.first()
         event.medico = specialist
+        event.recurrente = recuerrente
+        event.dia_semana = dia_semana
         event.tipo = 0
         event.save()
         extended_props = EventExtendedProp()
@@ -89,6 +104,42 @@ def assing_specialist_consult_time(request):
     return HttpResponse("Acceso denegado")
 
 
+@login_required
+
+@login_required
+def cargar_eventos(request):
+    try:
+        response = []
+        eventos = Event.objects.filter(tipo=0, deshabilitado=0)  # TODO only load the current month
+
+        for evento in eventos:
+            if evento.recurrente:
+                evento_dict = {
+                    'startRecur': datetime.datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
+                    'daysOfWeek': [evento.dia_semana],
+                    'startTime': str(evento.hora_inicio.time()),
+                    'endTime': str(evento.hora_fin.time()),
+                    'title': evento.titulo,
+                    'backgroundColor': evento.color,
+                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
+                }
+            else:
+                # TODO falta el cargar eventos sencillo
+                evento_dict = {
+                    'title': evento.titulo,
+                    'backgroundColor': evento.color,
+                    'start': str(evento.hora_inicio),
+                    'end': str(evento.hora_fin),
+                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
+
+                }
+            response.append(evento_dict)
+
+    except Event.DoesNotExist:
+        print("Evento does not exist")
+        response = {'rc': 500, 'msg': 'Error loading Events', 'data': None}
+
+    return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 @login_required

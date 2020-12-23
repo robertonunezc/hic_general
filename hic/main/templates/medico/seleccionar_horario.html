@@ -17,10 +17,9 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                {% autoescape off %}
-                    events: {{ eventos }},
-                {% endautoescape %}
-
+                events: {
+                    url: '{% url 'main:cargar_eventos' %}'
+                },
                 select: function (info) {
                     const btnShowModal = document.getElementById('btn-show-doctor-time');
                     btnShowModal.click();
