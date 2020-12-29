@@ -2,7 +2,7 @@ from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 
 from hic.main.models import Paciente
-from hic.paciente.forms import PacienteForm
+from hic.paciente.forms import PacienteForm, HistoriaClinicaForm
 from django.contrib.auth.decorators import login_required
 from hic.pdf import get_historia_pdf
 # Create your views here
@@ -18,14 +18,20 @@ def listado_paciente(request):
 
 @login_required
 def nuevo_paciente(request):
-    form = PacienteForm()
+    paciente_form = PacienteForm()
+    historia_clinica_form = HistoriaClinicaForm()
     if request.method == 'POST':
-        form = PacienteForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('pacientes:listado_pacientes')
+        paciente_form = PacienteForm(request.POST, request.FILES)
+        if paciente_form.is_valid():
+            historia_clinica_form = HistoriaClinicaForm(request.POST)
+            if historia_clinica_form.is_valid():
+                paciente = paciente_form.save()
+                historia_clinica_form.instance.paciente = paciente
+                historia_clinica_form.save()
+                return redirect('pacientes:listado_pacientes')
     context = {
-        'form': form
+        'paciente_form': paciente_form,
+        'historia_clinica_form': historia_clinica_form
     }
     return render(request, 'pacientes/alta_paciente.html', context=context)
 

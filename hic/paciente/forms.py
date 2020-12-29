@@ -1,5 +1,12 @@
 from django import forms
 from hic.main.models import Paciente, Medico, Especialidad, Consultorio, Direccion, NEstado
+from hic.paciente.models import HistoriaClinica
+
+
+class HistoriaClinicaForm(forms.ModelForm):
+    class Meta:
+        model = HistoriaClinica
+        exclude = ('paciente',)
 
 
 class PacienteForm(forms.ModelForm):
@@ -14,6 +21,7 @@ class MedicoForm(forms.ModelForm):
     class Meta:
         model = Medico
         fields = '__all__'
+
 
 
 class ConsultorioForm(forms.ModelForm):

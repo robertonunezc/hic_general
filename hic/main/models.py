@@ -29,6 +29,7 @@ class Persona(models.Model):
     email = models.CharField(max_length=80, unique=True)
     genero = models.IntegerField(choices=GENERO)
     fecha_nacimiento = models.DateField(null=False, blank=False)
+    direccion = models.TextField(null=True, blank=True)
 
     def get_full_name(self):
         full_name = '%s %s %s' % (self.nombre, self.primer_apellido, self.segundo_apellido)
