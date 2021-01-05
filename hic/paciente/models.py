@@ -4,7 +4,7 @@ from hic.main.models import Paciente, Medico
 
 
 class HistoriaClinica(models.Model):
-    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT)
+    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT, related_name='paciente')
     fecha = models.DateField()
     folio = models.CharField(max_length=50)
     nombre_madre = models.CharField(max_length=50)
@@ -32,8 +32,8 @@ class HistoriaClinica(models.Model):
     neuroterapia = models.BooleanField(default=False)
     fecha_cita = models.DateField()
     profesional_cargo = models.CharField(max_length=250)
-    valoracion = models.CharField(max_length=250)
-    terapias = models.CharField(max_length=250)
+    costo_valoracion = models.CharField(max_length=250)
+    costo_terapias = models.CharField(max_length=250)
     nombre_entrevistador = models.CharField(max_length=250)
 
 

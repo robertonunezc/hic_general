@@ -3,68 +3,97 @@
 {% load staticfiles %}
 {% cloudinary_includes %}
 {% cloudinary_js_config %}
+{% load crispy_forms_tags %}
 {% block custom_style %}
-<link rel="stylesheet"
+    <style>
+        .form-flex, .form-flex-sm {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .form-flex > div {
+            flex: 0 1 30%;
+            margin: 5px;
+        }
+
+        .form-flex-sm > div {
+            flex: 0 1 10%;
+            margin: 5px;
+        }
+    </style>
+    <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
-        <link rel="stylesheet" href="{% static 'vendors/chosen/chosen.css' %}">
+
+    <link rel="stylesheet" href="{% static 'vendors/chosen/chosen.css' %}">
 {% endblock %}
 
 {% block container %}
-<div class="row">
+    <div class="row">
         <div class="col">
             <div class="card shadow">
-                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Editar Paciente</h6>
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Editar Paciente</h6>
                 </div>
                 <div class="card-body">
                     <form action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_nombre">Nombre</label>
                                     {{ form.nombre }}
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_primer_apellido">Primer Apellido</label>
                                     {{ form.primer_apellido }}
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_segundo_apellido">Segundo Apellido</label>
                                     {{ form.segundo_apellido }}
                                 </div>
                             </div>
-                            <div class="col-6">
+                        </div>
+                        <div class="row">
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_email">Email</label>
+                                    {{ form.email }}
+                                </div>
+                            </div>
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_telefono">Teléfono</label>
                                     {{ form.telefono }}
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_genero">Género</label>
                                     {{ form.genero }}
                                 </div>
                             </div>
-                            <div class="col-6">
+                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="id_fecha">Fecha de Nacimiento</label>
                                     {{ form.fecha_nacimiento }}
                                 </div>
                             </div>
+                             <div class="col-4">
+                                <div class="form-group">
+                                    <label for="direccion">Dirección</label>
+                                    {{ form.direccion}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-info">Guardar</button>
+                        <div class="row flex-column">
+                            {% crispy historia_clinica_form historia_clinica_form.helper %}
                         </div>
-
                     </form>
                 </div>
             </div>

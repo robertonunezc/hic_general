@@ -1,9 +1,24 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% load cloudinary %}
-{% cloudinary_includes %}
-{% cloudinary_js_config %}
+{% load crispy_forms_tags %}
 {% block custom_style %}
+    <style>
+        .form-flex, .form-flex-sm {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .form-flex > div {
+            flex: 0 1 30%;
+            margin: 5px;
+        }
+
+        .form-flex-sm > div {
+            flex: 0 1 10%;
+            margin: 5px;
+        }
+    </style>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
 {% endblock %}
@@ -14,7 +29,6 @@
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Nuevo Paciente</h6>
                 </div>
-
                 <div class="card-body">
                     <form action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -63,13 +77,17 @@
                                     {{ paciente_form.email }}
                                 </div>
                             </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="id_email">Dirección</label>
+                                    {{ paciente_form.direccion}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="row">
-                            {{ historia_clinica_form.as_p }}
+                        <div class="row flex-column">
+                            {% crispy historia_clinica_form historia_clinica_form.helper %}
                         </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-info">Guardar</button>
-                        </div>
+
                     </form>
                 </div>
             </div>

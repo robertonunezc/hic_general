@@ -36,12 +36,7 @@ class ECita(models.Model):
 
 class TCita(models.Model):
 
-    TIPO = (
-        ("PSICOLOGIA", "PSICOLOGIA"),
-        ("AUTISMO", "AUTISMO"),
-    )
-
-    tipo = models.CharField(choices=TIPO, max_length=50)
+    tipo = models.CharField(default="", max_length=50)
     color = models.CharField(max_length=20, default="#3788d8")
 
     def __str__(self):

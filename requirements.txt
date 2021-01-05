@@ -6,3 +6,4 @@ openpyxl==2.6.2
 pdfkit
 python-dateutil
 pytz
+django-crispy-forms

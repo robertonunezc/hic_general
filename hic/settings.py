@@ -39,6 +39,7 @@ SHARED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'customer'
 ]
 
@@ -49,6 +50,7 @@ TENANT_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'hic.main',
     'hic.paciente',
     'hic.consulta',
@@ -64,11 +66,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cloudinary',
+    'crispy_forms',
     'customer',
     'hic.main',
     'hic.paciente',
     'hic.consulta',
     'hic.cita',
+
 ]
 
 MIDDLEWARE = [
@@ -150,6 +154,19 @@ DATABASES = {
 DATABASE_ROUTERS = (
     'tenant_schemas.routers.TenantSyncRouter',
 )
+
+
+
+HEROKU_SERVER = False
+
+if HEROKU_SERVER:
+    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2',
+    DATABASES['default']['HOST'] = 'ec2-54-160-202-3.compute-1.amazonaws.com'
+    DATABASES['default']['NAME'] = 'd3ql5ve8v2toj4'
+    DATABASES['default']['USER'] = 'jzpndnvhtovoim'
+    DATABASES['default']['PASSWORD'] = 'cc326a0d04790942fb96420fe5b7c29921ed1da5908f72902bde5b14ea8c1f50'
+    DATABASES['default']['PORT'] = 5432
+
 
 TENANT_MODEL = "customer.Client"# app.Model
 
