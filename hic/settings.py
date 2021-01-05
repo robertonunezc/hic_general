@@ -157,7 +157,7 @@ DATABASE_ROUTERS = (
 
 
 
-HEROKU_SERVER = False
+HEROKU_SERVER = True
 
 if HEROKU_SERVER:
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2',
