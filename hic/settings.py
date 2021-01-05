@@ -156,21 +156,8 @@ DATABASE_ROUTERS = (
 )
 
 
-
-HEROKU_SERVER = False
-
-if HEROKU_SERVER:
-    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2',
-    DATABASES['default']['HOST'] = 'ec2-54-160-202-3.compute-1.amazonaws.com'
-    DATABASES['default']['NAME'] = 'd3ql5ve8v2toj4'
-    DATABASES['default']['USER'] = 'jzpndnvhtovoim'
-    DATABASES['default']['PASSWORD'] = 'cc326a0d04790942fb96420fe5b7c29921ed1da5908f72902bde5b14ea8c1f50'
-    DATABASES['default']['PORT'] = 5432
-
-
 TENANT_MODEL = "customer.Client"# app.Model
 
-# HEROKU_SERVER = False
 HIC_DIR = "hic/hic_pdf/"
 HIC_HOST = 'http://localhost:8000/'
 HIC_LOCAL_DIR = '/home/h3dx0/Dev/hic_general/'  # Password validation

@@ -52,6 +52,7 @@ def cargar_eventos(request):
 
         for evento in eventos:
             if evento.recurrente:
+                print(evento.hora_inicio.time())
                 evento_dict = {
                     'startRecur': datetime.datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
                     'daysOfWeek': [evento.dia_semana],
@@ -101,7 +102,7 @@ def calendario_registrar_cita(request):
             medico = Medico.objects.get(pk=especialista_id)
             paciente = Paciente.objects.get(pk=paciente)
             recuerrente = True if recuerrente_si == "recurrente" else False
-            dia_semana = datetime.datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S%z").date().weekday()
+            dia_semana = datetime.datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S").date().weekday()
 
             if dia_semana == 6:
                 dia_semana = 0
@@ -114,6 +115,7 @@ def calendario_registrar_cita(request):
             cita.tipo = TCita.objects.get(pk=tipo_cita)
             cita.observaciones = observaciones
             cita.calendario = Calendario.objects.first()
+            print(inicio)
             cita.fecha = inicio
             cita.save()
 

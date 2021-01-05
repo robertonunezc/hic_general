@@ -104,7 +104,6 @@ def assing_specialist_consult_time(request):
     return HttpResponse("Acceso denegado")
 
 
-@login_required
 
 @login_required
 def cargar_eventos(request):
