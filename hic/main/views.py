@@ -3,8 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from hic.cita.models import Event, Calendario, EventExtendedProp
 from hic.cita.serializer import EventoSerializer, EventExtendedPropSerializer
-from hic.main.models import Medico, Especialidad, NEstado, NMunicipio, NCodigoPostal, \
-    NColonia, EspecialidadMedico
+from hic.main.models import Medico, NEstado, NMunicipio, NCodigoPostal, \
+    NColonia
 from hic.main.serializer import SpecialistSerializer
 from hic.paciente.forms import MedicoForm
 from django.views.decorators.csrf import csrf_exempt
@@ -148,18 +148,8 @@ def nuevo_medico(request):
     if request.method == 'POST':
         form = MedicoForm(request.POST)
         if form.is_valid():
-            medico = form.save()
-            especialidades = form.cleaned_data.get('especialidades')
-            for id in especialidades:
-                try:
-                    especialidad = Especialidad.objects.get(pk=id)
-                    especialidad_medico = EspecialidadMedico()
-                    especialidad_medico.especialidad = especialidad
-                    especialidad_medico.medico = medico
-                    especialidad_medico.save()
-                except Especialidad.DoesNotExist:
-                    continue
-            return HttpResponseRedirect('/inicio/medicos/listado/')
+            form.save()
+            return HttpResponseRedirect('/inicio/especialistas/listado')
 
         else:
             error = "Por favor revise los datos proporcionados algunos son incorrectos"
