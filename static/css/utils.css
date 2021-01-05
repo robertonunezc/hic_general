@@ -1,0 +1,16 @@
+.bold {
+    font-weight: bold;
+}
+.disp-block {
+    display: block;
+    margin: 0 auto;
+}
+.flex {
+    display: flex;
+}
+.flex-end {
+    justify-content: flex-end;
+}
+.fs10 {
+    font-size: 10px;
+}
