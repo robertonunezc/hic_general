@@ -210,3 +210,16 @@ def cargar_colonias(request):
                 obj_colonia, created = NColonia.objects.get_or_create(codigo_postal=obj_cp, nombre=colonia)
     return render(request, 'carga.html')
 
+
+def first_tenant(request):
+    from customer.models import Client
+
+    # create your public tenant
+    tenant = Client(domain_url='hicsistema.herokuapp.com/',
+                    # don't add your port or www here! on a local server you'll want to use localhost here
+                    schema_name='suc1',
+                    name='Sucursal1',
+                    plan='ANUAL',
+                    started_date='2020-12-12'
+                    )
+    tenant.save()
