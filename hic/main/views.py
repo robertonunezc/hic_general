@@ -31,7 +31,7 @@ def get_specialists_by_date(request):
     try:
         print(request.POST.get('date'))
 
-        dia_semana = datetime.datetime.strptime(request.POST.get('date'), "%Y-%m-%dT%H:%M:%S%z").date().weekday()
+        dia_semana = datetime.datetime.strptime(request.POST.get('date'), "%Y-%m-%dT%H:%M:%S").date().weekday()
 
         if dia_semana == 6:
             dia_semana = 0
@@ -104,7 +104,6 @@ def assing_specialist_consult_time(request):
     return HttpResponse("Acceso denegado")
 
 
-@login_required
 
 @login_required
 def cargar_eventos(request):
