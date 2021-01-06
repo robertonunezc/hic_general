@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load cloudinary %}
-
+{% block custom_style %}
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+{% endblock %}
 {% block container %}
     <div class="row">
         <div class="col-sm-12">
@@ -13,7 +15,7 @@
 
                 </div>
                 <div class="card-body">
-                    <table class="table">
+                    <table class="table" id="appointments-table">
                         <thead>
                         <th>Fecha</th>
                         <th>Paciente</th>
@@ -25,10 +27,10 @@
                         <tbody>
                         {% for cita in citas %}
                             <tr>
-                                <td>{{ cita.fecha| date:"d/M/Y H:i:s"  }}</td>
+                                <td>{{ cita.fecha| date:"d/M/Y H:i:s" }}</td>
                                 <td>{{ cita.paciente }}</td>
-                                <td>{{ cita.medico}}</td>
-                                <td>{{ cita.estado}}</td>
+                                <td>{{ cita.medico }}</td>
+                                <td>{{ cita.estado }}</td>
                                 <td>{{ cita.tipo }}</td>
                                 <td class="flex">
                                     <a href="{% url 'citas:editar_cita' cita_id=cita.pk %}"
@@ -46,4 +48,17 @@
 
         </div>
     </div>
+{% endblock %}
+
+{% block custom_js %}
+    <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#appointments-table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json'
+                }
+            });
+        });
+    </script>
 {% endblock %}
