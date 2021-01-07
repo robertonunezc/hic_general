@@ -66,8 +66,8 @@ class Medico(Persona):
     cedula = models.CharField(max_length=80, unique=True)
     institucion = models.ForeignKey(Institucion, on_delete=models.SET_NULL, null=True)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.SET_NULL, null=True)
-    # def __str__(self):
-    #     return "{} {} ".format(self.especialidad.nombre, self.nombre)
+    def __str__(self):
+        return "{} {} ".format(self.especialidad.nombre, self.nombre)
 
 
 #
