@@ -110,7 +110,19 @@ def assing_specialist_consult_time(request):
 
     return HttpResponse("Acceso denegado")
 
-
+@login_required
+def borrar_evento_horario(request,event_id):
+    if request.method == 'POST':
+        try:
+            evento = Event.objects.get(pk=event_id)
+            evento.deshabilitado = True
+            evento.save()
+            return HttpResponseRedirect('/especialistas/horario')
+        except Event.DoesNotExist:
+            print("No existe")
+        except Exception as e:
+            print(e)
+    return render(request,'cita/confirmacion_borrar.html')
 
 @login_required
 def cargar_eventos(request):

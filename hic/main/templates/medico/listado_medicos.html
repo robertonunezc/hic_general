@@ -27,15 +27,13 @@
                                 <td>{{ medico.get_full_name }}</td>
                                 <td>{{ medico.telefono }}</td>
                                 <td>
-                                    {% for especialidad in medico.especialidades.all %}
-                                        <li> {{ especialidad.especialidad }} </li>
-                                    {% endfor%}
+                                    {{ medico.especialidad.nombre }}
                                 </td>
                                 <td class="flex">
                                     <a href=""
                                        class="btn btn-sm btn-info mr-2">Editar</a>
-{#                                    <a href=""#}
-{#                                       class="btn btn-warning btn-sm">Imprimir</a>#}
+                                    {#                                    <a href=""#}
+                                    {#                                       class="btn btn-warning btn-sm">Imprimir</a>#}
                                 </td>
                             </tr>
                         {% endfor %}
