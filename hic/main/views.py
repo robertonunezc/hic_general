@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -67,38 +68,44 @@ def configurar_horario_medico(request):
 
 @login_required
 def assing_specialist_consult_time(request):
-    if request.method == "POST":
-        specialist_id = request.POST.get('doctor')
-        start_time = request.POST.get('inicio-cita-especialista')
-        end_time = request.POST.get('fin-cita-especialista')
-        recuerrente_si = request.POST.get('eventoRecurrente')
-        recuerrente = True if recuerrente_si == "recurrente" else False
-        dia_semana = datetime.datetime.strptime(start_time, "%Y-%m-%d").date().weekday()
+    try:
+        if request.method == "POST":
+            specialist_id = request.POST.get('doctor')
+            start_time = request.POST.get('inicio-cita-especialista')
+            end_time = request.POST.get('fin-cita-especialista')
+            recuerrente_si = request.POST.get('eventoRecurrente')
+            recuerrente = True if recuerrente_si == "recurrente" else False
+            dia_semana = datetime.datetime.strptime(start_time, "%Y-%m-%d").date().weekday()
 
-        if dia_semana == 6:
-            dia_semana = 0
-        else:
-            dia_semana += 1
+            if dia_semana == 6:
+                dia_semana = 0
+            else:
+                dia_semana += 1
 
-        specialist = Medico.objects.get(pk=specialist_id)
-        event = Event()
-        event.titulo = "Disponible-{}". format(specialist.nombre)
-        event.hora_inicio = start_time
-        event.hora_fin = end_time
-        event.calendario = Calendario.objects.first()
-        event.medico = specialist
-        event.recurrente = recuerrente
-        event.dia_semana = dia_semana
-        event.tipo = 0
-        event.save()
-        extended_props = EventExtendedProp()
-        extended_props.evento = event.pk
-        extended_props.doctor = specialist.pk
-        extended_props.save()
+            specialist = Medico.objects.get(pk=specialist_id)
+            event = Event()
+            event.titulo = "Disponible-{}".format(specialist.nombre)
+            event.hora_inicio = start_time
+            event.hora_fin = end_time
+            event.calendario = Calendario.objects.first()
+            event.medico = specialist
+            event.recurrente = recuerrente
+            event.dia_semana = dia_semana
+            event.tipo = 0
+            event.save()
+            extended_props = EventExtendedProp()
+            extended_props.evento = event.pk
+            extended_props.doctor = specialist.pk
+            extended_props.save()
 
-        event.extendedProps = extended_props
-        event.save()
+            event.extendedProps = extended_props
+            event.save()
 
+            return redirect('main:horarios_especialista')
+
+    except Exception as e:
+        messages.add_message(request=request, level=messages.ERROR,
+                             message="Ha ocurrido un error. Intente nuevamente. Todos los datos son obligatorios")
         return redirect('main:horarios_especialista')
 
     return HttpResponse("Acceso denegado")

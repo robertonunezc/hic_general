@@ -3,10 +3,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager, User
 from cloudinary.models import CloudinaryField
 from django.conf import settings
+from datetime import date
 
 
 # Create your models here.
-
 
 class Usuario(models.Model):
     admin_user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
@@ -34,6 +34,11 @@ class Persona(models.Model):
     def get_full_name(self):
         full_name = '%s %s %s' % (self.nombre, self.primer_apellido, self.segundo_apellido)
         return full_name.strip()
+
+    @property
+    def get_edad(self):
+        actual_year = date.today().year
+        return actual_year -  self.fecha_nacimiento.year
 
     def __str__(self):
         return self.get_full_name().strip()

@@ -51,6 +51,15 @@
     </script>
 {% endblock %}
 {% block container %}
+    <div class="row">
+        {% if messages %}
+            <ul class="alert-danger alert">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
     <div class="col-12">
         <div id="calendar"></div>
     </div>
