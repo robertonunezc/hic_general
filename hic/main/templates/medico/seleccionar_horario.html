@@ -5,11 +5,13 @@
 {% endblock %}
 {% block custom_js %}
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/locales/es.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'es',
                 initialView: 'dayGridMonth',
                 selectable: true,
                 headerToolbar: {
@@ -29,18 +31,16 @@
                     fin.value = info.endStr;
 
                 },
-                {#                eventClick: function (info) {#}
-                {#                    const extendedProps = info.event.extendedProps;#}
-                {#                    const doctor = document.getElementById('doctor-cita');#}
-                {#                    const inicio = document.getElementById('inicio-cita');#}
-                {#                    const evento = document.getElementById('evento-cita');#}
-                {#                    const btnShowModal = document.getElementById('btn-show-modal');#}
-                {#                    btnShowModal.click();#}
-                {#                    doctor.value = extendedProps.doctor;#}
-                {#                    evento.value = extendedProps.evento;#}
-                {#                    inicio.value = info.event.startStr;#}
-                {#                    console.log(info.event.startStr)#}
-                {#                }#}
+                eventClick: function (info) {
+                    const extendedProps = info.event.extendedProps;
+{#                    const btnShowModal = document.getElementById('btn-show-modal');#}
+{#                    btnShowModal.click();#}
+{#                    doctor.value = extendedProps.doctor;#}
+{#                    evento.value = extendedProps.evento;#}
+{#                    inicio.value = info.event.startStr;#}
+                    console.log(extendedProps.evento)
+                    window.location.href = "/especialistas/borrar-evento/"+extendedProps.evento
+                }
 
             });
 

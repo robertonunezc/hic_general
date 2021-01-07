@@ -5,11 +5,13 @@
 {% endblock %}
 {% block custom_js %}
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/locales/es.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                 locale: 'es',
                 initialView: 'timeGridWeek',
                 timeZone: 'America/Mexico_City',
                 selectable: true,
@@ -55,7 +57,7 @@
                 console.log(response)
                 const specialistsData = response.data.data;
                 specialistSelect.innerHTML = specialistsData.map(function (specialist) {
-                    return `<option value="${specialist.id}">${specialist.nombre}</option>`
+                    return `<option value="${specialist.id}">${specialist.especialidad.nombre} ${specialist.nombre} ${specialist.primer_apellido}</option>`
                 }).join('');
             }).catch(function (error) {
                 console.log(error)
