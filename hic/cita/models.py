@@ -2,7 +2,7 @@ from django.db import models
 
 from hic.main.models import Medico, Paciente
 import json
-
+from colorfield.fields import ColorField
 
 class Calendario(models.Model):
     nombre = models.CharField(max_length=200, default="Clínica General")
@@ -37,7 +37,10 @@ class ECita(models.Model):
 class TCita(models.Model):
 
     tipo = models.CharField(default="", max_length=50)
-    color = models.CharField(max_length=20, default="#3788d8")
+    color = ColorField(max_length=20, default="#3788d8")
+
+    class Meta:
+        verbose_name = "Tipo Cita"
 
     def __str__(self):
         return self.tipo

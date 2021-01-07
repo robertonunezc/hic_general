@@ -40,6 +40,7 @@ SHARED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'colorfield',
     'customer'
 ]
 
@@ -50,10 +51,12 @@ TENANT_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'colorfield',
     'crispy_forms',
     'hic.main',
     'hic.paciente',
     'hic.consulta',
+
     'hic.cita',
 ]
 
@@ -67,6 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'crispy_forms',
+    'colorfield',
     'customer',
     'hic.main',
     'hic.paciente',

@@ -22,7 +22,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('inicio/', include('hic.main.url', namespace="main")),
+    path('', include('hic.main.url', namespace="main")),
     path('pacientes/', include('hic.paciente.url', namespace="pacientes")),
     path('citas/', include('hic.cita.url', namespace="citas")),
     path('consultas/', include('hic.consulta.url', namespace="consultas")),
