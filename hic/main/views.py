@@ -84,7 +84,7 @@ def assing_specialist_consult_time(request):
 
             specialist = Medico.objects.get(pk=specialist_id)
             event = Event()
-            event.titulo = "Disponible-{}".format(specialist.nombre)
+            event.titulo = specialist.nombre
             event.hora_inicio = start_time
             event.hora_fin = end_time
             event.calendario = Calendario.objects.first()

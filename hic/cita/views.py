@@ -133,7 +133,7 @@ def calendario_registrar_cita(request):
             evento.tipo = 1
             evento.color = cita.tipo.color
             evento.calendario = Calendario.objects.first()
-            evento.titulo = "{}-RES".format(paciente.nombre)
+            evento.titulo = paciente.nombre
             evento.recurrente = recuerrente
             evento.dia_semana = dia_semana
             evento.save()
