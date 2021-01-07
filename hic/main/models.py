@@ -57,7 +57,6 @@ class Institucion(models.Model):
 
 class Especialidad(models.Model):
     nombre = models.CharField(null=False, unique=True, max_length=80)
-    color = models.CharField(max_length=20, default="#3788d8")
 
     def __str__(self):
         return self.nombre
