@@ -6,6 +6,13 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card shadow">
+                {% if messages %}
+                    <div class="alert alert-success">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="card-header py-3 d-flex justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Listado de Médicos</h6>
                     <a href="{% url 'main:nuevo_medico' %}" class="">
@@ -30,8 +37,10 @@
                                     {{ medico.especialidad.nombre }}
                                 </td>
                                 <td class="flex">
-                                    <a href=""
+                                    <a href="{% url 'main:editar_medico' especialista_id=medico.pk %}"
                                        class="btn btn-sm btn-info mr-2">Editar</a>
+                                     <a href="{% url 'main:editar_medico' especialista_id=medico.pk %}"
+                                       class="btn btn-sm btn-outline-primary mr-2">Info completa</a>
                                     {#                                    <a href=""#}
                                     {#                                       class="btn btn-warning btn-sm">Imprimir</a>#}
                                 </td>
