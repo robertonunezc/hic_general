@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.inicio, name='menu_principal'),
     path('especialistas/listado', views.listado_medicos, name='listado_medicos'),
     path('especialistas/nuevo', views.nuevo_medico, name='nuevo_medico'),
+    path('especialistas/editar/<int:especialista_id>', views.editar_medico, name='editar_medico'),
     path('especialistas/cargar-eventos', views.cargar_eventos, name='cargar_eventos'),
     path('especialistas/horario', views.configurar_horario_medico, name='horarios_especialista'),
     path('especialistas/borrar-evento/<int:event_id>', views.borrar_evento_horario, name='borrar_evento_horario'),

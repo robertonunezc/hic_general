@@ -180,21 +180,24 @@ def nuevo_medico(request):
 
 
 @login_required
-def editar_medico(request, medico_id):
-    medico = get_object_or_404(Medico, pk=medico_id)
+def editar_medico(request, especialista_id):
+    medico = get_object_or_404(Medico, pk=especialista_id)
     form = MedicoForm(instance=medico)
     msg = None
     if request.method == 'POST':
         form = MedicoForm(request.POST, instance=medico)
         if form.is_valid():
             form.save()
-            msg = "Cita actualizada con éxito"
+            msg = "Especialista editado con éxito"
+            messages.add_message(request=request, level=messages.ERROR,
+                                 message=msg)
+            return  redirect('main:listado_medicos')
 
     context = {
         'form': form,
         'msg': msg
     }
-    return render(request, 'cita/editar_cita.html', context=context)
+    return render(request, 'medico/editar_medico.html', context=context)
 
 
 #cargar colonias(dev)

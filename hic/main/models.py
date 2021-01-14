@@ -67,7 +67,7 @@ class Medico(Persona):
     institucion = models.ForeignKey(Institucion, on_delete=models.SET_NULL, null=True)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.SET_NULL, null=True)
     def __str__(self):
-        return "{} {} ".format(self.especialidad.nombre, self.nombre)
+        return "{} {} {} ".format(self.especialidad.nombre, self.nombre, self.primer_apellido)
 
 
 #
