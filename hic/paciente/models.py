@@ -30,11 +30,11 @@ class HistoriaClinica(models.Model):
     psicopedagogia = models.BooleanField(default=False)
     terapia_lenguaje = models.BooleanField(default=False)
     neuroterapia = models.BooleanField(default=False)
-    fecha_cita = models.DateField()
+    fecha_cita = models.DateField(null=True, blank=True)
     profesional_cargo = models.CharField(max_length=250)
-    costo_valoracion = models.CharField(max_length=250)
-    costo_terapias = models.CharField(max_length=250)
-    nombre_entrevistador = models.CharField(max_length=250)
+    costo_valoracion = models.CharField(max_length=250, default=0)
+    costo_terapias = models.CharField(max_length=250, default=0)
+    nombre_entrevistador = models.CharField(max_length=250, null=True, blank=True)
 
 
 

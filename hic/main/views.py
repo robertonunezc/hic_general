@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from hic.cita.models import Event, Calendario, EventExtendedProp
 from hic.cita.serializer import EventoSerializer, EventExtendedPropSerializer
+from hic.main import process_inital_data
 from hic.main.models import Medico, NEstado, NMunicipio, NCodigoPostal, \
     NColonia
 from hic.main.serializer import SpecialistSerializer
@@ -198,6 +199,26 @@ def editar_medico(request, especialista_id):
         'msg': msg
     }
     return render(request, 'medico/editar_medico.html', context=context)
+
+
+@login_required
+def import_initial_data(request):
+    error = None
+    if request.method == 'POST':
+        file = request.FILES['initial-data']
+        if process_inital_data.validate_file_extension(filename=file.name):
+            try:
+                raw_data = process_inital_data.process_file(file=file,sheet="LISTADO")
+                process_inital_data.process_data(data=raw_data)
+            except Exception as e:
+                print(e)
+                error = e
+        else:
+            error = "El archivo no tiene el formato correcto"
+    context = {
+        'error': error
+    }
+    return render(request, 'import_initial_data.html', context=context)
 
 
 #cargar colonias(dev)
