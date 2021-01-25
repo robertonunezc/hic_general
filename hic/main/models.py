@@ -25,9 +25,9 @@ class Persona(models.Model):
     nombre = models.CharField(max_length=80)
     primer_apellido = models.CharField(max_length=80)
     segundo_apellido = models.CharField(max_length=80)
-    telefono = models.CharField(max_length=80, unique=True)
-    email = models.CharField(max_length=80, unique=True)
-    genero = models.IntegerField(choices=GENERO)
+    telefono = models.CharField(max_length=80, null=True, blank=True)
+    email = models.CharField(max_length=80, null=True, blank=True)
+    genero = models.IntegerField(choices=GENERO,null=True, blank=True)
     fecha_nacimiento = models.DateField(null=False, blank=False)
     direccion = models.TextField(null=True, blank=True)
 

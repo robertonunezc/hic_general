@@ -16,4 +16,6 @@ urlpatterns = [
     path('especialistas/dia', views.get_specialists_by_date, name='specialist_by_date'),
     path('carga/', views.cargar_colonias, name='carga'),
     path('first/', views.first_tenant, name='first_tenant'),
+    path('import/', views.import_initial_data, name='import_initial_data'),
+
 ]

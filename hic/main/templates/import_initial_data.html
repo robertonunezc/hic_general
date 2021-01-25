@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block container %}
+    <div class="gird">
+        <div class="row">
+            <div class="cell-12">
+                {% if error != None %}
+                    <div class="remark error">{{ error }}</div>
+                {% endif %}
+                <form action="{% url 'main:import_initial_data' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="initial-data" id="initial-data"/>
+                    <button class="button primary" type="submit">Cargar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block custom_js %}
+{% endblock %}
