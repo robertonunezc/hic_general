@@ -64,7 +64,7 @@ class Especialidad(models.Model):
 class Medico(Persona):
     usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
     cedula = models.CharField(max_length=80, unique=True)
-    institucion = models.ForeignKey(Institucion, on_delete=models.SET_NULL, null=True)
+    institucion = models.CharField(max_length=100, null=True, blank=True)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.SET_NULL, null=True)
     def __str__(self):
         return "{} {} {} ".format(self.especialidad.nombre, self.nombre, self.primer_apellido)
