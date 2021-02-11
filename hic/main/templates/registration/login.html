@@ -18,13 +18,13 @@
 </head>
 
 
-<body data-admin-utc-offset="0">
+<body data-admin-utc-offset="0" style="background-color: #1c294e">
 <div class="container">
     <div class="row mt-3">
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <div class="card p-4">
-                <img src="{% static 'img/logo.png' %}" alt="LOGO" style="display: block;margin: 0 auto" class="disp-block" width="100">
+{#                <img src="{% static 'img/logo.png' %}" alt="LOGO" style="display: block;margin: 0 auto" class="disp-block" width="100">#}
                 <h3 class="text-center">Entrar al sistema</h3>
                 <form method="post" action="#" class="form-horizontal">
                     {% csrf_token %}
