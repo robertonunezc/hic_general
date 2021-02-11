@@ -247,5 +247,5 @@ def first_tenant(request):
     from customer.models import Client
 
     # create your public tenant
-    tenant = Client(domain_url='hic.puntoreica.com',schema_name='suc1',name='Sucursal1',plan='ANUAL',started_date='2020-12-12')
+    tenant = Client(domain_url='playa.cisnemexico.org',schema_name='playaok',name='SucursalPlayaOK',plan='ANUAL',started_date='2020-12-12')
     tenant.save()
