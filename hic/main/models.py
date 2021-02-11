@@ -46,7 +46,7 @@ class Persona(models.Model):
 
 class Paciente(Persona):
     usuario = models.OneToOneField(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
-
+    estado = models.CharField(max_length=50, default="ACTIVO")
 
 class Institucion(models.Model):
     nombre = models.CharField(max_length=200, unique=True)

@@ -23,6 +23,7 @@
                         <th>Género</th>
                         <th>Fecha De Nacimiento</th>
                         <th>Edad</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                         </thead>
                         <tbody>
@@ -33,6 +34,7 @@
                                 <td>{% if paciente.genero == 0 %} M {% else %} F {% endif %}</td>
                                 <td>{{ paciente.fecha_nacimiento| date:"d/M/Y" }}</td>
                                 <td>{{ paciente.get_edad }}</td>
+                                <td><strong>{{ paciente.estado }}</strong></td>
                                 <td class="flex">
 
                                     <a href="{% url 'pacientes:historia_clinica' paciente_id=paciente.pk %}"
