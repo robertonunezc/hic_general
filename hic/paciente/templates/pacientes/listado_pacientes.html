@@ -18,9 +18,9 @@
                 <div class="card-body">
                     <table class="table" id="paciente-tabla">
                         <thead>
+                        <th>Folio</th>
                         <th>Nombre</th>
-                        <th>Teléfono</th>
-                        <th>Género</th>
+{#                        <th>Género</th>#}
                         <th>Fecha De Nacimiento</th>
                         <th>Edad</th>
                         <th>Estado</th>
@@ -29,9 +29,9 @@
                         <tbody>
                         {% for paciente in pacientes %}
                             <tr>
+                                <td>{{ paciente.folio }}</td>
                                 <td>{{ paciente.get_full_name }}</td>
-                                <td>{{ paciente.telefono }}</td>
-                                <td>{% if paciente.genero == 0 %} M {% else %} F {% endif %}</td>
+{#                                <td>{% if paciente.genero == 0 %} M {% else %} F {% endif %}</td>#}
                                 <td>{{ paciente.fecha_nacimiento| date:"d/M/Y" }}</td>
                                 <td>{{ paciente.get_edad }}</td>
                                 <td><strong>{{ paciente.estado }}</strong></td>
