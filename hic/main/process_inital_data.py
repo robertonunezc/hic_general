@@ -47,9 +47,9 @@ def process_row(row):
         row_fecha_nac = datetime.strptime(row[7], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
         row_diagnostico = row[8]
         row_medico_tratante = row[9]
-        row_observaciones = row[10]
-        row_servicio_solicitado = row[11]
-        row_observaciones_final = row[12]
+        row_servicio_solicitado = row[10]
+        row_observaciones_final = row[11]
+        row_estado = row[12]
 
         """Create paciente"""
         paciente = Paciente()
@@ -58,6 +58,7 @@ def process_row(row):
         paciente.primer_apellido = split_nombre[1]
         paciente.segundo_apellido = split_nombre[2]
         paciente.fecha_nacimiento = row_fecha_nac
+        paciente.estado = row_estado
         paciente.save()
 
         """Create historic"""
@@ -76,8 +77,8 @@ def process_row(row):
         hic.nombre_colegio = ""
         hic.grado_cursa = ""
         hic.diagnostico_medico = row_diagnostico
-        hic.observaciones_generales = row_observaciones
-        hic.remitido_por = ""
+        hic.observaciones_generales = row_observaciones_final
+        hic.remitido_por = row_medico_tratante
         hic.servicio_solicitado = row_servicio_solicitado
         hic.profesional_cargo = row_medico_tratante
 
