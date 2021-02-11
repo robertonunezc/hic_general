@@ -4,7 +4,7 @@ from hic.main.models import Paciente, Medico
 
 
 class HistoriaClinica(models.Model):
-    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT, related_name='paciente')
+    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT, related_name='historia_clinica')
     fecha = models.DateField()
     folio = models.CharField(max_length=50)
     nombre_madre = models.CharField(max_length=50)
