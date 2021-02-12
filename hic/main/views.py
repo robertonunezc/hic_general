@@ -169,7 +169,7 @@ def nuevo_medico(request):
         form = MedicoForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/inicio/especialistas/listado')
+            return HttpResponseRedirect('especialistas/listado')
 
         else:
             error = "Por favor revise los datos proporcionados algunos son incorrectos"
