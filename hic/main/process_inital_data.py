@@ -33,18 +33,27 @@ def process_data(data):
 
 
 def process_row(row):
-    print(row)
+    # print(row)
     try:
         row_folio = row[0]
         row_nombre = row[1]
-        row_fecha_ingresp = row[2]
-        new_date = datetime.strptime(row_fecha_ingresp, "%Y-%m-%d %H:%M:%S")
-        print(new_date.strftime("%Y-%m-%d"))
+        row_fecha_ingresp =  "1960-01-01 12:00:00" if row[2] is None else row[2]
+        try:
+            new_date = datetime.strptime(row_fecha_ingresp, "%Y-%m-%d %H:%M:%S")
+        except Exception as e:
+            new_date =  "1960-01-01"
+        print(row_folio)
         row_nombre_mama = row[3]
         row_telefono_mama = row[4]
         row_nombre_papa = row[5]
         row_telefono_papa = row[6]
-        row_fecha_nac = datetime.strptime(row[7], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
+        fecha = "1960-01-01 12:00:00" if row[7] is None else row[7]
+        try:
+            nac = datetime.strptime(fecha, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
+        except Exception as e:
+            nac = "1960-01-01"
+
+        row_fecha_nac = nac
         row_diagnostico = row[8]
         row_medico_tratante = row[9]
         row_servicio_solicitado = row[10]
