@@ -29,7 +29,12 @@
                         <tbody>
                         {% for paciente in pacientes %}
                             <tr>
-                                <td>{{ paciente.paciente.folio }}</td>
+
+                                <td>
+                                    {% for hic in paciente.historia_clinica.all %}
+                                        {{ hic.folio }}
+                                    {% endfor %}
+                                   </td>
                                 <td>{{ paciente.get_full_name }}</td>
 {#                                <td>{% if paciente.genero == 0 %} M {% else %} F {% endif %}</td>#}
                                 <td>{{ paciente.fecha_nacimiento| date:"d/M/Y" }}</td>
