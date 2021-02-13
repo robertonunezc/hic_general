@@ -42,16 +42,22 @@ def process_row(row):
             new_date = datetime.strptime(row_fecha_ingresp, "%Y-%m-%d %H:%M:%S")
         except Exception as e:
             new_date =  "1960-01-01"
-        print(row_folio)
+
         row_nombre_mama = row[3]
         row_telefono_mama = row[4]
         row_nombre_papa = row[5]
         row_telefono_papa = row[6]
-        fecha = "1960-01-01 12:00:00" if row[7] is None else row[7]
+
+        fecha_array = row[7].split(" ")
+        fecha_str = "{}-{}-{}".format(fecha_array[3],get_month(fecha_array[0]), fecha_array[1])
+        print(fecha_str)
+        # fecha = "1960-01-01 12:00:00" if row[7] is None else row[7]
         try:
-            nac = datetime.strptime(fecha, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
+            nac = datetime.strptime(fecha_str, "%Y-%m-%d").strftime("%Y-%m-%d")
         except Exception as e:
+            print(e)
             nac = "1960-01-01"
+        print(nac)
 
         row_fecha_nac = nac
         row_diagnostico = row[8]
@@ -98,3 +104,16 @@ def process_row(row):
 
     return True
 
+def get_month(month):
+    if month == "ENERO": return "01"
+    if month == "FEBRERO": return "02"
+    if month == "MARZO": return "03"
+    if month == "ABRIL": return "04"
+    if month == "MAYO": return "05"
+    if month == "JUNIO": return "06"
+    if month == "JULIO": return "07"
+    if month == "AGOSTO": return "08"
+    if month == "SEPTIEMBRE": return "09"
+    if month == "OCTUBRE": return "10"
+    if month == "NOVIEMBRE": return "11"
+    if month == "DICIEMBRE": return "12"
