@@ -118,7 +118,7 @@ def borrar_evento_horario(request,event_id):
             evento = Event.objects.get(pk=event_id)
             evento.deshabilitado = True
             evento.save()
-            return HttpResponseRedirect('/especialistas/horario')
+            return redirect('main:listado_medicos')
         except Event.DoesNotExist:
             print("No existe")
         except Exception as e:
