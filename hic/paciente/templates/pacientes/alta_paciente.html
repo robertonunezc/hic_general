@@ -75,7 +75,9 @@
                                 <div class="form-group">
                                     <label for="id_email">Email</label>
                                     {{ paciente_form.email }}
-                                    <input type="hidden" name="id_estado" id="id_estado" value="ACTIVO">
+                                    <div class="d-none">
+                                        {{ paciente_form.estado }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-4">
