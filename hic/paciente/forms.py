@@ -77,7 +77,7 @@ class HistoriaClinicaForm(forms.ModelForm):
 class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        exclude = ('usuario')
+        exclude = ('usuario',)
 
 
 class MedicoForm(forms.ModelForm):
