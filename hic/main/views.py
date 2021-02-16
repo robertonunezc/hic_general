@@ -105,6 +105,7 @@ def assing_specialist_consult_time(request):
             return redirect('main:horarios_especialista')
 
     except Exception as e:
+        print(e)
         messages.add_message(request=request, level=messages.ERROR,
                              message="Ha ocurrido un error. Intente nuevamente. Todos los datos son obligatorios")
         return redirect('main:horarios_especialista')
@@ -169,7 +170,7 @@ def nuevo_medico(request):
         form = MedicoForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('especialistas/listado')
+            return redirect('main:listado_medicos')
 
         else:
             error = "Por favor revise los datos proporcionados algunos son incorrectos"
