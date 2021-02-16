@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from hic.paciente.models import TAlergia
+from hic.paciente.models import TAlergia, HistoriaClinica
 
-# admin.site.register(TAlergia)
+admin.site.register(HistoriaClinica)
