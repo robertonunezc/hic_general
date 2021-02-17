@@ -251,7 +251,7 @@ def editar_cita(request, cita_id):
 
 @login_required
 def listado_citas(request):
-    citas = Cita.objects.all().order_by('-fecha')
+    citas = Cita.objects.all().order_by('-id')
     context = {
         'citas': citas
     }
