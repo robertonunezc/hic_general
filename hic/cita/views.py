@@ -1,4 +1,4 @@
-from django.db.models.functions import datetime
+from datetime import datetime, timedelta
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -54,7 +54,7 @@ def cargar_eventos(request):
             if evento.recurrente:
                 print(evento.hora_inicio.time())
                 evento_dict = {
-                    'startRecur': datetime.datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
+                    'startRecur': datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
                     'daysOfWeek': [evento.dia_semana],
                     'startTime': str(evento.hora_inicio.time()),
                     'endTime': str(evento.hora_fin.time()),
@@ -102,64 +102,70 @@ def calendario_registrar_cita(request):
             medico = Medico.objects.get(pk=especialista_id)
             paciente = Paciente.objects.get(pk=paciente)
             recuerrente = True if recuerrente_si == "recurrente" else False
-            dia_semana = datetime.datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S").date().weekday()
+            cita_fecha = datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S")
+            dia_semana = cita_fecha.date().weekday()
 
             if dia_semana == 6:
                 dia_semana = 0
             else:
                 dia_semana += 1
-            cita = Cita()
-            cita.medico = medico
-            cita.paciente = paciente
-            cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
-            cita.tipo = TCita.objects.get(pk=tipo_cita)
-            cita.observaciones = observaciones
-            cita.calendario = Calendario.objects.first()
-            print(inicio)
-            cita.fecha = inicio
-            cita.save()
+
+            if not recuerrente:
+                crear_cita_evento(cita_fecha, medico, paciente, tipo_cita, observaciones, fin, recuerrente,
+                                  dia_semana)
+            for i in range(0,5):
+                print("crendo citas{}".format(i))
+                print(7 * i)
+                fecha_inicio = cita_fecha + timedelta(days=7 * i)
+                crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fin, recuerrente, dia_semana)
+
 
         except Exception as e:
             print(e)
             messages.add_message(request=request,level=messages.ERROR,message="Error creando la cita. Todos los datos son obligatorios")
             return redirect('citas:seleccionar_horario')
 
-        try:
-            evento = Event()
-            evento.cita = cita
-            evento.medico = medico
-            evento.hora_inicio = inicio
-            evento.hora_fin = fin
-            evento.tipo = 1
-            evento.color = cita.tipo.color
-            evento.calendario = Calendario.objects.first()
-            evento.titulo = paciente.nombre
-            evento.recurrente = recuerrente
-            evento.dia_semana = dia_semana
-            evento.save()
-        except Exception as e:
-            # TODO create flash message when an error ocurred
-            print(e)
-            cita.delete()
-            return redirect('citas:seleccionar_horario')
-
-        try:
-            extendedProp = EventExtendedProp()
-            extendedProp.doctor = medico.pk
-            extendedProp.evento = evento.pk
-            extendedProp.cita = cita.pk
-            extendedProp.save()
-            evento.extendedProps = extendedProp
-            evento.save()
-        except Exception as e:
-            print(e)
-            cita.delete()
-            evento.delete()
-            return redirect('citas:seleccionar_horario')
-
         return redirect('citas:seleccionar_horario')
 
     return HttpResponse("Acceso denegado")
+
+
+def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fecha_fin, recurrente, dia_semana):
+    try:
+        print(cita_fecha)
+        cita = Cita()
+        cita.medico = medico
+        cita.paciente = paciente
+        cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
+        cita.tipo = TCita.objects.get(pk=tipo_cita_id)
+        cita.observaciones = observaciones
+        cita.calendario = Calendario.objects.first()
+        cita.fecha = cita_fecha
+        cita.save()
+        """SAVE EVENT"""
+        evento = Event()
+        evento.cita = cita
+        evento.medico = medico
+        evento.hora_inicio = cita_fecha
+        evento.hora_fin = fecha_fin
+        evento.tipo = 1
+        evento.color = cita.tipo.color
+        evento.calendario = Calendario.objects.first()
+        evento.titulo = paciente.nombre
+        evento.recurrente = recurrente
+        evento.dia_semana = dia_semana
+        evento.save()
+
+        """SAVE EXTENDED PROP"""
+        extendedProp = EventExtendedProp()
+        extendedProp.doctor = medico.pk
+        extendedProp.evento = evento.pk
+        extendedProp.cita = cita.pk
+        extendedProp.save()
+        evento.extendedProps = extendedProp
+        evento.save()
+    except Exception as e:
+        print(e)
 
 
 @login_required
