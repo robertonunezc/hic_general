@@ -51,27 +51,35 @@ def cargar_eventos(request):
         eventos = Event.objects.filter(tipo=1, deshabilitado=0)  # TODO only load the current month
 
         for evento in eventos:
-            if evento.recurrente:
-                print(evento.hora_inicio.time())
-                evento_dict = {
-                    'startRecur': datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
-                    'daysOfWeek': [evento.dia_semana],
-                    'startTime': str(evento.hora_inicio.time()),
-                    'endTime': str(evento.hora_fin.time()),
-                    'title': evento.titulo,
-                    'backgroundColor': evento.color,
-                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
-                }
-            else:
-                # TODO falta el cargar eventos sencillo
-                evento_dict = {
-                    'title': evento.titulo,
-                    'backgroundColor': evento.color,
-                    'start': str(evento.hora_inicio),
-                    'end': str(evento.hora_fin),
-                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
+            evento_dict = {
+                'title': evento.titulo,
+                'backgroundColor': evento.color,
+                'start': str(evento.hora_inicio),
+                'end': str(evento.hora_fin),
+                'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
 
-                }
+            }
+            # if evento.recurrente:
+            #     print(evento.hora_inicio.time())
+            #     evento_dict = {
+            #         'startRecur': datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
+            #         'daysOfWeek': [evento.dia_semana],
+            #         'startTime': str(evento.hora_inicio.time()),
+            #         'endTime': str(evento.hora_fin.time()),
+            #         'title': evento.titulo,
+            #         'backgroundColor': evento.color,
+            #         'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
+            #     }
+            # else:
+            #     # TODO falta el cargar eventos sencillo
+            #     evento_dict = {
+            #         'title': evento.titulo,
+            #         'backgroundColor': evento.color,
+            #         'start': str(evento.hora_inicio),
+            #         'end': str(evento.hora_fin),
+            #         'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
+            #
+            #     }
             response.append(evento_dict)
 
     except Cita.DoesNotExist:
@@ -103,21 +111,24 @@ def calendario_registrar_cita(request):
             paciente = Paciente.objects.get(pk=paciente)
             recuerrente = True if recuerrente_si == "recurrente" else False
             cita_fecha = datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S")
+            cita_fecha_fin =  datetime.strptime(fin, "%Y-%m-%dT%H:%M:%S")
             dia_semana = cita_fecha.date().weekday()
-
             if dia_semana == 6:
                 dia_semana = 0
             else:
                 dia_semana += 1
 
             if not recuerrente:
-                crear_cita_evento(cita_fecha, medico, paciente, tipo_cita, observaciones, fin, recuerrente,
+                crear_cita_evento(cita_fecha, medico, paciente, tipo_cita, observaciones, cita_fecha_fin, recuerrente,
                                   dia_semana)
-            for i in range(0,5):
-                print("crendo citas{}".format(i))
-                print(7 * i)
-                fecha_inicio = cita_fecha + timedelta(days=7 * i)
-                crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fin, recuerrente, dia_semana)
+            else:
+                print(cita_fecha_fin)
+                for i in range(0,5):
+                    print("crendo citas{}".format(i))
+                    days = 7 * i
+                    fecha_inicio = cita_fecha + timedelta(days=days)
+                    fecha_fin = cita_fecha_fin + timedelta(days=days)
+                    crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente, dia_semana)
 
 
         except Exception as e:
@@ -132,7 +143,6 @@ def calendario_registrar_cita(request):
 
 def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fecha_fin, recurrente, dia_semana):
     try:
-        print(cita_fecha)
         cita = Cita()
         cita.medico = medico
         cita.paciente = paciente
