@@ -250,6 +250,18 @@ def editar_cita(request, cita_id):
 
 
 @login_required
+def migrar(request):
+    citas = Cita.objects.all()
+    for cita in citas:
+        evento = cita.events.first()
+        dia_semana = evento.dia_semana
+        for i in range(1,5):
+            dias = 7 * i
+            fecha_cita = cita.fecha + timedelta(days=dias)
+            fecha_fin = evento.hora_fin + timedelta(days=dias)
+            crear_cita_evento(fecha_cita,cita.medico,cita.paciente,cita.tipo_id, cita.observaciones, fecha_fin,True,dia_semana)
+    return HttpResponse("OK")
+@login_required
 def listado_citas(request):
     citas = Cita.objects.all().order_by('-id')
     context = {
