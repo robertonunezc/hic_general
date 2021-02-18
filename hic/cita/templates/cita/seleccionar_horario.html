@@ -92,11 +92,23 @@
                 specialistName.innerHTML = `${dateDetails.medico.nombre} ${dateDetails.medico.primer_apellido}`;
                 dateTime.innerHTML = `${formatDate[0]} ${formatDate[1].split("-")[0]}`;
                 dateText.innerHTML = dateDetails.observaciones == "" ? "NO TIENE" : dateDetails.observaciones;
-                dateStatus.innerHTML = dateDetails.estado.estado == 0 ? "RESERVADA" : "CANCELADA";
+                dateStatus.innerHTML = getEstadoCita(dateDetails.estado.estado);
 
             }).catch(function (error) {
                 console.log(error)
             })
+            function getEstadoCita(estado){
+                switch (estado){
+                    case 0:
+                        return "RESERVADA";
+                    case 1:
+                        return "CONFIRMADA";
+                    case 2:
+                        return "TERMINADA";
+                    case -1:
+                        return "CANCELADA";
+                }
+            }
         }
 
     </script>

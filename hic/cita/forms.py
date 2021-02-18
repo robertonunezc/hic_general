@@ -12,7 +12,7 @@ class PrimeraCitaForm(forms.ModelForm):
 
 
 class CitaForm(forms.ModelForm):
-    observaciones = forms.CharField(widget=forms.Textarea)
+    observaciones = forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta:
         model = Cita
