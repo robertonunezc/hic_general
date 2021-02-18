@@ -52,7 +52,7 @@ def cargar_eventos(request):
 
         for evento in eventos:
             evento_dict = {
-                'title': evento.titulo,
+                'title': "{}-{}".format(evento.titulo, evento.cita.medico.nombre),
                 'backgroundColor': evento.color,
                 'start': str(evento.hora_inicio),
                 'end': str(evento.hora_fin),
