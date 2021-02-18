@@ -42,7 +42,7 @@
                             2020-12-12
                         </div>
                     </div>
-                     <div class="col-4">
+                    <div class="col-4">
                         <label for="" class="font-weight-bold">Observaciones:</label>
                         <div id="observaciones-cita">
                             Este paciente es recurrente
@@ -51,8 +51,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-{#                <button type="button" class="btn btn-primary">Editar</button>#}
-                <a href="" id="btn-editar-cita" class="btn btn-primary">Editar</a>
+                {#                <button type="button" class="btn btn-primary">Editar</button>#}
+                {% if not user.groups.all.0.name == "especialistas" %}
+                    <a href="" id="btn-editar-cita" class="btn btn-primary">Editar</a>
+                {% endif %}
                 <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
