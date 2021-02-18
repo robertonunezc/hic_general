@@ -55,6 +55,13 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
         {% if user.groups.all.0.name == "especialistas" %}
+             <li class="nav-item">
+                <a class="nav-link" href="{% url 'citas:seleccionar_horario' %}"
+                   aria-expanded="true">
+                    <i class="fas fa-fw fa-calendar"></i>
+                    <span>Calendario Citas pacientes</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'main:horarios_especialista' %}"
                    aria-expanded="true">
