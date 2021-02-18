@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load cloudinary %}
+{% block custom_style %}
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+{% endblock %}
+{% block container %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                </div>
+                <div class="card-body">
+                    <table class="table" id="appointments-table">
+                        <thead>
+                        <th>Fecha</th>
+                        <th>Fecha Fin</th>
+                        <th>Paciente</th>
+                        <th>Especialista</th>
+                        <th>Estado</th>
+                        <th>Tipo</th>
+                        </thead>
+                        <tbody>
+                        {% for cita in citas %}
+                            <tr>
+                                <td>{{ cita.fecha| date:"d/M/Y H:i:s" }}</td>
+                                <td>{{ cita.fecha_fin| date:"d/M/Y H:i:s" }}</td>
+                                <td>{{ cita.paciente }}</td>
+                                <td>{{ cita.medico }}</td>
+                                <td>{{ cita.estado }}</td>
+                                <td>{{ cita.tipo }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+    <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#appointments-table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json'
+                }
+            });
+        });
+    </script>
+{% endblock %}
