@@ -18,6 +18,7 @@
                     <table class="table" id="appointments-table">
                         <thead>
                         <th>Fecha</th>
+                        <th>Fecha Fin</th>
                         <th>Paciente</th>
                         <th>Especialista</th>
                         <th>Estado</th>
@@ -28,6 +29,7 @@
                         {% for cita in citas %}
                             <tr>
                                 <td>{{ cita.fecha| date:"d/M/Y H:i:s" }}</td>
+                                <td>{{ cita.fecha_fin| date:"d/M/Y H:i:s" }}</td>
                                 <td>{{ cita.paciente }}</td>
                                 <td>{{ cita.medico }}</td>
                                 <td>{{ cita.estado }}</td>
