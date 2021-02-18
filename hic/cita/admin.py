@@ -14,8 +14,8 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ['titulo', 'hora_inicio', 'hora_fin', 'tipo', 'color', 'recurrente', 'dia_semana', 'medico']
 
 admin.site.register(Calendario)
-admin.site.register(Event)
-admin.site.register(Cita)
+admin.site.register(Event, EventAdmin)
+admin.site.register(Cita, CitaAdmin)
 admin.site.register(ECita)
 admin.site.register(TCita)
 admin.site.register(EventExtendedProp)
