@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('hic.main.url', namespace="main")),
     path('pacientes/', include('hic.paciente.url', namespace="pacientes")),
+    path('reportes/', include('hic.reportes.url', namespace="reportes")),
     path('citas/', include('hic.cita.url', namespace="citas")),
     path('consultas/', include('hic.consulta.url', namespace="consultas")),
     path('accounts/', include('django.contrib.auth.urls')),

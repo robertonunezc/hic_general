@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block container %}
+    <div class="row">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12">
+                    <h4 >Seleccione las fechas</h4>
+                </div>
+                <div class="col-3">
+                    <label for="fecha_inicio">Fecha Inicio</label>
+                    <input type="date" class="form-control" name="fecha_inicio">
+
+                </div>
+                <div class="col-3">
+                    <label for="fecha_fin">Fecha Final</label>
+                    <input type="date" class="form-control" name="fecha_fin">
+                </div>
+                <div class="col-3">
+                    <label for="fecha_fin">Estado Cita</label>
+                    <select name="estado" id="estado">
+                        <option value="-1">--seleccione--</option>
+                        {% for estado in estados.all %}
+                            <option value="{{ estado.pk }}">{{ estado }}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label for="fecha_fin">Especialistas</label>
+                    <select name="especialista" id="especialista">
+                        <option value="-1">--seleccione--</option>
+                        {% for especialista in especialistas.all %}
+                            <option value="{{ especialista.pk }}">{{ especialista.nombre }}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-12 mt-2">
+                    <button class="btn btn-success">Obtener datos</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

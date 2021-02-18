@@ -151,6 +151,7 @@ def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fe
         cita.observaciones = observaciones
         cita.calendario = Calendario.objects.first()
         cita.fecha = cita_fecha
+        cita.fecha_fin = fecha_fin
         cita.save()
         """SAVE EVENT"""
         evento = Event()

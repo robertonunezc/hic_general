@@ -8,11 +8,7 @@
         <div class="col-sm-12">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Listado de citas</h6>
-                    <a href="{% url 'citas:seleccionar_horario' %}" class="">
-                        Nueva cita
-                    </a>
-
+                    <h6 class="m-0 font-weight-bold text-primary"></h6>
                 </div>
                 <div class="card-body">
                     <table class="table" id="appointments-table">
@@ -23,7 +19,6 @@
                         <th>Especialista</th>
                         <th>Estado</th>
                         <th>Tipo</th>
-                        <th>Acciones</th>
                         </thead>
                         <tbody>
                         {% for cita in citas %}
@@ -34,12 +29,6 @@
                                 <td>{{ cita.medico }}</td>
                                 <td>{{ cita.estado }}</td>
                                 <td>{{ cita.tipo }}</td>
-                                <td class="flex">
-                                    <a href="{% url 'citas:editar_cita' cita_id=cita.pk %}"
-                                       class="btn btn-sm btn-info mr-2">Editar</a>
-                                    <a href=""
-                                       class="btn btn-outline-danger btn-sm">Cancelar</a>
-                                </td>
                             </tr>
                         {% endfor %}
 
