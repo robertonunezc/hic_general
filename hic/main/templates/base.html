@@ -62,6 +62,13 @@
                     <span>Calendario Especialistas</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}"
+                   aria-expanded="true">
+                    <i class="fas fa-fw fa-sign-out-alt"></i>
+                    <span>Salir</span>
+                </a>
+            </li>
         {% else %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'main:menu_principal' %}">
