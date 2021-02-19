@@ -75,6 +75,10 @@
         function loadDateDetails(dateId) {
             const url = `/citas/detalle/${dateId}`;
             const btnEdit = document.getElementById('btn-editar-cita');
+            const btnDelete = document.getElementById('btn-borrar-cita');
+
+            btnDelete.setAttribute('href', `/citas/borrar/${dateId}`);
+
             btnEdit.setAttribute('href', `/citas/editar/${dateId}`);
 
             axios.get(url).then(function (response) {

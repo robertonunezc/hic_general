@@ -6,7 +6,7 @@ from django.contrib import messages
 from hic.cita.forms import CitaForm, PrimeraCitaForm
 from hic.cita.models import Cita, ECita, Event, TCita, Calendario, EventExtendedProp
 from hic.cita.serializer import EventoSerializer, CitaSerializer, EventExtendedPropSerializer
-from hic.main.models import Paciente, Medico, Especialidad
+from hic.main.models import Paciente, Medico, Especialidad, RegistroIncidencias
 from hic.paciente.forms import PacienteForm
 import json
 
@@ -31,12 +31,18 @@ def seleccionar_horario(request):
 def borrar_cita(request, cita_id):
     if request.method == 'POST':
         try:
+            motivo = request.POST.get("motivo")
             cita = Cita.objects.get(pk=cita_id)
             cita.deshabilitado = True
             cita.save()
             for evento in cita.events.all():
                 evento.deshabilitado = True
                 evento.save()
+            incidencia = RegistroIncidencias()
+            incidencia.accion = "Borrado cita {}".format(cita.pk)
+            incidencia.comentario = motivo
+            incidencia.usuario = request.user
+            incidencia.save()
             return HttpResponseRedirect('/citas/horario')
         except Cita.DoesNotExist:
             print("No existe")
@@ -241,6 +247,15 @@ def editar_cita(request, cita_id):
         form = CitaForm(request.POST, instance=cita)
         if form.is_valid():
             form.save()
+            eventos = Event.objects.filter(cita=cita)
+            for evento in eventos:
+                evento.titulo = cita.paciente.nombre
+                evento.hora_inicio = cita.fecha
+                evento.hora_fin = cita.fecha_fin
+                evento.dia_semana = cita.fecha.date().weekday()
+                evento.medico = cita.medico
+                evento.color = cita.tipo.color
+                evento.save()
             msg = "Cita actualizada con éxito"
 
     context = {

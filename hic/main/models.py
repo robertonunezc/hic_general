@@ -125,3 +125,10 @@ class Consultorio(models.Model):
     direccion = models.ForeignKey(Direccion, on_delete=models.SET_NULL, null=True)
     telefono = models.CharField(max_length=80)
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
+
+
+class RegistroIncidencias(models.Model):
+    accion = models.CharField(max_length=80)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now=True)
+    comentario =models.CharField(max_length=250)

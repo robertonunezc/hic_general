@@ -11,6 +11,11 @@
                     <h6 class="m-0 font-weight-bold text-primary"></h6>
                 </div>
                 <div class="card-body">
+                    {% if message %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endif %}
                     <table class="table" id="appointments-table">
                         <thead>
                         <th>Fecha</th>
