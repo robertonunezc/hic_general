@@ -5,6 +5,13 @@ from hic.main.models import *
 admin.site.site_header = "Sistema de gestión de médico"
 admin.site.site_title = "Sistema de gestión de médico"
 admin.site.index_title = "Bienvenido al sistema"
+
+class RegistroIncidenciasAdmin(admin.ModelAdmin):
+    list_display = ['accion', 'fecha', 'usuario', 'comentario']
+    search_fields = ['accion', 'fecha', 'usuario', 'comentario']
+    list_filter = ['accion', 'fecha', 'usuario', 'comentario']
+
+admin.site.register(RegistroIncidencias, RegistroIncidenciasAdmin)
 admin.site.register(Usuario)
 admin.site.register(Paciente)
 admin.site.register(Medico)

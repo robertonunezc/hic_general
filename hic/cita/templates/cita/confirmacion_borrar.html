@@ -10,8 +10,10 @@
                 <div class="alert alert-danger">¿Confirma que quiere borrar este elemento?</div>
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-danger" type="submit">Si, Seguro</button>
-                        <div class="btn btn-outline-primary ml-5" onclick=" window.history.back();">No, quiero regresar</div>
+                        <label for="">Debe indicar la causa de esta acción</label>
+                        <textarea name="motivo" id="motivo" cols="30" rows="10" required></textarea>
+                        <button class="btn btn-danger mt-3" type="submit">Si, Seguro</button>
+                        <div class="btn btn-outline-primary ml-5  mt-3" onclick=" window.history.back();">No, quiero regresar</div>
 
                     </div>
                 </div>
