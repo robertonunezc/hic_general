@@ -15,14 +15,18 @@ import json
 def seleccionar_horario(request):
     pacientes = Paciente.objects.all()
     especialistas = Medico.objects.all()
-    leyenda_especialidades = Especialidad.objects.all()
     tipo_citas = TCita.objects.all()
-    # serializer.data['extendedProps'] = serializer.data['extended_props']
+    medico = request.GET.get('especialista', None)
+    url_loadevents = '/citas/cargar/eventos/'
+    if medico is not None:
+        url_loadevents='/citas/cargar/eventos/?especialista={}'.format(medico)
+
     context = {
         'pacientes': pacientes,
         'especialistas': especialistas,
         'tipo_citas': tipo_citas,
-        'leyenda_especialidades': leyenda_especialidades
+        'url_loadevents':url_loadevents
+
     }
     print(context)
     return render(request, 'cita/seleccionar_horario.html', context=context)
@@ -54,7 +58,11 @@ def borrar_cita(request, cita_id):
 def cargar_eventos(request):
     try:
         response = []
-        eventos = Event.objects.filter(tipo=1, deshabilitado=0)  # TODO only load the current month
+        medico = request.GET.get('especialista', None)
+        if medico is not None:
+            eventos =  Event.objects.filter(tipo=1, deshabilitado=0, medico_id=medico)
+        else:
+            eventos = Event.objects.filter(tipo=1, deshabilitado=0)  # TODO only load the current week and future
 
         for evento in eventos:
             evento_dict = {
