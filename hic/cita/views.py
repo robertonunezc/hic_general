@@ -18,14 +18,22 @@ def seleccionar_horario(request):
     tipo_citas = TCita.objects.all()
     medico = request.GET.get('especialista', None)
     url_loadevents = '/citas/cargar/eventos/'
+    fecha_evento = False
+
     if medico is not None:
         url_loadevents='/citas/cargar/eventos/?especialista={}'.format(medico)
+
+    # I use this variable to move the calendar to specific date after an event was created
+    if request.session.get('fecha_evento_creado', False):
+        fecha_evento = request.session.get('fecha_evento_creado', False)
+
 
     context = {
         'pacientes': pacientes,
         'especialistas': especialistas,
         'tipo_citas': tipo_citas,
-        'url_loadevents':url_loadevents
+        'url_loadevents':url_loadevents,
+        'fecha_evento':fecha_evento
 
     }
     print(context)
@@ -143,14 +151,14 @@ def calendario_registrar_cita(request):
                     fecha_inicio = cita_fecha + timedelta(days=days)
                     fecha_fin = cita_fecha_fin + timedelta(days=days)
                     crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente, dia_semana)
-
+            request.session['fecha_evento_creado'] = inicio
+            return redirect('citas:seleccionar_horario')
 
         except Exception as e:
             print(e)
             messages.add_message(request=request,level=messages.ERROR,message="Error creando la cita. Todos los datos son obligatorios")
             return redirect('citas:seleccionar_horario')
 
-        return redirect('citas:seleccionar_horario')
 
     return HttpResponse("Acceso denegado")
 
