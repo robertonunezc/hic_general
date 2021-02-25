@@ -20,7 +20,7 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 locale: 'es',
-                initialView: 'timeGridWeek',
+                initialView: 'timeGridDay',
                 timeZone: 'America/Mexico_City',
                 selectable: true,
                 headerToolbar: {
@@ -29,7 +29,7 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 events: {
-                    url: '{% url 'citas:cargar_eventos' %}',
+                    url: '{{ url_loadevents }}',
                 },
 
                 select: function (info) {
@@ -101,8 +101,8 @@
             }).catch(function (error) {
                 console.log(error)
             })
-            function getEstadoCita(estado){
-                switch (estado){
+            function getEstadoCita(estado) {
+                switch (estado) {
                     case 0:
                         return "RESERVADA";
                     case 1:
@@ -129,15 +129,22 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <h3>Seleccione un especialista si desea ver sus citas:</h3>
             <div class="row">
-                {% for especialidad in leyenda_especialidades %}
-                    <div class="col-3 m-2" style="background-color: {{ especialidad.color }}; color:white">
-                        {{ especialidad.nombre }}
+                <div class="col m-2">
+                    <a class="badge badge-success" href="/citas/horario">Todos</a>
+                </div>
+                {% for medico in especialistas %}
+                    <div class="col m-2">
+                        <a class="badge badge-info" href="/citas/horario?especialista={{ medico.pk }}">{{ medico.nombre }}</a>
                     </div>
                 {% endfor %}
             </div>
+                        <hr>
+
         </div>
-        <div class="col-12">
+
+        <div class="col-12 mt-2">
             <div id="calendar"></div>
         </div>
     </div>
