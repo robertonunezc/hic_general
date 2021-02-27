@@ -73,8 +73,9 @@ def cargar_eventos(request):
             eventos = Event.objects.filter(tipo=1, deshabilitado=0)  # TODO only load the current week and future
 
         for evento in eventos:
+            cita_pagada = "PAGADA" if evento.cita.pagada else "APARTADA"
             evento_dict = {
-                'title': "{}-{}".format(evento.titulo, evento.cita.medico.nombre),
+                'title': "{} {} {}".format(evento.titulo, evento.cita.medico.nombre, cita_pagada),
                 'backgroundColor': evento.color,
                 'start': str(evento.hora_inicio),
                 'end': str(evento.hora_fin),
@@ -128,10 +129,11 @@ def calendario_registrar_cita(request):
             paciente = request.POST.get('paciente')
             tipo_cita = request.POST.get('tipoCita')
             recuerrente_si = request.POST.get('eventoRecurrente')
-
+            cita_pagada_data = request.POST.get('eventoPagado')
             medico = Medico.objects.get(pk=especialista_id)
             paciente = Paciente.objects.get(pk=paciente)
             recuerrente = True if recuerrente_si == "recurrente" else False
+            cita_pagada = True if cita_pagada_data == "pagada" else False
             cita_fecha = datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S")
             cita_fecha_fin =  datetime.strptime(fin, "%Y-%m-%dT%H:%M:%S")
             dia_semana = cita_fecha.date().weekday()
@@ -142,7 +144,7 @@ def calendario_registrar_cita(request):
 
             if not recuerrente:
                 crear_cita_evento(cita_fecha, medico, paciente, tipo_cita, observaciones, cita_fecha_fin, recuerrente,
-                                  dia_semana)
+                                  dia_semana, cita_pagada)
             else:
                 print(cita_fecha_fin)
                 for i in range(0,5):
@@ -150,7 +152,7 @@ def calendario_registrar_cita(request):
                     days = 7 * i
                     fecha_inicio = cita_fecha + timedelta(days=days)
                     fecha_fin = cita_fecha_fin + timedelta(days=days)
-                    crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente, dia_semana)
+                    crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente, dia_semana, cita_pagada)
             request.session['fecha_evento_creado'] = inicio
             return redirect('citas:seleccionar_horario')
 
@@ -163,7 +165,7 @@ def calendario_registrar_cita(request):
     return HttpResponse("Acceso denegado")
 
 
-def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fecha_fin, recurrente, dia_semana):
+def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fecha_fin, recurrente, dia_semana, cita_pagada):
     try:
         cita = Cita()
         cita.medico = medico
@@ -174,6 +176,7 @@ def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fe
         cita.calendario = Calendario.objects.first()
         cita.fecha = cita_fecha
         cita.fecha_fin = fecha_fin
+        cita.pagada = cita_pagada
         cita.save()
         """SAVE EVENT"""
         evento = Event()
