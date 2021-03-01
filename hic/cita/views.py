@@ -130,10 +130,11 @@ def calendario_registrar_cita(request):
             tipo_cita = request.POST.get('tipoCita')
             recuerrente_si = request.POST.get('eventoRecurrente')
             cita_pagada_data = request.POST.get('eventoPagado')
+            print(cita_pagada_data)
             medico = Medico.objects.get(pk=especialista_id)
             paciente = Paciente.objects.get(pk=paciente)
             recuerrente = True if recuerrente_si == "recurrente" else False
-            cita_pagada = True if cita_pagada_data == "pagada" else False
+            cita_pagada = True if cita_pagada_data == "pagado" else False
             cita_fecha = datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S")
             cita_fecha_fin =  datetime.strptime(fin, "%Y-%m-%dT%H:%M:%S")
             dia_semana = cita_fecha.date().weekday()
