@@ -84,6 +84,7 @@ def assing_specialist_consult_time(request):
                 dia_semana += 1
 
             specialist = Medico.objects.get(pk=specialist_id)
+            # TODO create for the complete month
             for time in range(9,21):
                 event = Event()
                 event.titulo = specialist.nombre
@@ -98,6 +99,9 @@ def assing_specialist_consult_time(request):
                 extended_props = EventExtendedProp()
                 extended_props.evento = event.pk
                 extended_props.doctor = specialist.pk
+                extended_props.nombre_doctor = specialist.nombre
+                extended_props.evento_inicio = event.hora_inicio
+                extended_props.evento_fin = event.hora_fin
                 extended_props.save()
 
                 event.extendedProps = extended_props

@@ -87,5 +87,8 @@ class Event(models.Model):
 
 class EventExtendedProp(models.Model):
     doctor = models.IntegerField()
+    nombre_doctor = models.CharField(max_length=200, default="Dr.")
     cita = models.IntegerField(null=True, blank=True)
     evento = models.IntegerField(null=True, blank=True)
+    evento_inicio = models.DateTimeField(null=True, blank=True)
+    evento_fin = models.DateTimeField(null=True, blank=True)

@@ -127,6 +127,7 @@ def calendario_registrar_cita(request):
     if request.method == "POST":
         try:
             especialista_id = request.POST.get('especialista')
+            evento = request.POST.get('evento-cita')
             observaciones = request.POST.get('observaciones')
             inicio = request.POST.get('fecha-inicio-cita')
             fin = request.POST.get('fecha-fin-cita')
@@ -134,7 +135,7 @@ def calendario_registrar_cita(request):
             tipo_cita = request.POST.get('tipoCita')
             recuerrente_si = request.POST.get('eventoRecurrente')
             cita_pagada_data = request.POST.get('eventoPagado')
-            print(cita_pagada_data)
+
             medico = Medico.objects.get(pk=especialista_id)
             paciente = Paciente.objects.get(pk=paciente)
             recuerrente = True if recuerrente_si == "recurrente" else False
@@ -146,7 +147,14 @@ def calendario_registrar_cita(request):
                 dia_semana = 0
             else:
                 dia_semana += 1
-
+            """
+                Si es recurrente  :
+                 1- Crear cita
+                 2- Buscar evento del mismo dia y la misma hora inicio y hora fin
+                 3- Validar q es del mismo especialista ese evento
+                 4- Asignar cita a ese evento
+                Esto hacerlo para todos los eventos
+            """
             if not recuerrente:
                 crear_cita_evento(cita_fecha, medico, paciente, tipo_cita, observaciones, cita_fecha_fin, recuerrente,
                                   dia_semana, cita_pagada)
