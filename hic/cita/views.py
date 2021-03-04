@@ -37,6 +37,7 @@ def seleccionar_horario(request):
 
     }
     print(context)
+    request.session['fecha_evento_creado'] = None
     return render(request, 'cita/seleccionar_horario.html', context=context)
 
 @login_required
@@ -68,14 +69,17 @@ def cargar_eventos(request):
         response = []
         medico = request.GET.get('especialista', None)
         if medico is not None:
-            eventos =  Event.objects.filter(tipo=1, deshabilitado=0, medico_id=medico)
+            eventos =  Event.objects.filter(tipo=0, deshabilitado=0, medico_id=medico)
         else:
-            eventos = Event.objects.filter(tipo=1, deshabilitado=0)  # TODO only load the current week and future
+            eventos = Event.objects.filter(tipo=0, deshabilitado=0)  # TODO only load the current week and future
 
         for evento in eventos:
-            cita_pagada = "PAGADA" if evento.cita.pagada else "APARTADA"
+            cita_pagada = ""
+            if evento.cita:
+                cita_pagada = "PAGADA" if evento.cita.pagada else "APARTADA"
+
             evento_dict = {
-                'title': "{} {} {}".format(evento.titulo, evento.cita.medico.nombre, cita_pagada),
+                'title': "{} {}".format(evento.titulo, cita_pagada),
                 'backgroundColor': evento.color,
                 'start': str(evento.hora_inicio),
                 'end': str(evento.hora_fin),

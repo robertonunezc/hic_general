@@ -84,23 +84,24 @@ def assing_specialist_consult_time(request):
                 dia_semana += 1
 
             specialist = Medico.objects.get(pk=specialist_id)
-            event = Event()
-            event.titulo = specialist.nombre
-            event.hora_inicio = start_time
-            event.hora_fin = end_time
-            event.calendario = Calendario.objects.first()
-            event.medico = specialist
-            event.recurrente = recuerrente
-            event.dia_semana = dia_semana
-            event.tipo = 0
-            event.save()
-            extended_props = EventExtendedProp()
-            extended_props.evento = event.pk
-            extended_props.doctor = specialist.pk
-            extended_props.save()
+            for time in range(9,21):
+                event = Event()
+                event.titulo = specialist.nombre
+                event.hora_inicio = "{} {}:00:00".format(start_time, time)
+                event.hora_fin = "{} {}:00:00".format(start_time, time+1)
+                event.calendario = Calendario.objects.first()
+                event.medico = specialist
+                event.recurrente = recuerrente
+                event.dia_semana = dia_semana
+                event.tipo = 0
+                event.save()
+                extended_props = EventExtendedProp()
+                extended_props.evento = event.pk
+                extended_props.doctor = specialist.pk
+                extended_props.save()
 
-            event.extendedProps = extended_props
-            event.save()
+                event.extendedProps = extended_props
+                event.save()
 
             return redirect('main:horarios_especialista')
 
