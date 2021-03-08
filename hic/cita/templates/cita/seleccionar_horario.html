@@ -45,6 +45,7 @@
                     btnShowModal.click();
                     fechaInicio.value = info.event.extendedProps.evento_inicio ;
                     fechaFin.value =  info.event.extendedProps.evento_fin;
+                    evento.value = info.event.extendedProps.evento;
                     nombreEspecialista.innerHTML = `<strong>${info.event.extendedProps.nombre_doctor}</strong>`;
                     idEspecialista.value = info.event.extendedProps.doctor;
                     console.log(info.event.start)

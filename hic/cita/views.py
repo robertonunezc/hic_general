@@ -127,7 +127,7 @@ def calendario_registrar_cita(request):
     if request.method == "POST":
         try:
             especialista_id = request.POST.get('especialista')
-            evento = request.POST.get('evento-cita')
+            evento_id = request.POST.get('evento-cita')
             observaciones = request.POST.get('observaciones')
             inicio = request.POST.get('fecha-inicio-cita')
             fin = request.POST.get('fecha-fin-cita')
@@ -135,7 +135,6 @@ def calendario_registrar_cita(request):
             tipo_cita = request.POST.get('tipoCita')
             recuerrente_si = request.POST.get('eventoRecurrente')
             cita_pagada_data = request.POST.get('eventoPagado')
-
             medico = Medico.objects.get(pk=especialista_id)
             paciente = Paciente.objects.get(pk=paciente)
             recuerrente = True if recuerrente_si == "recurrente" else False
@@ -156,8 +155,9 @@ def calendario_registrar_cita(request):
                 Esto hacerlo para todos los eventos
             """
             if not recuerrente:
+                evento = Event.objects.get(pk=evento_id)
                 crear_cita_evento(cita_fecha, medico, paciente, tipo_cita, observaciones, cita_fecha_fin, recuerrente,
-                                  dia_semana, cita_pagada)
+                                  dia_semana, cita_pagada, evento)
             else:
                 print(cita_fecha_fin)
                 for i in range(0,5):
@@ -165,7 +165,10 @@ def calendario_registrar_cita(request):
                     days = 7 * i
                     fecha_inicio = cita_fecha + timedelta(days=days)
                     fecha_fin = cita_fecha_fin + timedelta(days=days)
-                    crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente, dia_semana, cita_pagada)
+                    evento = Event.objects.get(hora_inicio=fecha_inicio,hora_fin=fecha_fin, medico=medico)
+                    print("EVETBTI")
+                    print(evento)
+                    crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente, dia_semana, cita_pagada, evento)
             request.session['fecha_evento_creado'] = inicio
             return redirect('citas:seleccionar_horario')
 
@@ -178,43 +181,45 @@ def calendario_registrar_cita(request):
     return HttpResponse("Acceso denegado")
 
 
-def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fecha_fin, recurrente, dia_semana, cita_pagada):
-    try:
-        cita = Cita()
-        cita.medico = medico
-        cita.paciente = paciente
-        cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
-        cita.tipo = TCita.objects.get(pk=tipo_cita_id)
-        cita.observaciones = observaciones
-        cita.calendario = Calendario.objects.first()
-        cita.fecha = cita_fecha
-        cita.fecha_fin = fecha_fin
-        cita.pagada = cita_pagada
-        cita.save()
-        """SAVE EVENT"""
-        evento = Event()
-        evento.cita = cita
-        evento.medico = medico
-        evento.hora_inicio = cita_fecha
-        evento.hora_fin = fecha_fin
-        evento.tipo = 1
-        evento.color = cita.tipo.color
-        evento.calendario = Calendario.objects.first()
-        evento.titulo = paciente.nombre
-        evento.recurrente = recurrente
-        evento.dia_semana = dia_semana
-        evento.save()
+def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fecha_fin, recurrente, dia_semana, cita_pagada, evento):
+        cita = None
+        try:
+            cita = Cita()
+            cita.medico = medico
+            cita.paciente = paciente
+            cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
+            cita.tipo = TCita.objects.get(pk=tipo_cita_id)
+            cita.observaciones = observaciones
+            cita.calendario = Calendario.objects.first()
+            cita.fecha = cita_fecha
+            cita.fecha_fin = fecha_fin
+            cita.pagada = cita_pagada
+            cita.save()
+        except Exception as e:
+            print("Fallo crear cita")
+            print(e)
+        try:
+            """FIND EVENT"""
+            # evento = Event.objects.get(pk=evento_id)
+            evento.cita = cita
+            evento.color = cita.tipo.color
+            evento.titulo = "{} {} {}".format(evento.medico.nombre, cita.paciente.nombre, cita_pagada)
+            evento.recurrente = recurrente
+            evento.dia_semana = dia_semana
+            evento.save()
+        except Exception as e:
+            print(e)
+            print("Fallo crear evento")
+        try:
+            """SAVE EXTENDED PROP"""
+            extendedProps = EventExtendedProp.objects.filter(evento=evento.pk)
+            for prop in extendedProps:
+                prop.cita = cita.pk
+                prop.save()
+        except Exception as e:
+            print(e)
+            print("Fallo crear extenden prop")
 
-        """SAVE EXTENDED PROP"""
-        extendedProp = EventExtendedProp()
-        extendedProp.doctor = medico.pk
-        extendedProp.evento = evento.pk
-        extendedProp.cita = cita.pk
-        extendedProp.save()
-        evento.extendedProps = extendedProp
-        evento.save()
-    except Exception as e:
-        print(e)
 
 
 @login_required
