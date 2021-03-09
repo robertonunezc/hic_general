@@ -75,10 +75,9 @@ def cargar_eventos(request):
     try:
         response = []
         medico = request.GET.get('especialista', None)
+        eventos = Event.objects.filter(tipo=0, deshabilitado=0).order_by('id')
         if medico is not None:
-            eventos =  Event.objects.filter(tipo=0, deshabilitado=0, medico_id=medico)
-        else:
-            eventos = Event.objects.filter(tipo=0, deshabilitado=0)  # TODO only load the current week and future
+            eventos =  eventos.filter(medico_id=medico)
 
         for evento in eventos:
             cita_pagada = ""
@@ -211,7 +210,7 @@ def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fe
             # evento = Event.objects.get(pk=evento_id)
             evento.cita = cita
             evento.color = cita.tipo.color
-            evento.titulo = "{} {} {}".format(evento.medico.nombre, cita.paciente.nombre, cita_pagada)
+            evento.titulo = "{} {}".format(evento.medico.nombre, cita.paciente.nombre)
             evento.recurrente = recurrente
             evento.dia_semana = dia_semana
             evento.save()
@@ -294,7 +293,7 @@ def editar_cita(request, cita_id):
             form.save()
             eventos = Event.objects.filter(cita=cita)
             for evento in eventos:
-                evento.titulo = cita.paciente.nombre
+                evento.titulo = "{} {}".format(cita.medico,cita.paciente.nombre)
                 evento.hora_inicio = cita.fecha
                 evento.hora_fin = cita.fecha_fin
                 evento.dia_semana = cita.fecha.date().weekday()
