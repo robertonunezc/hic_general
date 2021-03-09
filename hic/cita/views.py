@@ -46,11 +46,18 @@ def borrar_cita(request, cita_id):
         try:
             motivo = request.POST.get("motivo")
             cita = Cita.objects.get(pk=cita_id)
-            cita.deshabilitado = True
-            cita.save()
             for evento in cita.events.all():
-                evento.deshabilitado = True
+                evento.titulo = evento.medico.nombre
+                evento.cita = None
+                evento.color = "#3788d8"
                 evento.save()
+
+            extendedProps = EventExtendedProp.objects.filter(cita=cita.pk)
+            for extended in extendedProps:
+                extended.cita = None
+                extended.save()
+
+            cita.delete()
             incidencia = RegistroIncidencias()
             incidencia.accion = "Borrado cita {}".format(cita.pk)
             incidencia.comentario = motivo

@@ -41,14 +41,21 @@
                     const evento = document.getElementById('evento-cita');
                     const nombreEspecialista = document.getElementById('nombre-especialista');
                     const idEspecialista = document.getElementById('especialista');
-                    const btnShowModal = document.getElementById('btn-show-modal');
-                    btnShowModal.click();
-                    fechaInicio.value = info.event.extendedProps.evento_inicio ;
-                    fechaFin.value =  info.event.extendedProps.evento_fin;
+
+                    fechaInicio.value = info.event.extendedProps.evento_inicio;
+                    fechaFin.value = info.event.extendedProps.evento_fin;
                     evento.value = info.event.extendedProps.evento;
                     nombreEspecialista.innerHTML = `<strong>${info.event.extendedProps.nombre_doctor}</strong>`;
                     idEspecialista.value = info.event.extendedProps.doctor;
-                    console.log(info.event.start)
+                    console.log(info.event.extendedProps.cita)
+                    let btnShowModal;
+                    if (info.event.extendedProps.cita != null) {
+                         btnShowModal = document.getElementById('btn-show-detail-modal');
+                        loadDateDetails(info.event.extendedProps.cita)
+                    } else {
+                        btnShowModal = document.getElementById('btn-show-modal');
+                    }
+                        btnShowModal.click();
 
                 },
                 select: function (info) {
