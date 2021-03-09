@@ -145,26 +145,14 @@ def cargar_eventos(request):
         eventos = Event.objects.filter(tipo=0, deshabilitado=0)  # TODO only load the current month
 
         for evento in eventos:
-            if evento.recurrente:
-                evento_dict = {
-                    'startRecur': datetime2.datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
-                    'daysOfWeek': [evento.dia_semana],
-                    'startTime': str(evento.hora_inicio.time()),
-                    'endTime': str(evento.hora_fin.time()),
-                    'title': evento.titulo,
-                    'backgroundColor': evento.color,
-                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
-                }
-            else:
-                # TODO falta el cargar eventos sencillo
-                evento_dict = {
-                    'title': evento.titulo,
-                    'backgroundColor': evento.color,
-                    'start': str(evento.hora_inicio),
-                    'end': str(evento.hora_fin),
-                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
+            evento_dict = {
+                'title': evento.titulo,
+                'backgroundColor': evento.color,
+                'start': str(evento.hora_inicio),
+                'end': str(evento.hora_fin),
+                'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
+            }
 
-                }
             response.append(evento_dict)
 
     except Event.DoesNotExist:

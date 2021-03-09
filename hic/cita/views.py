@@ -190,6 +190,7 @@ def calendario_registrar_cita(request):
 
 def crear_cita_evento(cita_fecha,medico,paciente,tipo_cita_id, observaciones, fecha_fin, recurrente, dia_semana, cita_pagada, evento):
         cita = None
+        print(tipo_cita_id)
         try:
             cita = Cita()
             cita.medico = medico
