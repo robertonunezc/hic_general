@@ -74,8 +74,18 @@ def borrar_cita(request, cita_id):
 def cargar_eventos(request):
     try:
         response = []
+        start_date = request.GET.get('start', None)
+        end_date = request.GET.get('end', None)
+
         medico = request.GET.get('especialista', None)
-        eventos = Event.objects.filter(tipo=0, deshabilitado=0).order_by('id')
+        if start_date is  None and end_date is  None:
+            start_date = datetime.today()
+            end_date = datetime.today() + timedelta(days=1)
+
+        print(start_date)
+        print(end_date)
+        eventos = Event.objects.filter(tipo=0, deshabilitado=0, hora_inicio__gte=start_date, hora_fin__lte=end_date).order_by('id')
+
         if medico is not None:
             eventos =  eventos.filter(medico_id=medico)
 

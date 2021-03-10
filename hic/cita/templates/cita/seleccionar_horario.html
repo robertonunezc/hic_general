@@ -26,14 +26,15 @@
                 {% endif %}
                 timeZone: 'America/Mexico_City',
                 selectable: true,
+                lazyFetching:true,
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: {
-                    url: '{{ url_loadevents }}',
-                },
+                eventSources:[
+                    '{{ url_loadevents }}',
+                ],
 
                 eventClick: function (info) {
                     const fechaInicio = document.getElementById('fecha-inicio-cita');
@@ -50,12 +51,12 @@
                     console.log(info.event.extendedProps.cita)
                     let btnShowModal;
                     if (info.event.extendedProps.cita != null) {
-                         btnShowModal = document.getElementById('btn-show-detail-modal');
+                        btnShowModal = document.getElementById('btn-show-detail-modal');
                         loadDateDetails(info.event.extendedProps.cita)
                     } else {
                         btnShowModal = document.getElementById('btn-show-modal');
                     }
-                        btnShowModal.click();
+                    btnShowModal.click();
 
                 },
                 select: function (info) {
@@ -63,7 +64,7 @@
                     btnShowModal.click();
                     console.log(info.event.extendedProps)
                     loadDateDetails(info.event.extendedProps.cita)
-                }
+                },
 
             });
 
