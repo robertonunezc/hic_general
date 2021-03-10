@@ -82,8 +82,6 @@ def cargar_eventos(request):
             start_date = datetime.today()
             end_date = datetime.today() + timedelta(days=1)
 
-        print(start_date)
-        print(end_date)
         eventos = Event.objects.filter(tipo=0, deshabilitado=0, hora_inicio__gte=start_date, hora_fin__lte=end_date).order_by('id')
 
         if medico is not None:
@@ -303,7 +301,10 @@ def editar_cita(request, cita_id):
             form.save()
             eventos = Event.objects.filter(cita=cita)
             for evento in eventos:
-                evento.titulo = "{} {}".format(cita.medico,cita.paciente.nombre)
+                medico_nombre = evento.medico.nombre
+                if evento.medico.pk != cita.medico.pk:
+                    medico_nombre = cita.medico.nombre
+                evento.titulo = "{} {}".format(medico_nombre,cita.paciente.nombre)
                 evento.hora_inicio = cita.fecha
                 evento.hora_fin = cita.fecha_fin
                 evento.dia_semana = cita.fecha.date().weekday()
