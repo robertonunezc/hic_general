@@ -301,13 +301,10 @@ def editar_cita(request, cita_id):
             form.save()
             eventos = Event.objects.filter(cita=cita)
             for evento in eventos:
-                medico_nombre = evento.medico.nombre
-                if evento.medico.pk != cita.medico.pk:
-                    medico_nombre = cita.medico.nombre
-                evento.titulo = "{} {}".format(medico_nombre,cita.paciente.nombre)
-                evento.hora_inicio = cita.fecha
-                evento.hora_fin = cita.fecha_fin
-                evento.dia_semana = cita.fecha.date().weekday()
+                evento.titulo = "{} {}".format( cita.medico.nombre,cita.paciente.nombre)
+                # evento.hora_inicio = cita.fecha
+                # evento.hora_fin = cita.fecha_fin
+                # evento.dia_semana = cita.fecha.date().weekday()
                 evento.medico = cita.medico
                 evento.color = cita.tipo.color
                 evento.save()
