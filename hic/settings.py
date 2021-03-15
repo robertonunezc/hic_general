@@ -58,6 +58,7 @@ TENANT_APPS = [
     'hic.consulta',
     'hic.reportes',
     'hic.cita',
+    'hic.contabilidad',
 ]
 
 INSTALLED_APPS = [
@@ -77,6 +78,7 @@ INSTALLED_APPS = [
     'hic.consulta',
     'hic.cita',
     'hic.reportes',
+    'hic.contabilidad',
 ]
 
 MIDDLEWARE = [
