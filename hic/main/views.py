@@ -12,7 +12,9 @@ from hic.paciente.forms import MedicoForm
 from django.views.decorators.csrf import csrf_exempt
 import json
 import openpyxl
-import datetime
+import datetime as datetime2
+from datetime import datetime, timedelta
+
 
 @login_required
 def inicio(request):
@@ -33,7 +35,7 @@ def get_specialists_by_date(request):
     try:
         print(request.POST.get('date'))
 
-        dia_semana = datetime.datetime.strptime(request.POST.get('date'), "%Y-%m-%dT%H:%M:%S").date().weekday()
+        dia_semana = datetime2.datetime.strptime(request.POST.get('date'), "%Y-%m-%dT%H:%M:%S").date().weekday()
 
         if dia_semana == 6:
             dia_semana = 0
@@ -76,31 +78,41 @@ def assing_specialist_consult_time(request):
             end_time = request.POST.get('fin-cita-especialista')
             recuerrente_si = request.POST.get('eventoRecurrente')
             recuerrente = True if recuerrente_si == "recurrente" else False
-            dia_semana = datetime.datetime.strptime(start_time, "%Y-%m-%d").date().weekday()
+            dia_semana = datetime2.datetime.strptime(start_time, "%Y-%m-%d").date().weekday()
 
             if dia_semana == 6:
                 dia_semana = 0
             else:
                 dia_semana += 1
-
+            start_time = datetime.strptime(str(start_time), "%Y-%m-%d")
             specialist = Medico.objects.get(pk=specialist_id)
-            event = Event()
-            event.titulo = specialist.nombre
-            event.hora_inicio = start_time
-            event.hora_fin = end_time
-            event.calendario = Calendario.objects.first()
-            event.medico = specialist
-            event.recurrente = recuerrente
-            event.dia_semana = dia_semana
-            event.tipo = 0
-            event.save()
-            extended_props = EventExtendedProp()
-            extended_props.evento = event.pk
-            extended_props.doctor = specialist.pk
-            extended_props.save()
+            for days in range(0,32):
+                new_start_time = start_time + timedelta(days=days)
+                print("START TIME")
+                print(start_time)
+                for time in range(9,21):
+                    event = Event()
+                    print(new_start_time + timedelta(hours=time))
+                    print(new_start_time + timedelta(hours=time+1))
+                    event.titulo = specialist.nombre
+                    event.hora_inicio =new_start_time + timedelta(hours=time)
+                    event.hora_fin = new_start_time + timedelta(hours=time+1)
+                    event.calendario = Calendario.objects.first()
+                    event.medico = specialist
+                    event.recurrente = recuerrente
+                    event.dia_semana = dia_semana
+                    event.tipo = 0
+                    event.save()
+                    extended_props = EventExtendedProp()
+                    extended_props.evento = event.pk
+                    extended_props.doctor = specialist.pk
+                    extended_props.nombre_doctor = specialist.nombre
+                    extended_props.evento_inicio = event.hora_inicio
+                    extended_props.evento_fin = event.hora_fin
+                    extended_props.save()
 
-            event.extendedProps = extended_props
-            event.save()
+                    event.extendedProps = extended_props
+                    event.save()
 
             return redirect('main:horarios_especialista')
 
@@ -133,26 +145,14 @@ def cargar_eventos(request):
         eventos = Event.objects.filter(tipo=0, deshabilitado=0)  # TODO only load the current month
 
         for evento in eventos:
-            if evento.recurrente:
-                evento_dict = {
-                    'startRecur': datetime.datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
-                    'daysOfWeek': [evento.dia_semana],
-                    'startTime': str(evento.hora_inicio.time()),
-                    'endTime': str(evento.hora_fin.time()),
-                    'title': evento.titulo,
-                    'backgroundColor': evento.color,
-                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
-                }
-            else:
-                # TODO falta el cargar eventos sencillo
-                evento_dict = {
-                    'title': evento.titulo,
-                    'backgroundColor': evento.color,
-                    'start': str(evento.hora_inicio),
-                    'end': str(evento.hora_fin),
-                    'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
+            evento_dict = {
+                'title': evento.titulo,
+                'backgroundColor': evento.color,
+                'start': str(evento.hora_inicio),
+                'end': str(evento.hora_fin),
+                'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
+            }
 
-                }
             response.append(evento_dict)
 
     except Event.DoesNotExist:

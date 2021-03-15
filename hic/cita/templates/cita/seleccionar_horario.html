@@ -26,33 +26,45 @@
                 {% endif %}
                 timeZone: 'America/Mexico_City',
                 selectable: true,
+                lazyFetching:true,
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: {
-                    url: '{{ url_loadevents }}',
-                },
+                eventSources:[
+                    '{{ url_loadevents }}',
+                ],
 
-                select: function (info) {
+                eventClick: function (info) {
                     const fechaInicio = document.getElementById('fecha-inicio-cita');
                     const fechaFin = document.getElementById('fecha-fin-cita');
                     const evento = document.getElementById('evento-cita');
-                    const btnShowModal = document.getElementById('btn-show-modal');
+                    const nombreEspecialista = document.getElementById('nombre-especialista');
+                    const idEspecialista = document.getElementById('especialista');
+
+                    fechaInicio.value = info.event.extendedProps.evento_inicio;
+                    fechaFin.value = info.event.extendedProps.evento_fin;
+                    evento.value = info.event.extendedProps.evento;
+                    nombreEspecialista.innerHTML = `<strong>${info.event.extendedProps.nombre_doctor}</strong>`;
+                    idEspecialista.value = info.event.extendedProps.doctor;
+                    console.log(info.event.extendedProps.cita)
+                    let btnShowModal;
+                    if (info.event.extendedProps.cita != null) {
+                        btnShowModal = document.getElementById('btn-show-detail-modal');
+                        loadDateDetails(info.event.extendedProps.cita)
+                    } else {
+                        btnShowModal = document.getElementById('btn-show-modal');
+                    }
                     btnShowModal.click();
-                    fechaInicio.value = info.startStr;
-                    fechaFin.value = info.endStr;
-                    console.log(info.start.getDate());
-                    loadingSpecialist(info.startStr);
 
                 },
-                eventClick: function (info) {
+                select: function (info) {
                     const btnShowModal = document.getElementById('btn-show-detail-modal');
                     btnShowModal.click();
                     console.log(info.event.extendedProps)
                     loadDateDetails(info.event.extendedProps.cita)
-                }
+                },
 
             });
 
@@ -139,11 +151,12 @@
                 </div>
                 {% for medico in especialistas %}
                     <div class="col m-2">
-                        <a class="badge badge-info" href="/citas/horario?especialista={{ medico.pk }}">{{ medico.nombre }}</a>
+                        <a class="badge badge-info"
+                           href="/citas/horario?especialista={{ medico.pk }}">{{ medico.nombre }}</a>
                     </div>
                 {% endfor %}
             </div>
-                        <hr>
+            <hr>
 
         </div>
 

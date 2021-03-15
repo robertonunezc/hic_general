@@ -20,11 +20,11 @@
                 <label for="nombre">Paciente</label>
                 {{ form.paciente }}
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-3 d-none">
                 <label for="nombre">Fecha</label>
                 {{ form.fecha }}
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-3 d-none">
                 <label for="nombre">Fecha Final</label>
                 {{ form.fecha_fin }}
             </div>
@@ -60,7 +60,7 @@
 {% endblock %}
 {% block custom_js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-    <script src="{% static 'vendors/chosen/chosen.jquery.js' %}"></script>
+{#    <script src="{% static 'vendors/chosen/chosen.jquery.js' %}"></script>#}
 
     <script>
         $(function () {
@@ -68,9 +68,9 @@
                 format: 'Y-m-d H:i:s',
                 step: 30
             });
-            $('select').addClass('chosen');
+{#            $('select').addClass('chosen');#}
             $('input').addClass('form-control');
-            $('.chosen').chosen();
+{#            $('.chosen').chosen();#}
 
         })
     </script>
