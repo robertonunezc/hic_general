@@ -14,4 +14,5 @@ urlpatterns = [
     path('editar/<int:cita_id>', views.editar_cita, name='editar_cita'),
     path('listado/', views.listado_citas, name='listado_citas'),
     path('migrar/', views.migrar, name='migrar'),
+    path('migrarcolores/', views.migrar_color_evento, name='migrar_color_evento'),
 ]

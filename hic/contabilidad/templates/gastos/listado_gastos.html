@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load cloudinary %}
+
+{% block container %}
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow">
+                {% if messages %}
+                    <div class="alert alert-success">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="card-header py-3 d-flex justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Listado de Gastos</h6>
+                    <a href="{% url 'contabilidad:nuevo_gasto' %}" class="">
+                        Nuevo Gasto
+                    </a>
+
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Especialidad</th>
+                        <th>Acciones</th>
+                        </thead>
+                        <tbody>
+                        {% for medico in medicos %}
+                            <tr>
+                                <td>{{ medico.get_full_name }}</td>
+                                <td>{{ medico.telefono }}</td>
+                                <td>
+                                    {{ medico.especialidad.nombre }}
+                                </td>
+                                <td class="flex">
+                                    <a href="{% url 'main:editar_medico' especialista_id=medico.pk %}"
+                                       class="btn btn-sm btn-info mr-2">Editar</a>
+                                     <a href="{% url 'main:editar_medico' especialista_id=medico.pk %}"
+                                       class="btn btn-sm btn-outline-primary mr-2">Info completa</a>
+                                    {#                                    <a href=""#}
+                                    {#                                       class="btn btn-warning btn-sm">Imprimir</a>#}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
