@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
-{% load cloudinary %}
 
 {% block container %}
 
     <div class="row">
+        <div class="col-12">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %}
+                            class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
         <div class="col-sm-12">
             <div class="card shadow">
-                {% if messages %}
-                    <div class="alert alert-success">
-                        {% for message in messages %}
-                            {{ message }}
-                        {% endfor %}
-                    </div>
-                {% endif %}
                 <div class="card-header py-3 d-flex justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Listado de Gastos</h6>
                     <a href="{% url 'contabilidad:nuevo_gastos' %}" class="">
@@ -32,6 +34,7 @@
                         <th>Lugar</th>
                         <th>Factura</th>
                         <th>Total</th>
+                        <th>Acciones</th>
                         </thead>
                         <tbody>
                         {% for gasto in gastos %}
