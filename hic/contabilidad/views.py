@@ -11,7 +11,7 @@ def listado_gastos(request):
     # fecha_fin =
     gastos = Gasto.objects.all()
     context = {
-        gastos
+        'gastos':gastos
     }
     return render(request, 'gastos/listado_gastos.html', context=context)
 
@@ -20,5 +20,5 @@ def nuevo_gasto(request):
     return ""
 
 @login_required
-def editar_gasto(request):
+def editar_gasto(request, gasto_id):
     return ""
