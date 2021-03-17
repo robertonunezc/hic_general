@@ -318,6 +318,16 @@ def editar_cita(request, cita_id):
 
 
 @login_required
+def migrar_color_evento(request):
+    eventos = Event.objects.all()
+    print("Found:{}".format(eventos.count()))
+    for evento in eventos:
+        print("Evento with cita? {}".format(evento.cita))
+        if not evento.cita:
+            evento.color =  "#99ADC1"
+            evento.save()
+    return  HttpResponse("Done")
+@login_required
 def migrar(request):
     citas = Cita.objects.all()
     for cita in citas:
