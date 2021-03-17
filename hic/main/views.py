@@ -86,6 +86,7 @@ def assing_specialist_consult_time(request):
                 dia_semana += 1
             start_time = datetime.strptime(str(start_time), "%Y-%m-%d")
             specialist = Medico.objects.get(pk=specialist_id)
+
             for days in range(0,32):
                 new_start_time = start_time + timedelta(days=days)
                 print("START TIME")
@@ -113,7 +114,8 @@ def assing_specialist_consult_time(request):
 
                     event.extendedProps = extended_props
                     event.save()
-
+                if not recuerrente:
+                    break
             return redirect('main:horarios_especialista')
 
     except Exception as e:
