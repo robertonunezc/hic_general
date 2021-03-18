@@ -1,46 +1,62 @@
 {% extends 'base.html' %}
-{% load cloudinary %}
+{% block custom_style %}
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
 
+{% endblock %}
 {% block container %}
 
     <div class="row">
+        <div class="col-12">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %}
+                            class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
         <div class="col-sm-12">
             <div class="card shadow">
-                {% if messages %}
-                    <div class="alert alert-success">
-                        {% for message in messages %}
-                            {{ message }}
-                        {% endfor %}
-                    </div>
-                {% endif %}
                 <div class="card-header py-3 d-flex justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Listado de Gastos</h6>
-                    <a href="{% url 'contabilidad:nuevo_gasto' %}" class="">
+                    <a href="{% url 'contabilidad:nuevo_gastos' %}" class="">
                         Nuevo Gasto
                     </a>
 
                 </div>
                 <div class="card-body">
-                    <table class="table">
+                    <table class="table" id="expenses-table">
                         <thead>
-                        <th>Nombre</th>
-                        <th>Teléfono</th>
-                        <th>Especialidad</th>
+                        <th>Fecha</th>
+                        <th>Descripcion</th>
+                        <th>Subcuenta</th>
+                        <th>Entidad</th>
+                        <th>Forma pago</th>
+                        <th>Recibo</th>
+                        <th>Lugar</th>
+                        <th>Factura</th>
+                        <th>Total</th>
                         <th>Acciones</th>
                         </thead>
                         <tbody>
-                        {% for medico in medicos %}
+                        {% for gasto in gastos %}
                             <tr>
-                                <td>{{ medico.get_full_name }}</td>
-                                <td>{{ medico.telefono }}</td>
+                                <td>{{ gasto.fecha|date:"d-m-Y" }}</td>
+                                <td>{{ gasto.descripcion }}</td>
                                 <td>
-                                    {{ medico.especialidad.nombre }}
+                                    {{ gasto.subcuenta.nombre }}
                                 </td>
+                                <td>{{ gasto.entidad }}</td>
+
+                                <td>{{ gasto.forma_pago.nombre }}</td>
+                                <td>{{ gasto.recibo }}</td>
+                                <td>{{ gasto.lugar.nombre }}</td>
+                                <td>{{ gasto.factura }}</td>
+                                <td>{{ gasto.total }}</td>
                                 <td class="flex">
-                                    <a href="{% url 'main:editar_medico' especialista_id=medico.pk %}"
+                                    <a href="{% url 'contabilidad:editar_gastos' gasto_id=gasto.pk %}"
                                        class="btn btn-sm btn-info mr-2">Editar</a>
-                                     <a href="{% url 'main:editar_medico' especialista_id=medico.pk %}"
-                                       class="btn btn-sm btn-outline-primary mr-2">Info completa</a>
                                     {#                                    <a href=""#}
                                     {#                                       class="btn btn-warning btn-sm">Imprimir</a>#}
                                 </td>
@@ -54,4 +70,16 @@
 
         </div>
     </div>
+{% endblock %}
+{% block custom_js %}
+    <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#expenses-table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.22/i18n/Spanish.json'
+                }
+            });
+        });
+    </script>
 {% endblock %}

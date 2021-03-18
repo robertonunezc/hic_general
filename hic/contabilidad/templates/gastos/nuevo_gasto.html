@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block custom_style %}
+    <style>
+        .form-flex, .form-flex-sm {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
 
-</body>
-</html>
+        .form-flex > div {
+            flex: 0 1 30%;
+            margin: 5px;
+        }
+
+        .form-flex-sm > div {
+            flex: 0 1 10%;
+            margin: 5px;
+        }
+    </style>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+{% endblock %}
+
+{% block container %}
+    <div class="row">
+        <div class="col-12">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row flex-column">
+
+        <h3>Registro de gasto</h3>
+        {% crispy gasto_form gasto_form.helper %}
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        $(function () {
+            $('#id_fecha').datetimepicker({
+                format: 'Y-m-d',
+                step: 30
+            });
+        })
+
+    </script>
+{% endblock %}

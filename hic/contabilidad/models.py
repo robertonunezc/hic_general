@@ -6,12 +6,19 @@ from django.db import models
 class TipoPago(models.Model):
     nombre = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.nombre
 
 class SubCuenta(models.Model):
     nombre = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.nombre
+
 class LugarGasto(models.Model):
     nombre = models.CharField(max_length=50)
+    def __str__(self):
+        return self.nombre
 
 class Gasto(models.Model):
     fecha = models.DateTimeField()
