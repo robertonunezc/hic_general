@@ -73,7 +73,7 @@ class Event(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.PROTECT)
     cita = models.ForeignKey(Cita, on_delete=models.SET_NULL, null=True, blank=True, related_name='events')
     calendario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
-    color = models.CharField(max_length=20, default="#3788d8")
+    color = models.CharField(max_length=20, default="#99ADC1")
     extendedProps = models.ForeignKey('cita.EventExtendedProp', null=True, blank=True,
                                        related_name='events', on_delete=models.PROTECT)
     deshabilitado = models.BooleanField(default=0) #0 habilitado, 1 dehabilitado
