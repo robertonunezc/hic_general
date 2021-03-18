@@ -87,7 +87,8 @@ def assing_specialist_consult_time(request):
             start_time = datetime.strptime(str(start_time), "%Y-%m-%d")
             specialist = Medico.objects.get(pk=specialist_id)
 
-            for days in range(0,32):
+            for i in range(0, 5):
+                days = 7 * i
                 new_start_time = start_time + timedelta(days=days)
                 print("START TIME")
                 print(start_time)
