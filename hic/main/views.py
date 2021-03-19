@@ -8,6 +8,7 @@ from hic.main import process_inital_data
 from hic.main.models import Medico, NEstado, NMunicipio, NCodigoPostal, \
     NColonia
 from hic.main.serializer import SpecialistSerializer
+from hic.main.utils import get_dia_semana, get_mes
 from hic.paciente.forms import MedicoForm
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -163,15 +164,8 @@ def borrar_evento_horario(request, event_id):
             print(e)
 
     context = {'evento': evento, 'dia_semana': dia_semana, 'mes': mes}
-    return render(request, 'cita/confirmacion_borrar.html', context=context)
+    return render(request, 'medico/confirmacion_borrar.html', context=context)
 
-def get_dia_semana(dia):
-    dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes']
-    return dias[dia]
-
-def get_mes(mes):
-    meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo','Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-    return meses[mes]
 @login_required
 def cargar_eventos(request):
     try:
