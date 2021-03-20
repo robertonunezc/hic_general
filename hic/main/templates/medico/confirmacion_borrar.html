@@ -8,18 +8,29 @@
             <form method="post" action="#">
                 {% csrf_token %}
                 <div class="row">
-                    {% if cita %}
+                    {% if messages %}
+                        <ul class="alert-danger alert">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    {% if evento.cita %}
                         <div class="col-12">
                             <div class="alert alert-danger">
                                 <p>Este espacio ya tiene una cita asignada para:
-                                    <b>{{ cita.paciente.nombre }} {{ cita.paciente.primer_apellido }}</b></p>
+                                    <b>{{ evento.cita.paciente.nombre }} {{ evento.cita.paciente.primer_apellido }}</b>
+                                </p>
                                 <p><b>¿CONFIRMA QUE LO QUIERE BORRAR?</b></p>
                             </div>
                         </div>
                     {% endif %}
                     <div class="form-group col-6">
                         <div class="alert alert-warning">Si, quiero borrar solo este espacio para:
-                            <b>{{ cita.paciente.nombre }} {{ cita.paciente.primer_apellido }} a las {{ evento.hora_inicio|date:"d-m-Y H:s" }}</b></div>
+                            <b>{{ evento.medico.nombre }} {{ evento.medico.primer_apellido }} a
+                                las {{ evento.hora_inicio|date:"d-m-Y H:s" }}</b></div>
 
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="eventoRecurrente"
@@ -32,10 +43,11 @@
 
 
                     <div class="form-group col-6">
-                        <div class="alert alert-warning">Si, quiero borrar todos los espacios del <b>{{ dia_semana }} para
+                        <div class="alert alert-warning">Si, quiero borrar todos los espacios del <b>{{ dia_semana }}
+                            para
                             todo
                             el
-                            mes de {{ mes }} para {{ cita.paciente.nombre }} {{ cita.paciente.primer_apellido }}</b>
+                            mes de {{ mes }} para {{ evento.medico.nombre }} {{ evento.medico.primer_apellido }}</b>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="eventoRecurrente"

@@ -8,6 +8,7 @@ from hic.main import process_inital_data
 from hic.main.models import Medico, NEstado, NMunicipio, NCodigoPostal, \
     NColonia
 from hic.main.serializer import SpecialistSerializer
+from hic.main.utils import get_dia_semana, get_mes
 from hic.paciente.forms import MedicoForm
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -28,6 +29,7 @@ def listado_medicos(request):
         'medicos': medicos
     }
     return render(request, 'medico/listado_medicos.html', context=context)
+
 
 @csrf_exempt
 @login_required
@@ -53,6 +55,7 @@ def get_specialists_by_date(request):
         print(e)
         response = {'rc': 500, 'msg': 'Error loading Specialists', 'data': None}
     return HttpResponse(json.dumps(response), content_type='application/json')
+
 
 @login_required
 def configurar_horario_medico(request):
@@ -87,17 +90,18 @@ def assing_specialist_consult_time(request):
             start_time = datetime.strptime(str(start_time), "%Y-%m-%d")
             specialist = Medico.objects.get(pk=specialist_id)
 
-            for days in range(0,32):
+            for i in range(0, 5):
+                days = 7 * i
                 new_start_time = start_time + timedelta(days=days)
                 print("START TIME")
                 print(start_time)
-                for time in range(9,21):
+                for time in range(9, 21):
                     event = Event()
                     print(new_start_time + timedelta(hours=time))
-                    print(new_start_time + timedelta(hours=time+1))
+                    print(new_start_time + timedelta(hours=time + 1))
                     event.titulo = specialist.nombre
-                    event.hora_inicio =new_start_time + timedelta(hours=time)
-                    event.hora_fin = new_start_time + timedelta(hours=time+1)
+                    event.hora_inicio = new_start_time + timedelta(hours=time)
+                    event.hora_fin = new_start_time + timedelta(hours=time + 1)
                     event.calendario = Calendario.objects.first()
                     event.medico = specialist
                     event.recurrente = recuerrente
@@ -126,19 +130,41 @@ def assing_specialist_consult_time(request):
 
     return HttpResponse("Acceso denegado")
 
+
 @login_required
-def borrar_evento_horario(request,event_id):
+def borrar_evento_horario(request, event_id):
+    evento = Event.objects.get(pk=event_id)
+    fecha = evento.hora_inicio.date()
+    dia_semana = get_dia_semana(fecha.weekday())
+    mes = get_mes(fecha.month)
     if request.method == 'POST':
+        recuerrente_si = request.POST.get('eventoRecurrente')
+        borrado_recuerrente = True if recuerrente_si == "si-recurrente" else False
+        print("Evento recurrente {}".format(recuerrente_si))
+        if borrado_recuerrente:
+            start_time = datetime.strptime(str(evento.hora_inicio), "%Y-%m-%d %H:%M:%S")
+            print(start_time)
+            for i in range(0, 5):
+                days = 7 * i
+                new_start_time = start_time + timedelta(days=days)
+                new_end_time = new_start_time + timedelta(hours=12)
+                eventos = Event.objects.filter(medico_id=evento.medico.pk, hora_inicio__gte=new_start_time, hora_fin__lte=new_end_time)
+                for evento in eventos:
+                    print(evento.hora_inicio)
+                    evento.delete()
+
+            return redirect('main:horarios_especialista')
+
         try:
-            evento = Event.objects.get(pk=event_id)
-            evento.deshabilitado = True
-            evento.save()
-            return redirect('main:listado_medicos')
+            evento.delete()
+            return redirect('main:horarios_especialista')
         except Event.DoesNotExist:
             print("No existe")
         except Exception as e:
             print(e)
-    return render(request,'cita/confirmacion_borrar.html')
+
+    context = {'evento': evento, 'dia_semana': dia_semana, 'mes': mes}
+    return render(request, 'medico/confirmacion_borrar.html', context=context)
 
 @login_required
 def cargar_eventos(request):
@@ -167,7 +193,7 @@ def cargar_eventos(request):
 @login_required
 def nuevo_medico(request):
     form = MedicoForm()
-    error= None
+    error = None
     if request.method == 'POST':
         form = MedicoForm(request.POST)
         if form.is_valid():
@@ -195,7 +221,7 @@ def editar_medico(request, especialista_id):
             msg = "Especialista editado con éxito"
             messages.add_message(request=request, level=messages.ERROR,
                                  message=msg)
-            return  redirect('main:listado_medicos')
+            return redirect('main:listado_medicos')
 
     context = {
         'form': form,
@@ -211,7 +237,7 @@ def import_initial_data(request):
         file = request.FILES['initial-data']
         if process_inital_data.validate_file_extension(filename=file.name):
             try:
-                raw_data = process_inital_data.process_file(file=file,sheet="LISTADO")
+                raw_data = process_inital_data.process_file(file=file, sheet="LISTADO")
                 process_inital_data.process_data(data=raw_data)
             except Exception as e:
                 print(e)
@@ -224,7 +250,7 @@ def import_initial_data(request):
     return render(request, 'import_initial_data.html', context=context)
 
 
-#cargar colonias(dev)
+# cargar colonias(dev)
 def cargar_colonias(request):
     if request.method == 'POST':
         file = request.FILES["excel_file"]
@@ -250,5 +276,6 @@ def first_tenant(request):
     from customer.models import Client
 
     # create your public tenant
-    tenant = Client(domain_url='playa.cisnemexico.org',schema_name='playaok',name='SucursalPlayaOK',plan='ANUAL',started_date='2020-12-12')
+    tenant = Client(domain_url='playa.cisnemexico.org', schema_name='playaok', name='SucursalPlayaOK', plan='ANUAL',
+                    started_date='2020-12-12')
     tenant.save()

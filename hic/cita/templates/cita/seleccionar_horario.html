@@ -135,9 +135,9 @@
 {% block container %}
     <div class="row">
         {% if messages %}
-            <ul class="alert-danger alert">
+            <ul>
                 {% for message in messages %}
-                    <li>{{ message }}</li>
+                    <li class="alert-{{ messages.tags }} alert">{{ message }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
