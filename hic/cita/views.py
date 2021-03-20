@@ -28,6 +28,7 @@ def seleccionar_horario(request):
     if request.session.get('fecha_evento_creado', False):
         fecha_evento = request.session.get('fecha_evento_creado', False)
 
+    print("FechaEvento {}".format(fecha_evento))
     context = {
         'pacientes': pacientes,
         'especialistas': especialistas,
@@ -63,7 +64,9 @@ def borrar_cita(request, cita_id):
                     days = 7 * i
                     new_start_time = start_time + timedelta(days=days)
                     cita_borrar = Cita.objects.filter(fecha=new_start_time).first()
-                    delete_date(cita_borrar=cita_borrar, motivo=motivo, usuario=request.user)
+                    if cita_borrar:
+                        print("Cita a borrar: {}".format(cita_borrar.fecha))
+                        delete_date(cita_borrar=cita_borrar, motivo=motivo, usuario=request.user)
                 return HttpResponseRedirect('/citas/horario')
 
             # Borrado 1 sola cita
@@ -78,6 +81,7 @@ def borrar_cita(request, cita_id):
             messages.add_message(request=request, level=messages.ERROR,
                                  message="Cita no existe. ")
         except Exception as e:
+            print(e)
             messages.add_message(request=request, level=messages.ERROR,
                                  message="Error borrando la cita. ")
     context = {'cita': cita, 'dia_semana': dia_semana, 'mes': mes}
@@ -87,6 +91,7 @@ def borrar_cita(request, cita_id):
 
 def delete_date(cita_borrar, motivo, usuario):
     for evento in cita_borrar.events.all():
+        print("Evento a borrar: {}".format(evento.hora_inicio))
         evento.titulo = evento.medico.nombre
         evento.cita = None
         evento.color = "#99ADC1"
@@ -100,7 +105,7 @@ def delete_date(cita_borrar, motivo, usuario):
     incidencia = RegistroIncidencias()
     incidencia.accion = "Borrado cita {}".format(cita_borrar.pk)
     incidencia.comentario = motivo
-    incidencia.usuario = usuario.user
+    incidencia.usuario = usuario
     incidencia.save()
 
     cita_borrar.delete()
@@ -193,6 +198,9 @@ def calendario_registrar_cita(request):
             cita_fecha = datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S")
             cita_fecha_fin = datetime.strptime(fin, "%Y-%m-%dT%H:%M:%S")
             dia_semana = cita_fecha.date().weekday()
+
+            request.session['fecha_evento_creado'] = inicio
+
             if dia_semana == 6:
                 dia_semana = 0
             else:
@@ -214,14 +222,17 @@ def calendario_registrar_cita(request):
                     print(evento)
                     crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente,
                                       dia_semana, cita_pagada, evento)
-            request.session['fecha_evento_creado'] = inicio
+            print("Set fecha evento creado:".format(request.session.get('fecha_evento_creado', False)))
             return redirect('citas:seleccionar_horario')
-
+        except Event.DoesNotExist:
+            messages.add_message(request=request, level=messages.ERROR,
+                                 message="Algunas citas no se crearon. Valide que cada espacio tenga asignado un especialista")
         except Exception as e:
             print(e)
             messages.add_message(request=request, level=messages.ERROR,
                                  message="Error creando la cita. Todos los datos son obligatorios")
-            return redirect('citas:seleccionar_horario')
+
+        return redirect('citas:seleccionar_horario')
 
     return HttpResponse("Acceso denegado")
 
