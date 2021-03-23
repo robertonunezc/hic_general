@@ -44,6 +44,9 @@ def seleccionar_horario(request):
 
 @login_required
 def borrar_cita(request, cita_id):
+    if request.user.groups.filter(name="especialistas"):
+        return redirect('/acceso-denegado/')
+
     cita = Cita.objects.get(pk=cita_id)
     evento = cita.events.first()
     fecha = evento.hora_inicio.date()
@@ -180,6 +183,9 @@ def seleccionar_tipo_cita(request, horario_id):
 
 @login_required
 def calendario_registrar_cita(request):
+    if request.user.groups.filter(name="especialistas"):
+        return redirect('/acceso-denegado/')
+
     if request.method == "POST":
         try:
             especialista_id = request.POST.get('especialista')
@@ -334,6 +340,9 @@ def primera_nueva_cita(request):
 
 @login_required
 def editar_cita(request, cita_id):
+    if request.user.groups.filter(name="especialistas"):
+        return redirect('/acceso-denegado/')
+
     cita = get_object_or_404(Cita, pk=cita_id)
     form = CitaForm(instance=cita)
     msg = None

@@ -249,6 +249,10 @@ def import_initial_data(request):
     }
     return render(request, 'import_initial_data.html', context=context)
 
+@login_required
+def acceso_denegado(request):
+    return render(request, 'acceso_denegado.html')
+
 
 # cargar colonias(dev)
 def cargar_colonias(request):

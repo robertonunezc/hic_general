@@ -6,6 +6,7 @@ app_name = 'main'
 urlpatterns = [
     path('', views.inicio, name='menu_principal'),
     path('especialistas/listado', views.listado_medicos, name='listado_medicos'),
+    path('acceso-denegado/', views.acceso_denegado, name='acceso_denegado'),
     path('especialistas/nuevo', views.nuevo_medico, name='nuevo_medico'),
     path('especialistas/editar/<int:especialista_id>', views.editar_medico, name='editar_medico'),
     path('especialistas/cargar-eventos', views.cargar_eventos, name='cargar_eventos'),
