@@ -28,6 +28,7 @@ ALLOWED_HOSTS = ['*']
 
 # AUTH_USER_MODEL = 'main.User'
 LOGIN_REDIRECT_URL = '/inicio/'
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
 # Application definition
 # Estas son las app que se comparten publicamente
