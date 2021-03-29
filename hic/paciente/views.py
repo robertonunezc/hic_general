@@ -20,6 +20,8 @@ def listado_paciente(request):
 
 @login_required
 def nuevo_paciente(request):
+    if request.user.groups.filter(name="especialistas"):
+        return redirect('/acceso-denegado/')
     paciente_form = PacienteForm()
     historia_clinica_form = HistoriaClinicaForm()
     if request.method == 'POST':
@@ -42,6 +44,9 @@ def nuevo_paciente(request):
 
 @login_required
 def editar_paciente(request, paciente_id):
+    if request.user.groups.filter(name="especialistas"):
+        return redirect('/acceso-denegado/')
+
     paciente = Paciente.objects.get(pk=paciente_id)
     historia_clinica = HistoriaClinica.objects.filter(paciente=paciente).first()
     form = PacienteForm(instance=paciente)
