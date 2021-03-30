@@ -3,7 +3,7 @@
 {% block custom_style %}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
-    <link rel="stylesheet" href="{% static 'vendors/chosen/chosen.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 
 {% endblock %}
 {% block container %}
@@ -60,7 +60,7 @@
 {% endblock %}
 {% block custom_js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-{#    <script src="{% static 'vendors/chosen/chosen.jquery.js' %}"></script>#}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
         $(function () {
@@ -68,7 +68,7 @@
                 format: 'Y-m-d H:i:s',
                 step: 30
             });
-{#            $('select').addClass('chosen');#}
+            $('select').select2();
             $('input').addClass('form-control');
 {#            $('.chosen').chosen();#}
 

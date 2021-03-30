@@ -55,6 +55,7 @@ class HistoriaClinicaForm(forms.ModelForm):
                 'psicopedagogia',
                 'terapia_lenguaje',
                 'neuroterapia',
+                'estado',
                 css_class='form-flex-sm'
             ),
             Div(
