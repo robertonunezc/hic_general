@@ -6,7 +6,7 @@ from hic.main.models import Paciente, Medico
 class HistoriaClinica(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT, related_name='historia_clinica')
     fecha = models.DateField()
-    folio = models.CharField(max_length=400)
+    folio = models.IntegerField()
     nombre_madre = models.CharField(max_length=400,null=True, blank=True)
     ocupacion_madre = models.CharField(max_length=400 ,null=True, blank=True)
     telefono_madre = models.CharField(max_length=400,null=True, blank=True)
