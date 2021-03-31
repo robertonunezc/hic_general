@@ -11,9 +11,9 @@ from hic.pdf import get_historia_pdf
 
 @login_required
 def listado_paciente(request):
-    pacientes = Paciente.objects.all().order_by('historia_clinica__folio')
+    historias_clinicas = HistoriaClinica.objects.all().order_by('folio')
     context = {
-        'pacientes': pacientes
+        'historias_clinicas': historias_clinicas
     }
     return render(request, 'pacientes/listado_pacientes.html', context=context)
 
