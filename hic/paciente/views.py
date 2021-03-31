@@ -11,7 +11,7 @@ from hic.pdf import get_historia_pdf
 
 @login_required
 def listado_paciente(request):
-    pacientes = Paciente.objects.all().order_by('-id')
+    pacientes = Paciente.objects.all().order_by('historia_clinica__folio')
     context = {
         'pacientes': pacientes
     }
