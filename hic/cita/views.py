@@ -44,7 +44,7 @@ def seleccionar_horario(request):
 
 @login_required
 def borrar_cita(request, cita_id):
-    if request.user.groups.filter(name="especialistas"):
+    if request.user.groups.filter(name="especialistas") or request.user.groups.filter(name="asistente"):
         return redirect('/acceso-denegado/')
 
     cita = Cita.objects.get(pk=cita_id)
@@ -145,27 +145,6 @@ def cargar_eventos(request):
                 'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
 
             }
-            # if evento.recurrente:
-            #     print(evento.hora_inicio.time())
-            #     evento_dict = {
-            #         'startRecur': datetime.strftime(evento.hora_inicio, '%Y-%m-%dT%H:%M:%S%z'),
-            #         'daysOfWeek': [evento.dia_semana],
-            #         'startTime': str(evento.hora_inicio.time()),
-            #         'endTime': str(evento.hora_fin.time()),
-            #         'title': evento.titulo,
-            #         'backgroundColor': evento.color,
-            #         'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
-            #     }
-            # else:
-            #     # TODO falta el cargar eventos sencillo
-            #     evento_dict = {
-            #         'title': evento.titulo,
-            #         'backgroundColor': evento.color,
-            #         'start': str(evento.hora_inicio),
-            #         'end': str(evento.hora_fin),
-            #         'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
-            #
-            #     }
             response.append(evento_dict)
 
     except Cita.DoesNotExist:

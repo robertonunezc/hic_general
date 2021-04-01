@@ -170,8 +170,13 @@ def borrar_evento_horario(request, event_id):
 def cargar_eventos(request):
     try:
         response = []
-        eventos = Event.objects.filter(tipo=0, deshabilitado=0)  # TODO only load the current month
-
+        start_date = request.GET.get('start', None)
+        end_date = request.GET.get('end', None)
+        if start_date is None and end_date is None:
+            start_date = datetime.today()
+            end_date = datetime.today() + timedelta(days=1)
+        eventos = Event.objects.filter(tipo=0, deshabilitado=0, hora_inicio__gte=start_date,
+                                      hora_fin__lte=end_date).order_by('id')
         for evento in eventos:
             evento_dict = {
                 'title': evento.titulo,
