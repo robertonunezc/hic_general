@@ -44,7 +44,7 @@ def nuevo_paciente(request):
 
 @login_required
 def editar_paciente(request, paciente_id):
-    if request.user.groups.filter(name="especialistas"):
+    if request.user.groups.filter(name="especialistas") or request.user.groups.filter(name="asistente"):
         return redirect('/acceso-denegado/')
 
     paciente = Paciente.objects.get(pk=paciente_id)

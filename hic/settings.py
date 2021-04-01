@@ -24,10 +24,10 @@ SECRET_KEY = '_%q)@_kgh_n(uim74u3d4=2_c0(u-ga)eqb2271)4z%3vdfkf^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['playa.cisnemexico.org', 'cancun.cisnemexico.org','suc1.hic.local']
 
 # AUTH_USER_MODEL = 'main.User'
-LOGIN_REDIRECT_URL = '/inicio/'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 
 # Application definition
