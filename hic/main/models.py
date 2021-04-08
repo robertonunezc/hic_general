@@ -136,4 +136,4 @@ class RegistroIncidencias(models.Model):
 class InicioFolio(models.Model):
     folio = models.IntegerField(default=0)
     def __str__(self):
-        return self.folio
+        return str(self.folio)
