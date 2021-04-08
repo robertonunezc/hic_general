@@ -132,3 +132,8 @@ class RegistroIncidencias(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now=True)
     comentario =models.CharField(max_length=250)
+
+class InicioFolio(models.Model):
+    folio = models.IntegerField(default=0)
+    def __str__(self):
+        return self.folio

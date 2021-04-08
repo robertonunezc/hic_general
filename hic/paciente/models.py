@@ -1,12 +1,12 @@
 from django.db import models
 
-from hic.main.models import Paciente, Medico
+from hic.main.models import Paciente, Medico, InicioFolio
 
 
 class HistoriaClinica(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT, related_name='historia_clinica')
     fecha = models.DateField()
-    folio = models.IntegerField()
+    folio = models.IntegerField(default=0)
     nombre_madre = models.CharField(max_length=400,null=True, blank=True)
     ocupacion_madre = models.CharField(max_length=400 ,null=True, blank=True)
     telefono_madre = models.CharField(max_length=400,null=True, blank=True)
@@ -36,6 +36,18 @@ class HistoriaClinica(models.Model):
     costo_terapias = models.CharField(max_length=250, default=0)
     nombre_entrevistador = models.CharField(max_length=250, null=True, blank=True)
 
+
+    def save(self, *args, **kwargs):
+        # This is to check if is an update
+        if self.pk is not  None:
+            return
+        inicio_folio = InicioFolio.objects.first()
+        ultimo_folio = HistoriaClinica.objects.last().folio
+        if inicio_folio.folio > ultimo_folio:
+            self.folio = inicio_folio.folio + 1
+        else:
+            self.folio += 1
+        super(HistoriaClinica,self).save(*args, **kwargs)
 
 
 class TAlergia(models.Model):
