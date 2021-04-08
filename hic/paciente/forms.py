@@ -20,7 +20,7 @@ class HistoriaClinicaForm(forms.ModelForm):
             ),
             Div(
                 'fecha',
-                'folio',
+                # 'folio',
                 'nombre_madre',
                 'ocupacion_madre',
                 'telefono_madre',
@@ -55,7 +55,6 @@ class HistoriaClinicaForm(forms.ModelForm):
                 'psicopedagogia',
                 'terapia_lenguaje',
                 'neuroterapia',
-                'estado',
                 css_class='form-flex-sm'
             ),
             Div(
@@ -72,7 +71,7 @@ class HistoriaClinicaForm(forms.ModelForm):
 
     class Meta:
         model = HistoriaClinica
-        exclude = ('paciente',)
+        exclude = ('paciente','folio')
 
 
 class PacienteForm(forms.ModelForm):
