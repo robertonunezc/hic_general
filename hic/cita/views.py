@@ -63,7 +63,7 @@ def borrar_cita(request, cita_id):
             # Borrado recurrente
             if borrado_recuerrente:
                 start_time = datetime.strptime(str(cita.fecha), "%Y-%m-%d %H:%M:%S")
-                for i in range(0, 5):
+                for i in range(0, 52):
                     days = 7 * i
                     new_start_time = start_time + timedelta(days=days)
                     cita_borrar = Cita.objects.filter(fecha=new_start_time).first()
@@ -197,7 +197,7 @@ def calendario_registrar_cita(request):
                                   dia_semana, cita_pagada, evento)
             else:
                 print(cita_fecha_fin)
-                for i in range(0, 5):
+                for i in range(0, 52):
                     print("crendo citas{}".format(i))
                     days = 7 * i
                     fecha_inicio = cita_fecha + timedelta(days=days)
