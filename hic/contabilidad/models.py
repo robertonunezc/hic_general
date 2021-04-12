@@ -31,3 +31,10 @@ class Gasto(models.Model):
     factura = models.CharField(max_length=250, null=True, blank=True)
     total = models.FloatField(default=0.0)
     fecha_registro = models.DateTimeField(auto_now=True)
+
+class TabuladorPrecios(models.Model):
+    nombre_servicio =  models.CharField(max_length=50)
+    precio = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return "{}- {}".format(self.nombre_servicio, self.precio)
