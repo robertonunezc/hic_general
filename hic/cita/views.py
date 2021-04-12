@@ -68,7 +68,7 @@ def borrar_cita(request, cita_id):
                     new_start_time = start_time + timedelta(days=days)
                     cita_borrar = Cita.objects.filter(fecha=new_start_time).first()
                     if cita_borrar:
-                        print("Cita a borrar: {}".format(cita_borrar.fecha))
+                        print("Cita a borrar: {}".format(cita_borrar.pk))
                         delete_date(cita_borrar=cita_borrar, motivo=motivo, usuario=request.user)
                 return HttpResponseRedirect('/citas/horario')
 
@@ -94,8 +94,9 @@ def borrar_cita(request, cita_id):
 
 def delete_date(cita_borrar, motivo, usuario):
     try:
+
         for evento in cita_borrar.events.all():
-            print("Evento a borrar: {}".format(evento.hora_inicio))
+            print("Evento a borrar: {}".format(evento.pk))
             evento.titulo = evento.medico.nombre
             evento.cita = None
             evento.color = "#99ADC1"
