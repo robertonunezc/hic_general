@@ -65,7 +65,10 @@ def borrar_cita(request, cita_id):
                 start_time = datetime.strptime(str(cita.fecha), "%Y-%m-%d %H:%M:%S")
                 for i in range(0, 52):
                     days = 7 * i
+                    print("Itercion")
+                    print(days)
                     new_start_time = start_time + timedelta(days=days)
+                    print("Fecha a borrar: {}".format(new_start_time))
                     cita_borrar = Cita.objects.filter(fecha=new_start_time).first()
                     if cita_borrar:
                         print("Cita a borrar: {}".format(cita_borrar.pk))
@@ -139,6 +142,8 @@ def cargar_eventos(request):
 
         for evento in eventos:
             cita_pagada = ""
+            print("Cita Evento")
+            print(evento.cita)
             if evento.cita:
                 cita_pagada = "PAGADA" if evento.cita.pagada else "APARTADA"
 
