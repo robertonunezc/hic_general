@@ -93,25 +93,29 @@ def borrar_cita(request, cita_id):
 
 
 def delete_date(cita_borrar, motivo, usuario):
-    for evento in cita_borrar.events.all():
-        print("Evento a borrar: {}".format(evento.hora_inicio))
-        evento.titulo = evento.medico.nombre
-        evento.cita = None
-        evento.color = "#99ADC1"
-        evento.save()
-    extendedProps = EventExtendedProp.objects.filter(cita=cita_borrar.pk)
+    try:
+        for evento in cita_borrar.events.all():
+            print("Evento a borrar: {}".format(evento.hora_inicio))
+            evento.titulo = evento.medico.nombre
+            evento.cita = None
+            evento.color = "#99ADC1"
+            evento.save()
+        extendedProps = EventExtendedProp.objects.filter(cita=cita_borrar.pk)
 
-    for extended in extendedProps:
-        extended.cita = None
-        extended.save()
+        for extended in extendedProps:
+            extended.cita = None
+            extended.save()
 
-    incidencia = RegistroIncidencias()
-    incidencia.accion = "Borrado cita {}".format(cita_borrar.pk)
-    incidencia.comentario = motivo
-    incidencia.usuario = usuario
-    incidencia.save()
+        incidencia = RegistroIncidencias()
+        incidencia.accion = "Borrado cita {}".format(cita_borrar.pk)
+        incidencia.comentario = motivo
+        incidencia.usuario = usuario
+        incidencia.save()
 
-    cita_borrar.delete()
+        cita_borrar.delete()
+    except Exception as e:
+        print(e)
+        print("Error borrando citas")
 
 
 @login_required
