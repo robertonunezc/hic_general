@@ -90,7 +90,7 @@ def assing_specialist_consult_time(request):
             start_time = datetime.strptime(str(start_time), "%Y-%m-%d")
             specialist = Medico.objects.get(pk=specialist_id)
 
-            for i in range(0, 5):
+            for i in range(0, 52):
                 days = 7 * i
                 new_start_time = start_time + timedelta(days=days)
                 print("START TIME")
@@ -144,14 +144,15 @@ def borrar_evento_horario(request, event_id):
         if borrado_recuerrente:
             start_time = datetime.strptime(str(evento.hora_inicio), "%Y-%m-%d %H:%M:%S")
             print(start_time)
-            for i in range(0, 5):
+            for i in range(0, 52):
                 days = 7 * i
                 new_start_time = start_time + timedelta(days=days)
                 new_end_time = new_start_time + timedelta(hours=12)
                 eventos = Event.objects.filter(medico_id=evento.medico.pk, hora_inicio__gte=new_start_time, hora_fin__lte=new_end_time)
-                for evento in eventos:
-                    print(evento.hora_inicio)
-                    evento.delete()
+                if eventos.count() > 0:
+                    for evento in eventos:
+                        print(evento.hora_inicio)
+                        evento.delete()
 
             return redirect('main:horarios_especialista')
 
