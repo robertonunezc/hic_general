@@ -74,8 +74,8 @@ def borrar_cita(request, cita_id):
                         print("Fecha a borrar: {}".format(new_start_time))
                         cita_borrar = Cita.objects.filter(fecha=new_start_time).first()
 
+                    print("Cita a borrar: {}".format(cita_borrar.pk))
                     if cita_borrar:
-                        print("Cita a borrar: {}".format(cita_borrar.pk))
                         delete_date(cita_borrar=cita_borrar, motivo=motivo, usuario=request.user)
                 return HttpResponseRedirect('/citas/horario')
 
