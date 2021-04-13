@@ -142,8 +142,6 @@ def cargar_eventos(request):
 
         for evento in eventos:
             cita_pagada = ""
-            print("Cita Evento")
-            print(evento.cita)
             if evento.cita:
                 cita_pagada = "PAGADA" if evento.cita.pagada else "APARTADA"
 
