@@ -292,6 +292,7 @@ def first_tenant(request):
 
 def test(request):
     print("Start")
-    Event.objects.all()
+    eventos = Event.objects.all()
+
     print("end")
-    return  HttpResponse("Loaded")
+    return  HttpResponse("Loaded{}".format(eventos.count()))
