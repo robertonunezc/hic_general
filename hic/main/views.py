@@ -176,8 +176,10 @@ def cargar_eventos(request):
         if start_date is None and end_date is None:
             start_date = datetime.today()
             end_date = datetime.today() + timedelta(days=1)
+        print("Start Loading events")
         eventos = Event.objects.filter(tipo=0, deshabilitado=0, hora_inicio__gte=start_date,
                                       hora_fin__lte=end_date).order_by('id')
+        print("End Loading events")
         for evento in eventos:
             evento_dict = {
                 'title': evento.titulo,
