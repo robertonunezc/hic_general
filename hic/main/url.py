@@ -18,5 +18,6 @@ urlpatterns = [
     path('carga/', views.cargar_colonias, name='carga'),
     path('first/', views.first_tenant, name='first_tenant'),
     path('import/', views.import_initial_data, name='import_initial_data'),
+    path('testq/', views.test, name='test'),
 
 ]
