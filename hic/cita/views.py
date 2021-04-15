@@ -217,6 +217,7 @@ def calendario_registrar_cita(request):
                     evento = Event.objects.get(hora_inicio=fecha_inicio, hora_fin=fecha_fin, medico=medico)
                     print("EVETBTI")
                     print(evento)
+
                     crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente,
                                       dia_semana, cita_pagada, evento)
             print("Set fecha evento creado:".format(request.session.get('fecha_evento_creado', False)))
@@ -227,7 +228,7 @@ def calendario_registrar_cita(request):
         except Exception as e:
             print(e)
             messages.add_message(request=request, level=messages.ERROR,
-                                 message="Error creando la cita. Todos los datos son obligatorios")
+                                 message="Error creando la cita.")
 
         return redirect('citas:seleccionar_horario')
 
@@ -238,6 +239,8 @@ def crear_cita_evento(cita_fecha, medico, paciente, tipo_cita_id, observaciones,
                       cita_pagada, evento):
     cita = None
     print(tipo_cita_id)
+    if evento.cita is not None:
+        raise ("Ya hay una cita para este evento {}".format(evento.hora_inicio))
     try:
         cita = Cita()
         cita.medico = medico
