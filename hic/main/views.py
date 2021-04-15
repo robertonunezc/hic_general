@@ -63,12 +63,10 @@ def configurar_horario_medico(request):
     serializer = EventoSerializer(eventos, many=True)
     especialistas = Medico.objects.all()
     # serializer.data['extendedProps'] = serializer.data['extended_props']
-    print(serializer.data)
     context = {
         'eventos': json.dumps(serializer.data),
         'especialistas': especialistas
     }
-    print(context)
     return render(request, 'medico/seleccionar_horario.html', context=context)
 
 
@@ -291,3 +289,9 @@ def first_tenant(request):
     tenant = Client(domain_url='playa.cisnemexico.org', schema_name='playaok', name='SucursalPlayaOK', plan='ANUAL',
                     started_date='2020-12-12')
     tenant.save()
+
+def test(request):
+    print("Start")
+    Event.objects.all()
+    print("end")
+    return  HttpResponse("Loaded")
