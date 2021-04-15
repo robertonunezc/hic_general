@@ -59,12 +59,12 @@ def get_specialists_by_date(request):
 
 @login_required
 def configurar_horario_medico(request):
-    eventos = Event.objects.filter(tipo=0, deshabilitado=0)  # TODO only load the current month
-    serializer = EventoSerializer(eventos, many=True)
+    # eventos = Event.objects.filter(tipo=0, deshabilitado=0)  # TODO only load the current month
+    # serializer = EventoSerializer(eventos, many=True)
     especialistas = Medico.objects.all()
     # serializer.data['extendedProps'] = serializer.data['extended_props']
     context = {
-        'eventos': json.dumps(serializer.data),
+        # 'eventos': json.dumps(serializer.data),
         'especialistas': especialistas
     }
     return render(request, 'medico/seleccionar_horario.html', context=context)
