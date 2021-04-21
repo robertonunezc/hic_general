@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+
+from django.core.paginator import Paginator
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -392,7 +394,10 @@ def migrar(request):
 @login_required
 def listado_citas(request):
     citas = Cita.objects.all().order_by('-id')
+    paginator = Paginator(citas, 25) # Show 25 contacts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'citas': citas
+        'citas': page_obj
     }
     return render(request, 'cita/listado_citas.html', context=context)
