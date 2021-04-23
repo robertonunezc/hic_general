@@ -127,29 +127,29 @@
                         <span>Administración</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/reportes/citas"
-                       aria-expanded="true">
-                        <i class="fas fa-chart-pie fa-chart-pie"></i>
-                        <span>Reportes</span>
-                    </a>
-                </li>
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages"
-                       aria-expanded="true"
-                       aria-controls="collapsePages">
-                        <i class="fas fa-fw fa-money-bill-alt"></i>
-                        <span>Contabilidad</span>
-                    </a>
-                    <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
-                         data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="{% url 'contabilidad:listado_gastos' %}">Gastos</a>
-                        </div>
-                    </div>
-                </li>
             {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="/reportes/citas"
+                   aria-expanded="true">
+                    <i class="fas fa-chart-pie fa-chart-pie"></i>
+                    <span>Reportes</span>
+                </a>
+            </li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item active">
+                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages"
+                   aria-expanded="true"
+                   aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-money-bill-alt"></i>
+                    <span>Contabilidad</span>
+                </a>
+                <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{% url 'contabilidad:listado_gastos' %}">Gastos</a>
+                    </div>
+                </div>
+            </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}"
