@@ -11,6 +11,8 @@ from hic.pdf import get_historia_pdf
 
 @login_required
 def listado_paciente(request):
+    if request.user.groups.filter(name="terapeuta"):
+        return redirect('/acceso-denegado/')
     historias_clinicas = HistoriaClinica.objects.all().order_by('folio')
     context = {
         'historias_clinicas': historias_clinicas
@@ -20,7 +22,7 @@ def listado_paciente(request):
 
 @login_required
 def nuevo_paciente(request):
-    if request.user.groups.filter(name="especialistas"):
+    if request.user.groups.filter(name="terapeuta"):
         return redirect('/acceso-denegado/')
     paciente_form = PacienteForm()
     historia_clinica_form = HistoriaClinicaForm()
@@ -44,7 +46,7 @@ def nuevo_paciente(request):
 
 @login_required
 def editar_paciente(request, paciente_id):
-    if request.user.groups.filter(name="especialistas") or request.user.groups.filter(name="asistente"):
+    if request.user.groups.filter(name="terapeuta"):
         return redirect('/acceso-denegado/')
 
     paciente = Paciente.objects.get(pk=paciente_id)
@@ -69,6 +71,8 @@ def editar_paciente(request, paciente_id):
 
 @login_required
 def historia_clinica(request, paciente_id):
+    if request.user.groups.filter(name="terapeuta"):
+        return redirect('/acceso-denegado/')
     paciente = Paciente.objects.get(pk=paciente_id)
     historia_clinica = HistoriaClinica.objects.filter(paciente=paciente).first()
     context = {

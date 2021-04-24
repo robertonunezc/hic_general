@@ -24,6 +24,8 @@ def inicio(request):
 
 @login_required
 def listado_medicos(request):
+    if request.user.groups.filter(name="terapeuta"):
+        return redirect('/acceso-denegado/')
     medicos = Medico.objects.all()
     context = {
         'medicos': medicos
@@ -72,6 +74,8 @@ def configurar_horario_medico(request):
 
 @login_required
 def assing_specialist_consult_time(request):
+    if request.user.groups.filter(name="terapeuta"):
+        return redirect('/acceso-denegado/')
     try:
         if request.method == "POST":
             specialist_id = request.POST.get('doctor')
@@ -131,6 +135,8 @@ def assing_specialist_consult_time(request):
 
 @login_required
 def borrar_evento_horario(request, event_id):
+    if not request.user.is_superuser:
+        return redirect('/acceso-denegado/')
     evento = Event.objects.get(pk=event_id)
     fecha = evento.hora_inicio.date()
     dia_semana = get_dia_semana(fecha.weekday())

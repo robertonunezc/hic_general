@@ -46,7 +46,7 @@ def seleccionar_horario(request):
 
 @login_required
 def borrar_cita(request, cita_id):
-    if request.user.groups.filter(name="especialistas") or request.user.groups.filter(name="asistente"):
+    if not request.user.is_superuser:
         return redirect('/acceso-denegado/')
 
     cita = Cita.objects.get(pk=cita_id)
@@ -147,12 +147,8 @@ def cargar_eventos(request):
             eventos = eventos.filter(medico_id=medico)
 
         for evento in eventos:
-            cita_pagada = ""
-            if evento.cita:
-                cita_pagada = "PAGADA" if evento.cita.pagada else "APARTADA"
-
             evento_dict = {
-                'title': "{} {}".format(evento.titulo, cita_pagada),
+                'title': "{}".format(evento.titulo),
                 'backgroundColor': evento.color,
                 'start': str(evento.hora_inicio),
                 'end': str(evento.hora_fin),
@@ -176,7 +172,7 @@ def seleccionar_tipo_cita(request, horario_id):
 
 @login_required
 def calendario_registrar_cita(request):
-    if request.user.groups.filter(name="especialistas"):
+    if request.user.groups.filter(name="terapeuta"):
         return redirect('/acceso-denegado/')
 
     if request.method == "POST":
@@ -189,11 +185,9 @@ def calendario_registrar_cita(request):
             paciente = request.POST.get('paciente')
             tipo_cita = request.POST.get('tipoCita')
             recuerrente_si = request.POST.get('eventoRecurrente')
-            cita_pagada_data = request.POST.get('eventoPagado')
             medico = Medico.objects.get(pk=especialista_id)
             paciente = Paciente.objects.get(pk=paciente)
             recuerrente = True if recuerrente_si == "recurrente" else False
-            cita_pagada = True if cita_pagada_data == "pagado" else False
             cita_fecha = datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S")
             cita_fecha_fin = datetime.strptime(fin, "%Y-%m-%dT%H:%M:%S")
             dia_semana = cita_fecha.date().weekday()
@@ -208,7 +202,7 @@ def calendario_registrar_cita(request):
             if not recuerrente:
                 evento = Event.objects.get(pk=evento_id)
                 crear_cita_evento(cita_fecha, medico, paciente, tipo_cita, observaciones, cita_fecha_fin, recuerrente,
-                                  dia_semana, cita_pagada, evento)
+                                  dia_semana, evento)
             else:
                 print(cita_fecha_fin)
                 for i in range(0, 52):
@@ -221,7 +215,7 @@ def calendario_registrar_cita(request):
                     print(evento)
 
                     crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente,
-                                      dia_semana, cita_pagada, evento)
+                                      dia_semana, evento)
             print("Set fecha evento creado:".format(request.session.get('fecha_evento_creado', False)))
             return redirect('citas:seleccionar_horario')
         except Event.DoesNotExist:
@@ -238,7 +232,7 @@ def calendario_registrar_cita(request):
 
 
 def crear_cita_evento(cita_fecha, medico, paciente, tipo_cita_id, observaciones, fecha_fin, recurrente, dia_semana,
-                      cita_pagada, evento):
+                     evento):
     cita = None
     print(tipo_cita_id)
     if evento.cita is not None:
@@ -253,7 +247,6 @@ def crear_cita_evento(cita_fecha, medico, paciente, tipo_cita_id, observaciones,
         cita.calendario = Calendario.objects.first()
         cita.fecha = cita_fecha
         cita.fecha_fin = fecha_fin
-        cita.pagada = cita_pagada
         cita.save()
     except Exception as e:
         print("Fallo crear cita")
@@ -336,7 +329,7 @@ def primera_nueva_cita(request):
 
 @login_required
 def editar_cita(request, cita_id):
-    if request.user.groups.filter(name="especialistas"):
+    if request.user.groups.filter(name="terapeuta") or request.user.groups.filter(name="recepcion"):
         return redirect('/acceso-denegado/')
 
     cita = get_object_or_404(Cita, pk=cita_id)
@@ -393,6 +386,8 @@ def migrar(request):
 
 @login_required
 def listado_citas(request):
+    if request.user.groups.filter(name="terapeuta"):
+        return redirect('/acceso-denegado/')
     citas = Cita.objects.all().order_by('-id')
     paginator = Paginator(citas, 25) # Show 25 contacts per page.
     page_number = request.GET.get('page')

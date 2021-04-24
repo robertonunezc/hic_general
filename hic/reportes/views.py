@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from hic.cita.models import ECita, Cita
@@ -6,6 +6,9 @@ from hic.main.models import Medico
 
 
 def estado_citas(request):
+    if not request.user.is_superuser and not request.user.groups.filter(name="administrador"):
+        return redirect('/acceso-denegado/')
+
     estados_citas = ECita.objects.all()
     especialistas = Medico.objects.all()
     if request.method == 'POST':
