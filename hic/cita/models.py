@@ -47,47 +47,27 @@ class TCita(models.Model):
 
 
 class Cita(models.Model):
-    fecha = models.DateTimeField()
+    titulo = models.CharField(max_length=100, default="Horario de Consulta")
+    fecha_inicio = models.DateTimeField()
     fecha_fin = models.DateTimeField(null=True, blank=True)
-    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT, related_name='citas')
+    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT, related_name='citas', null=True, blank=True)
     medico = models.ForeignKey(Medico, on_delete=models.PROTECT, related_name='citas')
     estado = models.ForeignKey(ECita, on_delete=models.PROTECT)
     tipo = models.ForeignKey(TCita, on_delete=models.PROTECT)
     observaciones = models.CharField(max_length=250, null=True, blank=True)
     calendario = models.ForeignKey(Calendario, on_delete=models.PROTECT)
-    deshabilitado = models.BooleanField(default=0) #0 habilitado, 1 dehabilitado
-    def __str__(self):
-        return "{} {} {} {} ".format(self.fecha, self.paciente, self.estado, self.tipo)
-
-
-class Event(models.Model):
-    titulo = models.CharField(max_length=100, default="Horario de Consulta")
-    descripcion = models.CharField(max_length=200, null=True, blank=True)
-    hora_inicio = models.DateTimeField()
-    hora_fin = models.DateTimeField()
-    # 0 Specialist event, 1 Pacient date event
-    tipo = models.IntegerField(default=0)
-    recurrente = models.BooleanField(default=0) #1 recurrent, 0 not
     dia_semana = models.IntegerField(null=True, blank=True) # 0 = Sunday, 1= Monday ....
-    medico = models.ForeignKey(Medico, on_delete=models.PROTECT)
-    cita = models.ForeignKey(Cita, on_delete=models.SET_NULL, null=True, blank=True, related_name='events')
-    calendario = models.ForeignKey('cita.Calendario', related_name='eventos', on_delete=models.CASCADE)
+    posicion_turno = models.IntegerField(default=0)#guardamos el horario 9:00 => 0, 10:00 =>1, 11:00 => 2 ....
+    recurrente = models.BooleanField(default=0)
+    extendedProps = models.ForeignKey('cita.EventExtendedProp', null=True, blank=True,related_name='events', on_delete=models.PROTECT)
     color = models.CharField(max_length=20, default="#99ADC1")
-    extendedProps = models.ForeignKey('cita.EventExtendedProp', null=True, blank=True,
-                                       related_name='events', on_delete=models.PROTECT)
-    deshabilitado = models.BooleanField(default=0) #0 habilitado, 1 dehabilitado
-
     def __str__(self):
-        if self.tipo == 0:
-            return "{} {}".format(self.titulo, self.medico.nombre)
-        if self.tipo == 1 and self.cita is not None:
-            return "{} {}".format(self.titulo, self.cita.paciente.nombre)
-        return self.titulo
+        return "{} {} {} {} ".format(self.fecha_inicio, self.paciente, self.estado, self.tipo)
+
 
 class EventExtendedProp(models.Model):
     doctor = models.IntegerField()
     nombre_doctor = models.CharField(max_length=200, default="Dr.")
     cita = models.IntegerField(null=True, blank=True)
-    evento = models.IntegerField(null=True, blank=True)
     evento_inicio = models.DateTimeField(null=True, blank=True)
     evento_fin = models.DateTimeField(null=True, blank=True)

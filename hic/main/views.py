@@ -2,11 +2,11 @@ from django.contrib import messages
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from hic.cita.models import Event, Calendario, EventExtendedProp
-from hic.cita.serializer import EventoSerializer, EventExtendedPropSerializer
+from hic.cita.models import  Calendario, EventExtendedProp
+from hic.cita.serializer import  EventExtendedPropSerializer
 from hic.main import process_inital_data
 from hic.main.models import Medico, NEstado, NMunicipio, NCodigoPostal, \
-    NColonia
+    NColonia, RegistroIncidencias
 from hic.main.serializer import SpecialistSerializer
 from hic.main.utils import get_dia_semana, get_mes
 from hic.paciente.forms import MedicoForm
@@ -47,7 +47,7 @@ def get_specialists_by_date(request):
             dia_semana += 1
         print(dia_semana)
         # date_end = date + datetime.timedelta(days=1)
-        events = Event.objects.filter(dia_semana=dia_semana, tipo=0, deshabilitado=0)
+        events = ""
         specilists = []
         for event in events:
             specilists.append(event.medico)
@@ -137,38 +137,38 @@ def assing_specialist_consult_time(request):
 def borrar_evento_horario(request, event_id):
     if not request.user.is_superuser:
         return redirect('/acceso-denegado/')
-    evento = Event.objects.get(pk=event_id)
-    fecha = evento.hora_inicio.date()
-    dia_semana = get_dia_semana(fecha.weekday())
-    mes = get_mes(fecha.month)
-    if request.method == 'POST':
-        recuerrente_si = request.POST.get('eventoRecurrente')
-        borrado_recuerrente = True if recuerrente_si == "si-recurrente" else False
-        print("Evento recurrente {}".format(recuerrente_si))
-        if borrado_recuerrente:
-            start_time = datetime.strptime(str(evento.hora_inicio), "%Y-%m-%d %H:%M:%S")
-            print(start_time)
-            for i in range(0, 52):
-                days = 7 * i
-                new_start_time = start_time + timedelta(days=days)
-                new_end_time = new_start_time + timedelta(hours=12)
-                eventos = Event.objects.filter(medico_id=evento.medico.pk, hora_inicio__gte=new_start_time, hora_fin__lte=new_end_time)
-                if eventos.count() > 0:
-                    for evento in eventos:
-                        print(evento.hora_inicio)
-                        evento.delete()
+    # evento = Event.objects.get(pk=event_id)
+    # fecha = evento.hora_inicio.date()
+    # dia_semana = get_dia_semana(fecha.weekday())
+    # mes = get_mes(fecha.month)
+    # if request.method == 'POST':
+    #     recuerrente_si = request.POST.get('eventoRecurrente')
+    #     borrado_recuerrente = True if recuerrente_si == "si-recurrente" else False
+    #     print("Evento recurrente {}".format(recuerrente_si))
+    #     if borrado_recuerrente:
+    #         start_time = datetime.strptime(str(evento.hora_inicio), "%Y-%m-%d %H:%M:%S")
+    #         print(start_time)
+    #         for i in range(0, 52):
+    #             days = 7 * i
+    #             new_start_time = start_time + timedelta(days=days)
+    #             new_end_time = new_start_time + timedelta(hours=12)
+    #             eventos = Event.objects.filter(medico_id=evento.medico.pk, hora_inicio__gte=new_start_time, hora_fin__lte=new_end_time)
+    #             if eventos.count() > 0:
+    #                 for evento in eventos:
+    #                     print(evento.hora_inicio)
+    #                     evento.delete()
+    #
+    #         return redirect('main:horarios_especialista')
+    #
+    #     try:
+    #         evento.delete()
+    #         return redirect('main:horarios_especialista')
+    #     except Event.DoesNotExist:
+    #         print("No existe")
+    #     except Exception as e:
+    #         print(e)
 
-            return redirect('main:horarios_especialista')
-
-        try:
-            evento.delete()
-            return redirect('main:horarios_especialista')
-        except Event.DoesNotExist:
-            print("No existe")
-        except Exception as e:
-            print(e)
-
-    context = {'evento': evento, 'dia_semana': dia_semana, 'mes': mes}
+    context = {'evento': "", 'dia_semana': "", 'mes': ""}
     return render(request, 'medico/confirmacion_borrar.html', context=context)
 
 @login_required

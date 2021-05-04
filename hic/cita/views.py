@@ -6,8 +6,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from hic.cita.forms import CitaForm, PrimeraCitaForm
-from hic.cita.models import Cita, ECita, Event, TCita, Calendario, EventExtendedProp
-from hic.cita.serializer import EventoSerializer, CitaSerializer, EventExtendedPropSerializer
+from hic.cita.models import Cita, ECita, TCita, Calendario, EventExtendedProp
+from hic.cita.serializer import CitaSerializer, EventExtendedPropSerializer
 from hic.main.models import Paciente, Medico, Especialidad, RegistroIncidencias
 from hic.main.utils import get_dia_semana, get_mes
 from hic.paciente.forms import PacienteForm
@@ -117,7 +117,7 @@ def delete_date(cita_borrar, motivo, usuario):
             extended.save()
 
         incidencia = RegistroIncidencias()
-        incidencia.accion = "Borrado cita {}".format(cita_borrar.pk)
+        incidencia.accion = "Borrado cita {} {} {}".format(cita_borrar.paciente.nombre, cita_borrar.medico.nombre, cita_borrar.fecha)
         incidencia.comentario = motivo
         incidencia.usuario = usuario
         incidencia.save()
