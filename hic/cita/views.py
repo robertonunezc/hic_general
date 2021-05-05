@@ -130,6 +130,7 @@ def cargar_eventos(request):
             eventos = eventos.filter(medico_id=medico)
 
         for evento in eventos:
+            print(evento.pk)
             evento_dict = {
                 'title': "{}".format(evento.titulo),
                 'backgroundColor': evento.color,
@@ -144,7 +145,6 @@ def cargar_eventos(request):
         print("Cita does not exist")
         response = {'rc': 500,
                     'msg': 'Error loading Specialists', 'data': None}
-
     return HttpResponse(json.dumps(response), content_type='application/json')
 
 
@@ -210,7 +210,7 @@ def crear_cita_paciente(cita, paciente, tipo_cita_id, observaciones, recuerrente
     try:
         tipo_cita = TCita.objects.get(pk=tipo_cita_id)
         cita.titulo = "{}: {} {}".format(
-            cita.medico, paciente.nombre, paciente.primer_apellido)
+            cita.medico.nombre, paciente.nombre, paciente.primer_apellido)
         cita.paciente = paciente
         cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
         cita.tipo = tipo_cita
@@ -288,17 +288,10 @@ def editar_cita(request, cita_id):
     if request.method == 'POST':
         form = CitaForm(request.POST, instance=cita)
         if form.is_valid():
-            form.save()
-            eventos = Event.objects.filter(cita=cita)
-            for evento in eventos:
-                evento.titulo = "{} {}".format(
-                    cita.medico.nombre, cita.paciente.nombre)
-                # evento.hora_inicio = cita.fecha
-                # evento.hora_fin = cita.fecha_fin
-                # evento.dia_semana = cita.fecha.date().weekday()
-                evento.medico = cita.medico
-                evento.color = cita.tipo.color
-                evento.save()
+            cita = form.save(False)
+            cita.titulo = "{} {} {}".format(
+                cita.medico.nombre, cita.paciente.nombre, cita.paciente.primer_apellido)
+            cita.save()
             msg = "Cita actualizada con éxito"
 
     context = {
