@@ -17,7 +17,7 @@
                             </div>
                         </div>
                     {% endif %}
-                    <div class="form-group col-6">
+                    <div class="form-group col">
                         <div class="alert alert-warning">Si, quiero borrar solo este espacio para:
                             <b>{{ cita.paciente.nombre }} {{ cita.paciente.primer_apellido }} a las {{ evento.hora_inicio|date:"d-m-Y H:s" }}</b></div>
 
@@ -29,9 +29,8 @@
                             </label>
                         </div>
                     </div>
-
-
-                    <div class="form-group col-6">
+                    {%if cita.recurrente == True%}
+                    <div class="form-group col">
                         <div class="alert alert-warning">Si, quiero borrar todos los espacios del <b>{{ dia_semana }} para
                             {{ cita.paciente.nombre }} {{ cita.paciente.primer_apellido }}</b>
                         </div>
@@ -43,7 +42,8 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col">
+                    {%endif%}
+                    <div class="col-12">
                         <label for="">Debe indicar la causa de esta acción</label>
                         <textarea name="motivo" id="motivo" cols="30" rows="10" required></textarea>
                         <button class="btn btn-danger mt-3" type="submit">Si, Seguro</button>

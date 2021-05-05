@@ -50,12 +50,7 @@ def borrar_cita(request, cita_id):
         return redirect('/acceso-denegado/')
 
     cita = Cita.objects.get(pk=cita_id)
-    evento = cita.events.first()
-    fecha = evento.hora_inicio.date()
-
-    dia_semana = get_dia_semana(fecha.weekday())
-    mes = get_mes(fecha.month)
-
+    usuario = request.user
     if request.method == 'POST':
         recuerrente_si = request.POST.get('eventoRecurrente')
         motivo = request.POST.get("motivo")
@@ -64,28 +59,18 @@ def borrar_cita(request, cita_id):
         try:
             # Borrado recurrente
             if borrado_recuerrente:
-                start_time = datetime.strptime(
-                    str(cita.fecha), "%Y-%m-%d %H:%M:%S")
-                for i in range(0, 52):
-                    if i == 0:
-                        cita_borrar = cita
-                    else:
-                        days = 7 * i
-                        print("Itercion")
-                        print(days)
-                        new_start_time = start_time + timedelta(days=days)
-                        print("Fecha a borrar: {}".format(new_start_time))
-                        cita_borrar = Cita.objects.filter(
-                            fecha=new_start_time).first()
-
-                    print("Cita a borrar: {}".format(cita_borrar))
-                    if cita_borrar:
-                        delete_date(cita_borrar=cita_borrar,
-                                    motivo=motivo, usuario=request.user)
+                dia_semana = cita.dia_semana  # 0->Mon, 1->Tuesday...6->Sunday
+                posicion_dia = cita.posicion_turno  # 9:00->0, 10:00->1 ...21:00->11
+                medico = cita.medico
+                cita_id = cita.pk
+                citas_registradas = Cita.objects.filter(
+                    dia_semana=dia_semana, posicion_turno=posicion_dia, medico=medico).exclude(fecha_inicio__lt=cita.fecha_inicio)
+                for cita_registrada in citas_registradas:
+                    delete_date(cita_borrar=cita_registrada,
+                                motivo=motivo, usuario=usuario)
                 return HttpResponseRedirect('/citas/horario')
 
             # Borrado 1 sola cita
-
             delete_date(cita_borrar=cita, motivo=motivo, usuario=request.user)
             messages.add_message(request=request, level=messages.SUCCESS,
                                  message="Cita borrada con exito. ")
@@ -99,34 +84,28 @@ def borrar_cita(request, cita_id):
             print(e)
             messages.add_message(request=request, level=messages.ERROR,
                                  message="Error borrando la cita. ")
-    context = {'cita': cita, 'dia_semana': dia_semana, 'mes': mes}
+    context = {'cita': cita, 'dia_semana': cita.dia_semana}
 
     return render(request, 'cita/confirmacion_borrar.html', context=context)
 
 
 def delete_date(cita_borrar, motivo, usuario):
     try:
-
-        for evento in cita_borrar.events.all():
-            print("Evento a borrar: {}".format(evento.pk))
-            evento.titulo = evento.medico.nombre
-            evento.cita = None
-            evento.color = "#99ADC1"
-            evento.save()
-        extendedProps = EventExtendedProp.objects.filter(cita=cita_borrar.pk)
-
-        for extended in extendedProps:
-            extended.cita = None
-            extended.save()
-
+        """Save incident LOG"""
         incidencia = RegistroIncidencias()
         incidencia.accion = "Borrado cita {} {} {}".format(
-            cita_borrar.paciente.nombre, cita_borrar.medico.nombre, cita_borrar.fecha)
+            cita_borrar.paciente.nombre, cita_borrar.medico.nombre, cita_borrar.fecha_inicio)
         incidencia.comentario = motivo
         incidencia.usuario = usuario
         incidencia.save()
 
-        cita_borrar.delete()
+        cita_borrar.titulo = "{} {}".format(
+            cita_borrar.medico.nombre, cita_borrar.medico.primer_apellido)
+        cita_borrar.color = "#99ADC1"
+        cita_borrar.paciente = None
+        cita_borrar.recurrente = False
+        cita_borrar.save()
+
     except Exception as e:
         print(e)
         print("Error borrando citas")
@@ -197,8 +176,8 @@ def calendario_registrar_cita(request):
                 crear_cita_paciente(cita, paciente, tipo_cita,
                                     observaciones, recuerrente)
             else:
-                dia_semana = cita.dia_semana
-                posicion_dia = cita.posicion_turno
+                dia_semana = cita.dia_semana  # 0->Mon, 1->Tuesday...6->Sunday
+                posicion_dia = cita.posicion_turno  # 9:00->0, 10:00->1 ...21:00->11
                 medico = cita.medico
                 cita_id = cita.pk
                 espacios_medico = Cita.objects.filter(
@@ -226,7 +205,7 @@ def calendario_registrar_cita(request):
 
 def crear_cita_paciente(cita, paciente, tipo_cita_id, observaciones, recuerrente):
     if cita.paciente is not None:
-        raise ("Ya hay una cita para este paciente en este espacio {}".format(
+        raise Exception("Ya hay una cita para este paciente en este espacio {}".format(
             cita.fecha_inicio))
     try:
         tipo_cita = TCita.objects.get(pk=tipo_cita_id)
@@ -237,6 +216,7 @@ def crear_cita_paciente(cita, paciente, tipo_cita_id, observaciones, recuerrente
         cita.tipo = tipo_cita
         cita.color = tipo_cita.color
         cita.observaciones = observaciones
+        cita.recurrente = recuerrente
         cita.save()
     except Exception as e:
         print("Fallo crear cita")
