@@ -4,9 +4,11 @@ from hic.main.models import Medico, Paciente
 import json
 from colorfield.fields import ColorField
 
+
 class Calendario(models.Model):
     nombre = models.CharField(max_length=200, default="Clínica General")
-    medico = models.ForeignKey(Medico, on_delete=models.SET_NULL, null=True, blank=True)
+    medico = models.ForeignKey(
+        Medico, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.nombre.__str__()
@@ -50,17 +52,25 @@ class Cita(models.Model):
     titulo = models.CharField(max_length=100, default="Horario de Consulta")
     fecha_inicio = models.DateTimeField()
     fecha_fin = models.DateTimeField(null=True, blank=True)
-    paciente = models.ForeignKey(Paciente, on_delete=models.PROTECT, related_name='citas', null=True, blank=True)
-    medico = models.ForeignKey(Medico, on_delete=models.PROTECT, related_name='citas')
-    estado = models.ForeignKey(ECita, on_delete=models.PROTECT)
-    tipo = models.ForeignKey(TCita, on_delete=models.PROTECT)
+    paciente = models.ForeignKey(
+        Paciente, on_delete=models.PROTECT, related_name='citas', null=True, blank=True)
+    medico = models.ForeignKey(
+        Medico, on_delete=models.PROTECT, related_name='citas')
+    estado = models.ForeignKey(
+        ECita, on_delete=models.PROTECT, null=True, blank=True)
+    tipo = models.ForeignKey(
+        TCita, on_delete=models.PROTECT, null=True, blank=True)
     observaciones = models.CharField(max_length=250, null=True, blank=True)
     calendario = models.ForeignKey(Calendario, on_delete=models.PROTECT)
-    dia_semana = models.IntegerField(null=True, blank=True) # 0 = Sunday, 1= Monday ....
-    posicion_turno = models.IntegerField(default=0)#guardamos el horario 9:00 => 0, 10:00 =>1, 11:00 => 2 ....
+    # 6 = Sunday, 6= Monday ....
+    dia_semana = models.IntegerField(null=True, blank=True)
+    # guardamos el horario 9:00 => 0, 10:00 =>1, 11:00 => 2 ....
+    posicion_turno = models.IntegerField(default=0)
     recurrente = models.BooleanField(default=0)
-    extendedProps = models.ForeignKey('cita.EventExtendedProp', null=True, blank=True,related_name='events', on_delete=models.PROTECT)
+    extendedProps = models.ForeignKey(
+        'cita.EventExtendedProp', null=True, blank=True, related_name='events', on_delete=models.PROTECT)
     color = models.CharField(max_length=20, default="#99ADC1")
+
     def __str__(self):
         return "{} {} {} {} ".format(self.fecha_inicio, self.paciente, self.estado, self.tipo)
 
