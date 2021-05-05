@@ -196,6 +196,17 @@ def calendario_registrar_cita(request):
             if not recuerrente:
                 crear_cita_paciente(cita, paciente, tipo_cita,
                                     observaciones, recuerrente)
+            else:
+                dia_semana = cita.dia_semana
+                posicion_dia = cita.posicion_turno
+                medico = cita.medico
+                cita_id = cita.pk
+                espacios_medico = Cita.objects.filter(
+                    dia_semana=dia_semana, posicion_turno=posicion_dia, medico=medico)
+                print("Dates to update {}".format(espacios_medico.count()))
+                for espacio in espacios_medico:
+                    crear_cita_paciente(espacio, paciente, tipo_cita,
+                                        observaciones, recuerrente)
 
             print("Set fecha evento creado:".format(
                 request.session.get('fecha_evento_creado', False)))
@@ -214,7 +225,6 @@ def calendario_registrar_cita(request):
 
 
 def crear_cita_paciente(cita, paciente, tipo_cita_id, observaciones, recuerrente):
-    print(tipo_cita_id)
     if cita.paciente is not None:
         raise ("Ya hay una cita para este paciente en este espacio {}".format(
             cita.fecha_inicio))
