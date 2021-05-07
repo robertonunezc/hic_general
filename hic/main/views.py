@@ -136,38 +136,27 @@ def assing_specialist_consult_time(request):
 def borrar_evento_horario(request, event_id):
     if not request.user.is_superuser:
         return redirect('/acceso-denegado/')
-    # evento = Event.objects.get(pk=event_id)
-    # fecha = evento.hora_inicio.date()
-    # dia_semana = get_dia_semana(fecha.weekday())
-    # mes = get_mes(fecha.month)
-    # if request.method == 'POST':
-    #     recuerrente_si = request.POST.get('eventoRecurrente')
-    #     borrado_recuerrente = True if recuerrente_si == "si-recurrente" else False
-    #     print("Evento recurrente {}".format(recuerrente_si))
-    #     if borrado_recuerrente:
-    #         start_time = datetime.strptime(str(evento.hora_inicio), "%Y-%m-%d %H:%M:%S")
-    #         print(start_time)
-    #         for i in range(0, 52):
-    #             days = 7 * i
-    #             new_start_time = start_time + timedelta(days=days)
-    #             new_end_time = new_start_time + timedelta(hours=12)
-    #             eventos = Event.objects.filter(medico_id=evento.medico.pk, hora_inicio__gte=new_start_time, hora_fin__lte=new_end_time)
-    #             if eventos.count() > 0:
-    #                 for evento in eventos:
-    #                     print(evento.hora_inicio)
-    #                     evento.delete()
-    #
-    #         return redirect('main:horarios_especialista')
-    #
-    #     try:
-    #         evento.delete()
-    #         return redirect('main:horarios_especialista')
-    #     except Event.DoesNotExist:
-    #         print("No existe")
-    #     except Exception as e:
-    #         print(e)
+    cita = Cita.objects.get(pk=event_id)
+    try:
+        usuario = request.user
+        if request.method == 'POST':
+            recuerrente_si = request.POST.get('eventoRecurrente')
+            borrado_recuerrente = True if recuerrente_si == "si-recurrente" else False
+        #     print("Evento recurrente {}".format(recuerrente_si))
+            if borrado_recuerrente:
+                dia_semana = cita.dia_semana  # 0->Mon, 1->Tuesday...6->Sunday
+                medico = cita.medico
+                cita_id = cita.pk
+                espacios_medico = Cita.objects.filter(
+                    dia_semana=dia_semana, medico=medico)
+                espacios_medico.delete()
+            else:
+                cita.delete()
+            return redirect('main:horarios_especialista')
+    except Exception as e:
+        print(e)
 
-    context = {'evento': "", 'dia_semana': "", 'mes': ""}
+    context = {'cita': cita, 'dia_semana': "", 'mes': ""}
     return render(request, 'medico/confirmacion_borrar.html', context=context)
 
 
@@ -266,6 +255,16 @@ def import_initial_data(request):
 @login_required
 def acceso_denegado(request):
     return render(request, 'acceso_denegado.html')
+
+
+def save_incidencia_log(cita):
+    """Save incident LOG"""
+    incidencia = RegistroIncidencias()
+    incidencia.accion = "Borrado cita {} {} {}".format(
+        cita_borrar.paciente.nombre, cita_borrar.medico.nombre, cita_borrar.fecha_inicio)
+    incidencia.comentario = motivo
+    incidencia.usuario = usuario
+    incidencia.save()
 
 
 # cargar colonias(dev)
