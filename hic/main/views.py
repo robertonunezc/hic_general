@@ -87,6 +87,12 @@ def assing_specialist_consult_time(request):
 
             start_time = datetime.strptime(str(start_time), "%Y-%m-%d")
             specialist = Medico.objects.get(pk=specialist_id)
+            assign_space = Cita.objects.filter(
+                dia_semana=dia_semana, medico=specialist)
+            if assign_space.exists():
+                messages.add_message(request=request, level=messages.ERROR,
+                                     message="Ya existe este especialista asignado a este dia")
+                return redirect('main:horarios_especialista')
 
             for i in range(0, 52):
                 if i > 0:
