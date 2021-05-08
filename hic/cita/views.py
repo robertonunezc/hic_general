@@ -130,7 +130,6 @@ def cargar_eventos(request):
             eventos = eventos.filter(medico_id=medico)
 
         for evento in eventos:
-            print(evento.pk)
             evento_dict = {
                 'title': "{}".format(evento.titulo),
                 'backgroundColor': evento.color,
