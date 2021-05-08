@@ -180,7 +180,7 @@ def calendario_registrar_cita(request):
                 medico = cita.medico
                 cita_id = cita.pk
                 espacios_medico = Cita.objects.filter(
-                    dia_semana=dia_semana, posicion_turno=posicion_dia, medico=medico)
+                    dia_semana=dia_semana, posicion_turno=posicion_dia, medico=medico, fecha_inicio__gte=cita.fecha_inicio)
                 print("Dates to update {}".format(espacios_medico.count()))
                 for espacio in espacios_medico:
                     crear_cita_paciente(espacio, paciente, tipo_cita,
