@@ -17,7 +17,7 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    /* right: 'dayGridMonth,timeGridWeek,timeGridDay'*/
                 },
                 events: {
                     url: '{% url 'main:cargar_eventos' %}'
@@ -39,7 +39,7 @@
 {#                    evento.value = extendedProps.evento;#}
 {#                    inicio.value = info.event.startStr;#}
                     console.log(extendedProps.evento)
-                    window.location.href = "/especialistas/borrar-evento/"+extendedProps.evento
+                    window.location.href = "/especialistas/borrar-evento/"+extendedProps.cita
                 }
 
             });
