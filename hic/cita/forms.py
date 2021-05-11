@@ -16,4 +16,4 @@ class CitaForm(forms.ModelForm):
 
     class Meta:
         model = Cita
-        fields = ('paciente', 'estado', 'observaciones',)
+        fields = ('paciente', 'estado', 'observaciones', 'tipo',)
