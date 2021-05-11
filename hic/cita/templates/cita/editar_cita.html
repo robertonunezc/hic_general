@@ -23,7 +23,11 @@
             <div class="form-group col-md-3">
                 <label for="nombre">Estado</label>
                 {{ form.estado }}
-            </div>          
+            </div>    
+             <div class="form-group col-md-3">
+                <label for="nombre">Tipo</label>
+                {{ form.tipo }}
+            </div>       
             <div class="form-group col-md-3">
                 <label for="observaciones">Observaciones</label>
                 {{ form.observaciones }}
@@ -34,7 +38,7 @@
         </div>
         <div class="btn-group">
             <button class="btn btn-info">Guardar</button>
-            <a href="{% url "citas:listado_citas" %}" class="btn btn-success">Listado Citas</a>
+            <a href="{% url "citas:seleccionar_horario" %}" class="btn btn-success">Listado Citas</a>
         </div>
     </form>
 {% endblock %}

@@ -290,6 +290,7 @@ def editar_cita(request, cita_id):
             cita = form.save(False)
             cita.titulo = "{} {} {}".format(
                 cita.medico.nombre, cita.paciente.nombre, cita.paciente.primer_apellido)
+            cita.color = cita.tipo.color
             cita.save()
             msg = "Cita actualizada con éxito"
 
