@@ -60,8 +60,8 @@ class HistoriaClinicaForm(forms.ModelForm):
             Div(
                 'fecha_cita',
                 'profesional_cargo',
-                'costo_valoracion',
-                'costo_terapias',
+                # 'costo_valoracion',
+                # 'costo_terapias',
                 'nombre_entrevistador',
                 css_class='form-flex'
             ),
@@ -71,7 +71,7 @@ class HistoriaClinicaForm(forms.ModelForm):
 
     class Meta:
         model = HistoriaClinica
-        exclude = ('paciente','folio')
+        exclude = ('paciente', 'folio', 'costo_valoracion', 'costo_terapias',)
 
 
 class PacienteForm(forms.ModelForm):

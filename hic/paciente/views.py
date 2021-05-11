@@ -1,3 +1,4 @@
+from hic.contabilidad.models import PacienteServicios, TabuladorPrecios
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 
@@ -8,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from hic.paciente.models import HistoriaClinica
 from hic.pdf import get_historia_pdf
 # Create your views here
+
 
 @login_required
 def listado_paciente(request):
@@ -34,7 +36,7 @@ def nuevo_paciente(request):
                 paciente = paciente_form.save()
                 historia_clinica_form.instance.paciente = paciente
                 historia_clinica_form.save()
-                return redirect('pacientes:listado_pacientes')
+                return HttpResponseRedirect('/pacientes/agregar/servicios/{}'.format(paciente.pk))
     print(paciente_form.errors)
     print(historia_clinica_form.errors)
     context = {
@@ -45,17 +47,28 @@ def nuevo_paciente(request):
 
 
 @login_required
+def agregar_servicios(request, paciente_id):
+    servicios = TabuladorPrecios.objects.all()
+    context = {
+        'servicios': servicios
+    }
+    return render(request, 'pacientes/agregar_servicios.html', context=context)
+
+
+@login_required
 def editar_paciente(request, paciente_id):
     if request.user.groups.filter(name="terapeuta"):
         return redirect('/acceso-denegado/')
 
     paciente = Paciente.objects.get(pk=paciente_id)
-    historia_clinica = HistoriaClinica.objects.filter(paciente=paciente).first()
+    historia_clinica = HistoriaClinica.objects.filter(
+        paciente=paciente).first()
     form = PacienteForm(instance=paciente)
     historia_form = HistoriaClinicaForm(instance=historia_clinica)
     if request.method == 'POST':
         form = PacienteForm(request.POST, request.FILES, instance=paciente)
-        historia_form = HistoriaClinicaForm(request.POST, instance=historia_clinica)
+        historia_form = HistoriaClinicaForm(
+            request.POST, instance=historia_clinica)
         if form.is_valid() and historia_form.is_valid():
             form.save()
             historia_form.save()
@@ -64,7 +77,7 @@ def editar_paciente(request, paciente_id):
     print(historia_form.errors)
     context = {
         'form': form,
-        'historia_clinica_form':historia_form
+        'historia_clinica_form': historia_form
     }
     return render(request, 'pacientes/editar_paciente.html', context=context)
 
@@ -74,13 +87,15 @@ def historia_clinica(request, paciente_id):
     if request.user.groups.filter(name="terapeuta"):
         return redirect('/acceso-denegado/')
     paciente = Paciente.objects.get(pk=paciente_id)
-    historia_clinica = HistoriaClinica.objects.filter(paciente=paciente).first()
+    historia_clinica = HistoriaClinica.objects.filter(
+        paciente=paciente).first()
     context = {
         'historia_clinica': historia_clinica,
         'paciente': paciente,
 
     }
     return render(request, 'pacientes/historia_clinica.html', context=context)
+
 
 @login_required
 def ver_pdf_historia(request, paciente_id):
