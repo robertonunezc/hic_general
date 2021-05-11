@@ -9,6 +9,8 @@ from django.contrib import messages
 
 @login_required
 def listado_gastos(request):
+    if not request.user.is_superuser and not request.user.groups.filter(name="administrador"):
+        return redirect('/acceso-denegado/')
     fecha_inicio = datetime.now().month
     # fecha_fin =
     gastos = Gasto.objects.all()

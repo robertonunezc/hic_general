@@ -37,9 +37,8 @@
                 ],
 
                 eventClick: function (info) {
-                    const fechaInicio = document.getElementById('fecha-inicio-cita');
+                    /*const fechaInicio = document.getElementById('fecha-inicio-cita');
                     const fechaFin = document.getElementById('fecha-fin-cita');
-                    const evento = document.getElementById('evento-cita');
                     const nombreEspecialista = document.getElementById('nombre-especialista');
                     const idEspecialista = document.getElementById('especialista');
 
@@ -48,28 +47,47 @@
                     evento.value = info.event.extendedProps.evento;
                     nombreEspecialista.innerHTML = `<strong>${info.event.extendedProps.nombre_doctor}</strong>`;
                     idEspecialista.value = info.event.extendedProps.doctor;
-                    console.log(info.event.extendedProps.cita)
-                    let btnShowModal;
-                    if (info.event.extendedProps.cita != null) {
-                        btnShowModal = document.getElementById('btn-show-detail-modal');
-                        loadDateDetails(info.event.extendedProps.cita)
-                    } else {
-                        btnShowModal = document.getElementById('btn-show-modal');
-                    }
-                    btnShowModal.click();
+                    console.log(info.event.extendedProps.cita)*/ 
+                    const date = info.event.extendedProps.cita;
+                    getDateDetails(date)
+                    .then(function(response){
+                        if(response.data.rc!=200) {
+                            alert("Ocurrió un error intentando cargar la información del espacio")
+                        }
+                        const date = response.data.data;                        
+                        console.log(date)
 
+                        if(date.paciente == null){
+                            openCreateDateModal(date)
+                        }else{
+                            openModalDateDetails(date)
+                        }
+                    })
+                    .catch(function(error){
+                        console.log(error)
+                    })
                 },
                 select: function (info) {
-                    const btnShowModal = document.getElementById('btn-show-detail-modal');
+                    /*const btnShowModal = document.getElementById('btn-show-detail-modal');
                     btnShowModal.click();
                     console.log(info.event.extendedProps)
-                    loadDateDetails(info.event.extendedProps.cita)
+                    loadDateDetails(info.event.extendedProps.cita)*/
                 },
 
             });
 
             calendar.render();
         });
+        
+        function openCreateDateModal(date){
+            const btnShowModal = document.getElementById('btn-show-modal');
+            const dateInfo = document.getElementById('evento-cita');
+            const nombreEspecialista = document.getElementById('nombre-especialista');
+            dateInfo.value = date.id;
+            nombreEspecialista.innerHTML = `<strong>${date.medico.nombre}${date.medico.primer_apellido}</strong>`;
+            btnShowModal.click();
+        }
+
 
         function loadingSpecialist(date) {
             const formData = new FormData();
@@ -87,47 +105,43 @@
             })
         }
 
-        function loadDateDetails(dateId) {
+        function getDateDetails(dateId){
             const url = `/citas/detalle/${dateId}`;
+            return axios.get(url)            
+        }
+        function openModalDateDetails(dateDetails) {
+            const btnShowModal = document.getElementById('btn-show-detail-modal');
             const btnEdit = document.getElementById('btn-editar-cita');
             const btnDelete = document.getElementById('btn-borrar-cita');
+            const pacienteName = document.getElementById('nombre-paciente');
+            const specialistName = document.getElementById('nombre-medico');
+            const dateTime = document.getElementById('fecha-cita');
+            const dateText = document.getElementById('observaciones-cita');
+            const dateStatus = document.getElementById('estado-cita');
+            const formatDate = dateDetails.fecha_inicio.split("T");
 
-            btnDelete.setAttribute('href', `/citas/borrar/${dateId}`);
+            btnDelete.setAttribute('href', `/citas/borrar/${dateDetails.id}`);
+            btnEdit.setAttribute('href', `/citas/editar/${dateDetails.id}`);
+            pacienteName.innerHTML = `${dateDetails.paciente.nombre} ${dateDetails.paciente.primer_apellido}`;
+            specialistName.innerHTML = `${dateDetails.medico.nombre}`;
+            dateTime.innerHTML = `${formatDate[0]} ${formatDate[1].split("-")[0]}`;
+            dateText.innerHTML = dateDetails.observaciones == "" ? "NO TIENE" : dateDetails.observaciones;
+            dateStatus.innerHTML = getEstadoCita(dateDetails.estado.estado);
+            btnShowModal.click();
 
-            btnEdit.setAttribute('href', `/citas/editar/${dateId}`);
-
-            axios.get(url).then(function (response) {
-                console.log(response);
-                const dateDetails = response.data.data;
-                const pacienteName = document.getElementById('nombre-paciente');
-                const specialistName = document.getElementById('nombre-medico');
-                const dateTime = document.getElementById('fecha-cita');
-                const dateText = document.getElementById('observaciones-cita');
-                const dateStatus = document.getElementById('estado-cita');
-                console.log(specialistName)
-                const formatDate = dateDetails.fecha.split("T");
-
-                pacienteName.innerHTML = `${dateDetails.paciente.nombre} ${dateDetails.paciente.primer_apellido}`;
-                specialistName.innerHTML = `${dateDetails.medico.nombre}`;
-                dateTime.innerHTML = `${formatDate[0]} ${formatDate[1].split("-")[0]}`;
-                dateText.innerHTML = dateDetails.observaciones == "" ? "NO TIENE" : dateDetails.observaciones;
-                dateStatus.innerHTML = getEstadoCita(dateDetails.estado.estado);
-
-            }).catch(function (error) {
-                console.log(error)
-            })
-            function getEstadoCita(estado) {
-                switch (estado) {
-                    case 0:
-                        return "RESERVADA";
-                    case 1:
-                        return "CONFIRMADA";
-                    case 2:
-                        return "TERMINADA";
-                    case -1:
-                        return "CANCELADA";
-                }
+        }
+        function getEstadoCita(estado) {
+            switch (estado) {
+                case 0:
+                    return "RESERVADA";
+                case 1:
+                    return "CONFIRMADA";
+                case 2:
+                    return "TERMINADA";
+                case -1:
+                    return "CANCELADA";
             }
+        
         }
 
     </script>

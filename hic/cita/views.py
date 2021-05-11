@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta
+
+from django.core.paginator import Paginator
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from hic.cita.forms import CitaForm, PrimeraCitaForm
-from hic.cita.models import Cita, ECita, Event, TCita, Calendario, EventExtendedProp
-from hic.cita.serializer import EventoSerializer, CitaSerializer, EventExtendedPropSerializer
+from hic.cita.models import Cita, ECita, TCita, Calendario, EventExtendedProp
+from hic.cita.serializer import CitaSerializer, EventExtendedPropSerializer
 from hic.main.models import Paciente, Medico, Especialidad, RegistroIncidencias
 from hic.main.utils import get_dia_semana, get_mes
 from hic.paciente.forms import PacienteForm
@@ -22,7 +24,8 @@ def seleccionar_horario(request):
     fecha_evento = False
 
     if medico is not None:
-        url_loadevents = '/citas/cargar/eventos/?especialista={}'.format(medico)
+        url_loadevents = '/citas/cargar/eventos/?especialista={}'.format(
+            medico)
 
     # I use this variable to move the calendar to specific date after an event was created
     if request.session.get('fecha_evento_creado', False):
@@ -37,23 +40,17 @@ def seleccionar_horario(request):
         'fecha_evento': fecha_evento
 
     }
-    print(context)
     request.session['fecha_evento_creado'] = None
     return render(request, 'cita/seleccionar_horario.html', context=context)
 
 
 @login_required
 def borrar_cita(request, cita_id):
-    if request.user.groups.filter(name="especialistas") or request.user.groups.filter(name="asistente"):
+    if not request.user.is_superuser:
         return redirect('/acceso-denegado/')
 
     cita = Cita.objects.get(pk=cita_id)
-    evento = cita.events.first()
-    fecha = evento.hora_inicio.date()
-
-    dia_semana = get_dia_semana(fecha.weekday())
-    mes = get_mes(fecha.month)
-
+    usuario = request.user
     if request.method == 'POST':
         recuerrente_si = request.POST.get('eventoRecurrente')
         motivo = request.POST.get("motivo")
@@ -62,18 +59,18 @@ def borrar_cita(request, cita_id):
         try:
             # Borrado recurrente
             if borrado_recuerrente:
-                start_time = datetime.strptime(str(cita.fecha), "%Y-%m-%d %H:%M:%S")
-                for i in range(0, 5):
-                    days = 7 * i
-                    new_start_time = start_time + timedelta(days=days)
-                    cita_borrar = Cita.objects.filter(fecha=new_start_time).first()
-                    if cita_borrar:
-                        print("Cita a borrar: {}".format(cita_borrar.fecha))
-                        delete_date(cita_borrar=cita_borrar, motivo=motivo, usuario=request.user)
+                dia_semana = cita.dia_semana  # 0->Mon, 1->Tuesday...6->Sunday
+                posicion_dia = cita.posicion_turno  # 9:00->0, 10:00->1 ...21:00->11
+                medico = cita.medico
+                cita_id = cita.pk
+                citas_registradas = Cita.objects.filter(
+                    dia_semana=dia_semana, posicion_turno=posicion_dia, medico=medico).exclude(fecha_inicio__lt=cita.fecha_inicio)
+                for cita_registrada in citas_registradas:
+                    delete_date(cita_borrar=cita_registrada,
+                                motivo=motivo, usuario=usuario)
                 return HttpResponseRedirect('/citas/horario')
 
             # Borrado 1 sola cita
-
             delete_date(cita_borrar=cita, motivo=motivo, usuario=request.user)
             messages.add_message(request=request, level=messages.SUCCESS,
                                  message="Cita borrada con exito. ")
@@ -87,31 +84,31 @@ def borrar_cita(request, cita_id):
             print(e)
             messages.add_message(request=request, level=messages.ERROR,
                                  message="Error borrando la cita. ")
-    context = {'cita': cita, 'dia_semana': dia_semana, 'mes': mes}
+    context = {'cita': cita, 'dia_semana': cita.dia_semana}
 
     return render(request, 'cita/confirmacion_borrar.html', context=context)
 
 
 def delete_date(cita_borrar, motivo, usuario):
-    for evento in cita_borrar.events.all():
-        print("Evento a borrar: {}".format(evento.hora_inicio))
-        evento.titulo = evento.medico.nombre
-        evento.cita = None
-        evento.color = "#99ADC1"
-        evento.save()
-    extendedProps = EventExtendedProp.objects.filter(cita=cita_borrar.pk)
+    try:
+        """Save incident LOG"""
+        incidencia = RegistroIncidencias()
+        incidencia.accion = "Borrado cita {} {} {}".format(
+            cita_borrar.paciente.nombre, cita_borrar.medico.nombre, cita_borrar.fecha_inicio)
+        incidencia.comentario = motivo
+        incidencia.usuario = usuario
+        incidencia.save()
 
-    for extended in extendedProps:
-        extended.cita = None
-        extended.save()
+        cita_borrar.titulo = "{} {}".format(
+            cita_borrar.medico.nombre, cita_borrar.medico.primer_apellido)
+        cita_borrar.color = "#99ADC1"
+        cita_borrar.paciente = None
+        cita_borrar.recurrente = False
+        cita_borrar.save()
 
-    incidencia = RegistroIncidencias()
-    incidencia.accion = "Borrado cita {}".format(cita_borrar.pk)
-    incidencia.comentario = motivo
-    incidencia.usuario = usuario
-    incidencia.save()
-
-    cita_borrar.delete()
+    except Exception as e:
+        print(e)
+        print("Error borrando citas")
 
 
 @login_required
@@ -126,22 +123,18 @@ def cargar_eventos(request):
             start_date = datetime.today()
             end_date = datetime.today() + timedelta(days=1)
 
-        eventos = Event.objects.filter(tipo=0, deshabilitado=0, hora_inicio__gte=start_date,
-                                       hora_fin__lte=end_date).order_by('id')
+        eventos = Cita.objects.filter(fecha_inicio__gte=start_date,
+                                      fecha_fin__lte=end_date).order_by('id')
 
         if medico is not None:
             eventos = eventos.filter(medico_id=medico)
 
         for evento in eventos:
-            cita_pagada = ""
-            if evento.cita:
-                cita_pagada = "PAGADA" if evento.cita.pagada else "APARTADA"
-
             evento_dict = {
-                'title': "{} {}".format(evento.titulo, cita_pagada),
+                'title': "{}".format(evento.titulo),
                 'backgroundColor': evento.color,
-                'start': str(evento.hora_inicio),
-                'end': str(evento.hora_fin),
+                'start': str(evento.fecha_inicio),
+                'end': str(evento.fecha_fin),
                 'extendedProps': EventExtendedPropSerializer(evento.extendedProps).data
 
             }
@@ -149,8 +142,8 @@ def cargar_eventos(request):
 
     except Cita.DoesNotExist:
         print("Cita does not exist")
-        response = {'rc': 500, 'msg': 'Error loading Specialists', 'data': None}
-
+        response = {'rc': 500,
+                    'msg': 'Error loading Specialists', 'data': None}
     return HttpResponse(json.dumps(response), content_type='application/json')
 
 
@@ -162,106 +155,71 @@ def seleccionar_tipo_cita(request, horario_id):
 
 @login_required
 def calendario_registrar_cita(request):
-    if request.user.groups.filter(name="especialistas"):
+    if request.user.groups.filter(name="terapeuta"):
         return redirect('/acceso-denegado/')
 
     if request.method == "POST":
         try:
-            especialista_id = request.POST.get('especialista')
-            evento_id = request.POST.get('evento-cita')
+            cita_id = request.POST.get('evento-cita')
             observaciones = request.POST.get('observaciones')
-            inicio = request.POST.get('fecha-inicio-cita')
-            fin = request.POST.get('fecha-fin-cita')
             paciente = request.POST.get('paciente')
             tipo_cita = request.POST.get('tipoCita')
             recuerrente_si = request.POST.get('eventoRecurrente')
-            cita_pagada_data = request.POST.get('eventoPagado')
-            medico = Medico.objects.get(pk=especialista_id)
             paciente = Paciente.objects.get(pk=paciente)
+            cita = Cita.objects.get(pk=cita_id)
             recuerrente = True if recuerrente_si == "recurrente" else False
-            cita_pagada = True if cita_pagada_data == "pagado" else False
-            cita_fecha = datetime.strptime(inicio, "%Y-%m-%dT%H:%M:%S")
-            cita_fecha_fin = datetime.strptime(fin, "%Y-%m-%dT%H:%M:%S")
-            dia_semana = cita_fecha.date().weekday()
 
-            request.session['fecha_evento_creado'] = inicio
-
-            if dia_semana == 6:
-                dia_semana = 0
-            else:
-                dia_semana += 1
+            request.session['fecha_evento_creado'] = cita.fecha_inicio.__str__()
 
             if not recuerrente:
-                evento = Event.objects.get(pk=evento_id)
-                crear_cita_evento(cita_fecha, medico, paciente, tipo_cita, observaciones, cita_fecha_fin, recuerrente,
-                                  dia_semana, cita_pagada, evento)
+                crear_cita_paciente(cita, paciente, tipo_cita,
+                                    observaciones, recuerrente)
             else:
-                print(cita_fecha_fin)
-                for i in range(0, 5):
-                    print("crendo citas{}".format(i))
-                    days = 7 * i
-                    fecha_inicio = cita_fecha + timedelta(days=days)
-                    fecha_fin = cita_fecha_fin + timedelta(days=days)
-                    evento = Event.objects.get(hora_inicio=fecha_inicio, hora_fin=fecha_fin, medico=medico)
-                    print("EVETBTI")
-                    print(evento)
-                    crear_cita_evento(fecha_inicio, medico, paciente, tipo_cita, observaciones, fecha_fin, recuerrente,
-                                      dia_semana, cita_pagada, evento)
-            print("Set fecha evento creado:".format(request.session.get('fecha_evento_creado', False)))
+                dia_semana = cita.dia_semana  # 0->Mon, 1->Tuesday...6->Sunday
+                posicion_dia = cita.posicion_turno  # 9:00->0, 10:00->1 ...21:00->11
+                medico = cita.medico
+                cita_id = cita.pk
+                espacios_medico = Cita.objects.filter(
+                    dia_semana=dia_semana, posicion_turno=posicion_dia, medico=medico, fecha_inicio__gte=cita.fecha_inicio)
+                print("Dates to update {}".format(espacios_medico.count()))
+                for espacio in espacios_medico:
+                    crear_cita_paciente(espacio, paciente, tipo_cita,
+                                        observaciones, recuerrente)
+
+            print("Set fecha evento creado:".format(
+                request.session.get('fecha_evento_creado', False)))
             return redirect('citas:seleccionar_horario')
-        except Event.DoesNotExist:
+        except Cita.DoesNotExist:
             messages.add_message(request=request, level=messages.ERROR,
                                  message="Algunas citas no se crearon. Valide que cada espacio tenga asignado un especialista")
         except Exception as e:
             print(e)
             messages.add_message(request=request, level=messages.ERROR,
-                                 message="Error creando la cita. Todos los datos son obligatorios")
+                                 message="Error creando la cita.")
 
         return redirect('citas:seleccionar_horario')
 
     return HttpResponse("Acceso denegado")
 
 
-def crear_cita_evento(cita_fecha, medico, paciente, tipo_cita_id, observaciones, fecha_fin, recurrente, dia_semana,
-                      cita_pagada, evento):
-    cita = None
-    print(tipo_cita_id)
+def crear_cita_paciente(cita, paciente, tipo_cita_id, observaciones, recuerrente):
+    if cita.paciente is not None:
+        raise Exception("Ya hay una cita para este paciente en este espacio {}".format(
+            cita.fecha_inicio))
     try:
-        cita = Cita()
-        cita.medico = medico
+        tipo_cita = TCita.objects.get(pk=tipo_cita_id)
+        cita.titulo = "{}: {} {}".format(
+            cita.medico.nombre, paciente.nombre, paciente.primer_apellido)
         cita.paciente = paciente
         cita.estado = ECita.objects.get(estado=ECita.RESERVADA)
-        cita.tipo = TCita.objects.get(pk=tipo_cita_id)
+        cita.tipo = tipo_cita
+        cita.color = tipo_cita.color
         cita.observaciones = observaciones
-        cita.calendario = Calendario.objects.first()
-        cita.fecha = cita_fecha
-        cita.fecha_fin = fecha_fin
-        cita.pagada = cita_pagada
+        cita.recurrente = recuerrente
         cita.save()
     except Exception as e:
         print("Fallo crear cita")
         print(e)
-    try:
-        """FIND EVENT"""
-        # evento = Event.objects.get(pk=evento_id)
-        evento.cita = cita
-        evento.color = cita.tipo.color
-        evento.titulo = "{} {}".format(evento.medico.nombre, cita.paciente.nombre)
-        evento.recurrente = recurrente
-        evento.dia_semana = dia_semana
-        evento.save()
-    except Exception as e:
-        print(e)
-        print("Fallo crear evento")
-    try:
-        """SAVE EXTENDED PROP"""
-        extendedProps = EventExtendedProp.objects.filter(evento=evento.pk)
-        for prop in extendedProps:
-            prop.cita = cita.pk
-            prop.save()
-    except Exception as e:
-        print(e)
-        print("Fallo crear extenden prop")
 
 
 @login_required
@@ -272,7 +230,8 @@ def detalle_cita(request, cita_id):
         response = {'rc': 200, 'msg': 'Specialists', 'data': serializer.data}
     except Cita.DoesNotExist:
         print("Cita does not exist")
-        response = {'rc': 500, 'msg': 'Error loading Specialists', 'data': None}
+        response = {'rc': 500,
+                    'msg': 'Error loading Specialists', 'data': None}
 
     return HttpResponse(json.dumps(response), content_type='application/json')
 
@@ -319,7 +278,7 @@ def primera_nueva_cita(request):
 
 @login_required
 def editar_cita(request, cita_id):
-    if request.user.groups.filter(name="especialistas"):
+    if request.user.groups.filter(name="terapeuta") or request.user.groups.filter(name="recepcion"):
         return redirect('/acceso-denegado/')
 
     cita = get_object_or_404(Cita, pk=cita_id)
@@ -328,16 +287,11 @@ def editar_cita(request, cita_id):
     if request.method == 'POST':
         form = CitaForm(request.POST, instance=cita)
         if form.is_valid():
-            form.save()
-            eventos = Event.objects.filter(cita=cita)
-            for evento in eventos:
-                evento.titulo = "{} {}".format(cita.medico.nombre, cita.paciente.nombre)
-                # evento.hora_inicio = cita.fecha
-                # evento.hora_fin = cita.fecha_fin
-                # evento.dia_semana = cita.fecha.date().weekday()
-                evento.medico = cita.medico
-                evento.color = cita.tipo.color
-                evento.save()
+            cita = form.save(False)
+            cita.titulo = "{} {} {}".format(
+                cita.medico.nombre, cita.paciente.nombre, cita.paciente.primer_apellido)
+            cita.color = cita.tipo.color
+            cita.save()
             msg = "Cita actualizada con éxito"
 
     context = {
@@ -376,8 +330,13 @@ def migrar(request):
 
 @login_required
 def listado_citas(request):
+    if request.user.groups.filter(name="terapeuta"):
+        return redirect('/acceso-denegado/')
     citas = Cita.objects.all().order_by('-id')
+    paginator = Paginator(citas, 25)  # Show 25 contacts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'citas': citas
+        'citas': page_obj
     }
     return render(request, 'cita/listado_citas.html', context=context)

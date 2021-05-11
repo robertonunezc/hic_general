@@ -17,9 +17,6 @@
             <form action="{% url 'citas:calendario_registrar_cita' %}" method="post">
                 <div class="modal-body">
                     <input type="hidden" name="evento-cita" id="evento-cita">
-                    <input type="hidden" name="fecha-inicio-cita" id="fecha-inicio-cita">
-                    <input type="hidden" name="fecha-fin-cita" id="fecha-fin-cita">
-
                     <div class="form-row">
                         <div class="form-group col-12">
                             <label for="pacienteNombre">Paciente</label>
@@ -35,7 +32,6 @@
                         <div class="form-group col-12">
                             <label for="medicoNombre">Especialista</label>
                             <p id="nombre-especialista"></p>
-                            <input type="hidden" value="" id="especialista" name="especialista">
                         </div>
                         <div class="form-group col-12">
                             <label for="tipoCita">Tipo Cita</label>
@@ -65,28 +61,6 @@
                                 <input class="form-check-input" type="radio" name="eventoRecurrente"
                                        id="eventoRecurrenteNo" value="no-recurrente">
                                 <label class="form-check-label" for="eventoRecurrenteNo">
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group col-12">
-                            <label for="">¿Es una cita pagada?</label>
-                        </div>
-                        <div class="form-group col-6">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="eventoPagado"
-                                       id="eventoPagadoSi" checked value="pagado">
-                                <label class="form-check-label" for="eventoPagadoSi">
-                                    Si
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group col-6">
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="eventoPagado"
-                                       id="eventoPagadoNo" value="apartado">
-                                <label class="form-check-label" for="eventoPagadoNo">
                                     No
                                 </label>
                             </div>

@@ -46,6 +46,7 @@
             </div>
             <div class="sidebar-brand-text mx-3">Clínica</div>
         </a>
+            <div class="text-center text-white">Usuario: {{ request.user }}</div>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -127,29 +128,29 @@
                         <span>Administración</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/reportes/citas"
-                       aria-expanded="true">
-                        <i class="fas fa-chart-pie fa-chart-pie"></i>
-                        <span>Reportes</span>
-                    </a>
-                </li>
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages"
-                       aria-expanded="true"
-                       aria-controls="collapsePages">
-                        <i class="fas fa-fw fa-money-bill-alt"></i>
-                        <span>Contabilidad</span>
-                    </a>
-                    <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
-                         data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="{% url 'contabilidad:listado_gastos' %}">Gastos</a>
-                        </div>
-                    </div>
-                </li>
             {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="/reportes/citas"
+                   aria-expanded="true">
+                    <i class="fas fa-chart-pie fa-chart-pie"></i>
+                    <span>Reportes</span>
+                </a>
+            </li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item active">
+                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages"
+                   aria-expanded="true"
+                   aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-money-bill-alt"></i>
+                    <span>Contabilidad</span>
+                </a>
+                <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{% url 'contabilidad:listado_gastos' %}">Gastos</a>
+                    </div>
+                </div>
+            </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}"
@@ -394,5 +395,14 @@
 {% block custom_js %}
 
 {% endblock %}
+<script type="text/javascript">
+  window._mfq = window._mfq || [];
+  (function() {
+    var mf = document.createElement("script");
+    mf.type = "text/javascript"; mf.defer = true;
+    mf.src = "//cdn.mouseflow.com/projects/49785345-3403-4a21-a2e2-c0cd8d81ccb6.js";
+    document.getElementsByTagName("head")[0].appendChild(mf);
+  })();
+</script>
 </body>
 </html>

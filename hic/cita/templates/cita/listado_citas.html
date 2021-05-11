@@ -49,6 +49,23 @@
             </div>
 
         </div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if citas.has_previous %}
+                    <a href="?page=1">&laquo; primera</a>
+                    <a href="?page={{ citas.previous_page_number }}">anterior</a>
+                {% endif %}
+
+                <span class="current">
+                    Paginas {{ citas.number }} de {{ citas.paginator.num_pages }}.
+                </span>
+
+                {% if citas.has_next %}
+                    <a href="?page={{ citas.next_page_number }}">siguiente</a>
+                    <a href="?page={{ citas.paginator.num_pages }}">ultima &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
 {% endblock %}
 
