@@ -83,8 +83,9 @@ def agregar_servicio_paciente(request, servicio_id, paciente_id):
             paciente_servicios.estado_cuenta = estado_cuenta
             paciente_servicios.servicio = servicio
             paciente_servicios.descuento = descuento
-            paciente_servicios.total = servicio.precio if int(
-                descuento) > 0 else servicio.precio / (100+int(descuento))/100
+            paciente_servicios.total = servicio.precio
+            # paciente_servicios.total = servicio.precio if int(
+            #     descuento) > 0 else servicio.precio / (100+int(descuento))/100
             paciente_servicios.save()
         else:
             response = {'code': 500,

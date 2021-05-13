@@ -1,4 +1,4 @@
-from hic.contabilidad.models import PacienteServicios, TabuladorPrecios
+from hic.contabilidad.models import EstadoCuenta, PacienteServicios, TabuladorPrecios
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 
@@ -99,6 +99,23 @@ def historia_clinica(request, paciente_id):
 
     }
     return render(request, 'pacientes/historia_clinica.html', context=context)
+
+
+@login_required
+def estado_cuenta(request, paciente_id):
+    if request.user.groups.filter(name="terapeuta"):
+        return redirect('/acceso-denegado/')
+    paciente = Paciente.objects.get(pk=paciente_id)
+    estado_cuenta = EstadoCuenta.objects.get(
+        paciente=paciente)
+    paciente_servicios = PacienteServicios.objects.filter(
+        estado_cuenta=estado_cuenta)
+
+    context = {
+        'servicios': paciente_servicios,
+        'paciente': paciente,
+    }
+    return render(request, 'pacientes/estado_cuenta.html', context=context)
 
 
 @login_required

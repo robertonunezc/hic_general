@@ -10,4 +10,6 @@ urlpatterns = [
     path('pdf/<int:paciente_id>', views.ver_pdf_historia, name='ver_pdf_historia'),
     path('historia/<int:paciente_id>',
          views.historia_clinica, name='historia_clinica'),
+    path('estado-cuenta/<int:paciente_id>',
+         views.estado_cuenta, name='estado_cuenta'),
 ]
