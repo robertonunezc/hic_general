@@ -41,7 +41,7 @@
                 <th>Descuento</th>
                 <th>Borrar</th>
             </thead>
-            <tbody>
+            <tbody id="servicios-agregados-body">
 
             </tbody>
         </table>
@@ -60,14 +60,45 @@
         btn.addEventListener('click', function (event) {
             event.preventDefault();
             const service = this.dataset.value;
-            addService(service)
+            const discount = 0; //TODO: get the real value of this
+            addService(service, discount)
         })
     }
 
 
-    function addService(service) {
+    async function addService(service, discount) {
         console.log("Add Service", service)
+        let response = await fetch(`/contabilidad/agregar/servicio/paciente/${service}/{{paciente_id}}?discount=${discount}`);
 
+        if (response.ok) {
+            let json = await response.json();
+            console.log(json)
+            if (json.code != 200) {
+                alert(json.msg);
+                return;
+            }
+            const $serviceTable = document.getElementById('servicios-agregados');
+            const serviceAmount = document.querySelectorAll('#servicios-agregados-body tr').length;
+            const $serviceRow = $serviceTable.insertRow(serviceAmount + 1);
+
+            let $nameCell = $serviceRow.insertCell(0);
+            let $priceCell = $serviceRow.insertCell(1);
+            let $discountCell = $serviceRow.insertCell(2);
+            let $removeCell = $serviceRow.insertCell(3);
+
+            $nameCell.innerHTML = json.data.nombre_servicio
+            $priceCell.innerHTML = json.data.precio
+            $discountCell.innerHTML = 0 //TODO: add the real value
+            $removeCell.innerHTML = `<button class="quitar-servicio-pedido btn btn-danger"
+                                                onclick="eliminarServicioEstadoCuenta(event,${json.data.id})"
+                                                data-estado="${json.data.id}"
+                                                data-servicio="${json.data.id}" class="">X</button>`;
+        } else {
+            alert("HTTP-Error: " + response.status);
+        }
+    }
+    function eliminarServicioEstadoCuenta() {
+        alert("Deleted services")
     }
 </script>
 {% endblock %}

@@ -1,6 +1,6 @@
 from hic.contabilidad.models import PacienteServicios, TabuladorPrecios
 from django.http.response import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 
 from hic.main.models import Paciente
 from hic.paciente.forms import PacienteForm, HistoriaClinicaForm
@@ -48,9 +48,13 @@ def nuevo_paciente(request):
 
 @login_required
 def agregar_servicios(request, paciente_id):
+    paciente = get_object_or_404(Paciente, pk=paciente_id)
+
     servicios = TabuladorPrecios.objects.all()
     context = {
-        'servicios': servicios
+        'servicios': servicios,
+        'paciente_id': paciente_id,
+        'paciente': paciente
     }
     return render(request, 'pacientes/agregar_servicios.html', context=context)
 
