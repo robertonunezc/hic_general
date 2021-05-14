@@ -10,4 +10,6 @@ urlpatterns = [
          views.detalle_servicio, name='obtener_servicio'),
     path('agregar/servicio/paciente/<int:servicio_id>/<int:paciente_id>',
          views.agregar_servicio_paciente, name='agregar_servicio_paciente'),
+    path('borrar/servicio/paciente/<int:servicio_id>/<int:paciente_id>',
+         views.eliminar_serivicio_paciente, name='eliminar_serivicio_paciente'),
 ]

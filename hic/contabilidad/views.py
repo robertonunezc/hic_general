@@ -101,3 +101,23 @@ def agregar_servicio_paciente(request, servicio_id, paciente_id):
         response = {'code': 500,
                     'msg': 'Error loading servicio', 'data': None}
     return HttpResponse(json.dumps(response), content_type="application/json")
+
+
+def eliminar_serivicio_paciente(request, servicio_id, paciente_id):
+    try:
+        servicio = TabuladorPrecios.objects.get(pk=servicio_id)
+        estado_cuenta = EstadoCuenta.objects.get(paciente_id=paciente_id)
+        servicio = PacienteServicios.objects.get(
+            estado_cuenta=estado_cuenta, servicio=servicio)
+        servicio.delete()
+        serializer = TabuladorPrecioSerializer(servicio)
+        response = {'code': 200, 'data': serializer.data, 'msg': "OK"}
+    except TabuladorPrecios.DoesNotExist:
+        print("Servicio does not exist")
+        response = {'code': 500,
+                    'msg': 'Error loading servicio', 'data': None}
+    except Exception as e:
+        print(e)
+        response = {'code': 500,
+                    'msg': 'Error borrando servicio', 'data': None}
+    return HttpResponse(json.dumps(response), content_type="application/json")

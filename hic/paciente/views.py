@@ -49,12 +49,19 @@ def nuevo_paciente(request):
 @login_required
 def agregar_servicios(request, paciente_id):
     paciente = get_object_or_404(Paciente, pk=paciente_id)
-
     servicios = TabuladorPrecios.objects.all()
+    paciente_servicios = None
+
+    estado_cuenta = EstadoCuenta.objects.filter(
+        paciente=paciente)
+    if estado_cuenta.exists():
+        paciente_servicios = PacienteServicios.objects.filter(
+            estado_cuenta=estado_cuenta.first())
     context = {
         'servicios': servicios,
         'paciente_id': paciente_id,
-        'paciente': paciente
+        'paciente': paciente,
+        'paciente_servicios': paciente_servicios
     }
     return render(request, 'pacientes/agregar_servicios.html', context=context)
 

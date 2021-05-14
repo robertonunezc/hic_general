@@ -42,7 +42,20 @@
                 <th>Borrar</th>
             </thead>
             <tbody id="servicios-agregados-body">
-
+                {%if paciente_servicios and paciente_servicios|length > 0%}
+                {%for servicio in paciente_servicios%}
+                <tr>
+                    <td>{{servicio.servicio.nombre_servicio}}</td>
+                    <td>{{servicio.total}}</td>
+                    <td>{{servicio.descuento}}</td>
+                    <td>
+                        <button class="quitar-servicio-pedido btn btn-danger"
+                            onclick="eliminarServicioEstadoCuenta(event,{{servicio.servicio.id}}, {{paciente_id}})"
+                            class="">X</button>
+                    </td>
+                </tr>
+                {%endfor%}
+                {%endif%}
             </tbody>
         </table>
     </div>
@@ -90,15 +103,21 @@
             $priceCell.innerHTML = json.data.precio
             $discountCell.innerHTML = 0 //TODO: add the real value
             $removeCell.innerHTML = `<button class="quitar-servicio-pedido btn btn-danger"
-                                                onclick="eliminarServicioEstadoCuenta(event,${json.data.id})"
-                                                data-estado="${json.data.id}"
-                                                data-servicio="${json.data.id}" class="">X</button>`;
+                                                onclick="eliminarServicioEstadoCuenta(event,${json.data.id}, {{paciente_id}})" class="">X</button>`;
         } else {
             alert("HTTP-Error: " + response.status);
         }
     }
-    function eliminarServicioEstadoCuenta() {
-        alert("Deleted services")
+    function eliminarServicioEstadoCuenta(event, servicio, paciente) {
+        let response = await fetch(`/contabilidad/borrar/servicio/paciente/${service}/${paciente_id}/`);
+        if (response.ok) {
+            let json = await response.json();
+            console.log(json)
+            if (json.code != 200) {
+                alert(json.msg);
+                return;
+            }
+        }
     }
 </script>
 {% endblock %}
