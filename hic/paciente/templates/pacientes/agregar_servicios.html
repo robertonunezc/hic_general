@@ -21,10 +21,13 @@
                     <td>{{servicio.precio}}</td>
                     <td>{{servicio.tipo_cobro}}</td>
                     <td>
-                        <label>Descuento</label>
-                        <input type="number" value="0" name="descuento" class="descuento-input" />
+                        <label>Descuento en %</label>
+                        <input type="number" value="0" name="descuento" id="discount-{{servicio.pk}}" class="descuento-input" />
                     </td>
-                    <td><button class="btn btn-primary btn-add" data-value="{{servicio.pk}}">Agregar</button></td>
+                    <td>
+                        <button class="btn btn-primary btn-add" data-value="{{servicio.pk}}" 
+                                data-discount="discount-{{servicio.pk}}">Agregar</button>
+                    </td>
 
                 </tr>
                 {% endfor %}
@@ -38,7 +41,8 @@
             <thead>
                 <th>Servicio</th>
                 <th>Costo</th>
-                <th>Descuento</th>
+                <th>Descuento %</th>
+                <th>Total</th>
                 <th>Borrar</th>
             </thead>
             <tbody id="servicios-agregados-body">
@@ -46,8 +50,10 @@
                 {%for servicio in paciente_servicios%}
                 <tr>
                     <td>{{servicio.servicio.nombre_servicio}}</td>
-                    <td>{{servicio.total}}</td>
+                    <td>{{servicio.servicio.precio}}</td>
                     <td>{{servicio.descuento}}</td>
+                    <td>{{servicio.total}}</td>
+
                     <td>
                         <button class="quitar-servicio-pedido btn btn-danger"
                             onclick="eliminarServicioEstadoCuenta(event,{{servicio.servicio.id}}, {{paciente_id}})"
@@ -62,7 +68,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <button class="btn btn-success">Terminar</button>
+        <a href="{% url 'pacientes:listado_pacientes' %}" class="btn btn-success">Terminar</a>
     </div>
 </div>
 {% endblock %}
@@ -72,9 +78,11 @@
     for (const btn of btnsAdd) {
         btn.addEventListener('click', function (event) {
             event.preventDefault();
-            const service = this.dataset.value;
-            const discount = 0; //TODO: get the real value of this
-            addService(service, discount)
+            const service = this.dataset.value;            
+            const discountId = this.dataset.discount;            
+            const $discountItem = document.getElementById(discountId);
+            const discountValue = $discountItem.value;
+            addService(service, discountValue)
         })
     }
 
@@ -97,19 +105,21 @@
             let $nameCell = $serviceRow.insertCell(0);
             let $priceCell = $serviceRow.insertCell(1);
             let $discountCell = $serviceRow.insertCell(2);
-            let $removeCell = $serviceRow.insertCell(3);
+            let $totalCell = $serviceRow.insertCell(3);
+            let $removeCell = $serviceRow.insertCell(4);
 
-            $nameCell.innerHTML = json.data.nombre_servicio
-            $priceCell.innerHTML = json.data.precio
-            $discountCell.innerHTML = 0 //TODO: add the real value
+            $nameCell.innerHTML = json.data.servicio.nombre_servicio
+            $priceCell.innerHTML = json.data.servicio.precio
+            $totalCell.innerHTML = json.data.total
+            $discountCell.innerHTML = json.data.descuento //TODO: add the real value
             $removeCell.innerHTML = `<button class="quitar-servicio-pedido btn btn-danger"
                                                 onclick="eliminarServicioEstadoCuenta(event,${json.data.id}, {{paciente_id}})" class="">X</button>`;
         } else {
             alert("HTTP-Error: " + response.status);
         }
     }
-    function eliminarServicioEstadoCuenta(event, servicio, paciente) {
-        let response = await fetch(`/contabilidad/borrar/servicio/paciente/${service}/${paciente_id}/`);
+    async function eliminarServicioEstadoCuenta(event, servicio, paciente) {
+        let response = await fetch(`/contabilidad/borrar/servicio/paciente/${servicio}/${paciente}`);
         if (response.ok) {
             let json = await response.json();
             console.log(json)
@@ -117,6 +127,7 @@
                 alert(json.msg);
                 return;
             }
+            window.location.reload(true) 
         }
     }
 </script>

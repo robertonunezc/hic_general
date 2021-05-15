@@ -60,9 +60,15 @@ class EstadoCuenta(models.Model):
     paciente = models.ForeignKey(
         Paciente, on_delete=models.PROTECT, related_name='estado_cuenta')
 
+    def __str__(self):
+        return "{}".format(self.paciente.nombre)
+
 
 class PacienteServicios(models.Model):
     servicio = models.ForeignKey(TabuladorPrecios, on_delete=models.PROTECT)
     estado_cuenta = models.ForeignKey(EstadoCuenta, on_delete=models.PROTECT)
     descuento = models.FloatField(default=0.0)
     total = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return "{}- {} - {} - {}".format(self.servicio.nombre_servicio, self.estado_cuenta.paciente.nombre, self.descuento, self.total)
