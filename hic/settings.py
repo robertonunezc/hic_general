@@ -24,7 +24,7 @@ SECRET_KEY = '_%q)@_kgh_n(uim74u3d4=2_c0(u-ga)eqb2271)4z%3vdfkf^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['playa.cisnemexico.org', 'cancun.cisnemexico.org','suc1.hic.local']
+ALLOWED_HOSTS = ['playa.cisnemexico.org', 'cancun.cisnemexico.org','hic.puntoreica.com']
 
 # AUTH_USER_MODEL = 'main.User'
 LOGIN_REDIRECT_URL = '/'
