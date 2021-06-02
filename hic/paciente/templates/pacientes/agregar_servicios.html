@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block custom_style %}
+{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-8">
+        <h2>Agregar Servicios </h2>
+        <hr>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <th>Servicio</th>
+                <th>Costo</th>
+                <th>Tipo</th>
+                <th>Descuento</th>
+                <th>Acción</th>
+            </thead>
+            <tbody>
+                {% for servicio in servicios %}
+                <tr>
+                    <td>{{servicio.nombre_servicio}}</td>
+                    <td>{{servicio.precio}}</td>
+                    <td>{{servicio.tipo_cobro}}</td>
+                    <td>
+                        <label>Descuento en %</label>
+                        <input type="number" value="0" name="descuento" id="discount-{{servicio.pk}}" class="descuento-input" />
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-add" data-value="{{servicio.pk}}" 
+                                data-discount="discount-{{servicio.pk}}">Agregar</button>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-4">
+        <h2>Servicios Agregados </h2>
+        <hr>
+        <table id="servicios-agregados" class="table table-bordered table-striped">
+            <thead>
+                <th>Servicio</th>
+                <th>Costo</th>
+                <th>Descuento %</th>
+                <th>Total</th>
+                <th>Borrar</th>
+            </thead>
+            <tbody id="servicios-agregados-body">
+                {%if paciente_servicios and paciente_servicios|length > 0%}
+                {%for servicio in paciente_servicios%}
+                <tr>
+                    <td>{{servicio.servicio.nombre_servicio}}</td>
+                    <td>{{servicio.servicio.precio}}</td>
+                    <td>{{servicio.descuento}}</td>
+                    <td>{{servicio.total}}</td>
+
+                    <td>
+                        <button class="quitar-servicio-pedido btn btn-danger"
+                            onclick="eliminarServicioEstadoCuenta(event,{{servicio.servicio.id}}, {{paciente_id}})"
+                            class="">X</button>
+                    </td>
+                </tr>
+                {%endfor%}
+                {%endif%}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <a href="{% url 'pacientes:listado_pacientes' %}" class="btn btn-success">Terminar</a>
+    </div>
+</div>
+{% endblock %}
+{% block custom_js %}
+<script>
+    const btnsAdd = document.querySelectorAll('.btn-add');
+    for (const btn of btnsAdd) {
+        btn.addEventListener('click', function (event) {
+            event.preventDefault();
+            const service = this.dataset.value;            
+            const discountId = this.dataset.discount;            
+            const $discountItem = document.getElementById(discountId);
+            const discountValue = $discountItem.value;
+            addService(service, discountValue)
+        })
+    }
+
+
+    async function addService(service, discount) {
+        console.log("Add Service", service)
+        let response = await fetch(`/contabilidad/agregar/servicio/paciente/${service}/{{paciente_id}}?discount=${discount}`);
+
+        if (response.ok) {
+            let json = await response.json();
+            console.log(json)
+            if (json.code != 200) {
+                alert(json.msg);
+                return;
+            }
+            const $serviceTable = document.getElementById('servicios-agregados');
+            const serviceAmount = document.querySelectorAll('#servicios-agregados-body tr').length;
+            const $serviceRow = $serviceTable.insertRow(serviceAmount + 1);
+
+            let $nameCell = $serviceRow.insertCell(0);
+            let $priceCell = $serviceRow.insertCell(1);
+            let $discountCell = $serviceRow.insertCell(2);
+            let $totalCell = $serviceRow.insertCell(3);
+            let $removeCell = $serviceRow.insertCell(4);
+
+            $nameCell.innerHTML = json.data.servicio.nombre_servicio
+            $priceCell.innerHTML = json.data.servicio.precio
+            $totalCell.innerHTML = json.data.total
+            $discountCell.innerHTML = json.data.descuento //TODO: add the real value
+            $removeCell.innerHTML = `<button class="quitar-servicio-pedido btn btn-danger"
+                                                onclick="eliminarServicioEstadoCuenta(event,${json.data.id}, {{paciente_id}})" class="">X</button>`;
+        } else {
+            alert("HTTP-Error: " + response.status);
+        }
+    }
+    async function eliminarServicioEstadoCuenta(event, servicio, paciente) {
+        let response = await fetch(`/contabilidad/borrar/servicio/paciente/${servicio}/${paciente}`);
+        if (response.ok) {
+            let json = await response.json();
+            console.log(json)
+            if (json.code != 200) {
+                alert(json.msg);
+                return;
+            }
+            window.location.reload(true) 
+        }
+    }
+</script>
+{% endblock %}
