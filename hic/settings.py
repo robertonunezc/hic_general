@@ -95,7 +95,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'hic.urls'
 
-## CLOUDINARY CONFIGURATIONS
+# CLOUDINARY CONFIGURATIONS
 CLOUDINARY = {
     'max_length': 200,
     'cloud_name': 'h3dx0',
@@ -106,8 +106,7 @@ CLOUDINARY = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -163,7 +162,27 @@ DATABASE_ROUTERS = (
 )
 
 
-TENANT_MODEL = "customer.Client"# app.Model
+TENANT_MODEL = "customer.Client"  # app.Model
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '{}/debug.log' .format(os.path.join(BASE_DIR)),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 HIC_DIR = "hic/hic_pdf/"
 HIC_HOST = 'http://localhost:8000/'
