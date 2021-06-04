@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block container %}
+<div class="row">
+    {% if msg %}
+     <div class="col-sm-12">
+        <div class="alert alert-danger">{{msg}}</div>
+        </div>
+    <div class="col-sm-12">
+        
+        <a href="{% url 'pacientes:agregar_servicios' paciente_id=paciente.id %}" class="btn btn-success">Agregar servicios</a>
+        </div>
+    {% endif %}
+    <div class="col-sm-12">
+    <h3>Estado de cuenta para : {{paciente.nombre}} {{paciente.primer_apellido}}</h3>
+    <table id="servicios-agregados" class="table table-bordered table-striped">
+        <thead>
+            <th>Servicio</th>
+            <th>Costo</th>
+            <th>Descuento</th>
+            <th>Total</th>
+        </thead>
+        <tbody id="servicios-agregados-body">
+            {%for servicio in servicios%}
+            <tr>
+                <td>{{servicio.servicio.nombre_servicio}}</td>
+                <td>${{servicio.servicio.precio}}</td>
+                <td>${{servicio.descuento}}</td>
+                <td>${{servicio.total}}</td>
+            </tr>
+
+            {%endfor%}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

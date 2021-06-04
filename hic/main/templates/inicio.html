@@ -32,8 +32,8 @@
                 <div class="card-body">
                     <img class="img-responsive" style="display:  block;margin: 15px auto"
                          src="{% static 'img/appoint.png' %}" alt="NUEVA CITA">
-                    <h5 class="card-title">Registro citas</h5>
-                    <p class="card-text">Crear las citas a los pacientes</p>
+                    <h5 class="card-title">Gestión citas</h5>
+                    <p class="card-text">Gestionar las citas a los pacientes</p>
                     {% if not user.groups.all.0.name == "especialistas" %}
 
                         <a href="{% url 'citas:seleccionar_horario' %}"
