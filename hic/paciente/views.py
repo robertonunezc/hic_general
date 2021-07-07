@@ -112,16 +112,25 @@ def historia_clinica(request, paciente_id):
 def estado_cuenta(request, paciente_id):
     if request.user.groups.filter(name="terapeuta"):
         return redirect('/acceso-denegado/')
-    paciente = Paciente.objects.get(pk=paciente_id)
-    estado_cuenta = EstadoCuenta.objects.get(
-        paciente=paciente)
-    paciente_servicios = PacienteServicios.objects.filter(
-        estado_cuenta=estado_cuenta)
 
-    context = {
-        'servicios': paciente_servicios,
-        'paciente': paciente,
-    }
+    paciente = get_object_or_404(Paciente, pk=paciente_id)
+    try:
+        estado_cuenta = EstadoCuenta.objects.get(
+            paciente=paciente)
+        paciente_servicios = PacienteServicios.objects.filter(
+            estado_cuenta=estado_cuenta)
+
+        context = {
+            'servicios': paciente_servicios,
+            'paciente': paciente,
+        }
+    except EstadoCuenta.DoesNotExist:
+        context = {
+            'paciente': paciente,
+            'msg': "El paciente no tiene estado de cuenta. Agregue servicios a cobrar"}
+    except Exception as e:
+        context = {
+            'msg': "Ocurrió un error al cargar el estado de cuenta"}
     return render(request, 'pacientes/estado_cuenta.html', context=context)
 
 
