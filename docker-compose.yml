@@ -1,4 +1,4 @@
-version: 3
+version: '3'
 services:
     hic_app:
         build: .
@@ -6,4 +6,10 @@ services:
             - 8000:8000
         volumes: 
             - .:/app
-            
+        restart: unless-stopped
+        networks: 
+            - postgres_dev
+networks: 
+    postgres_dev:
+        external: 
+            name: postgres_dev

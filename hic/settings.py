@@ -24,7 +24,8 @@ SECRET_KEY = '_%q)@_kgh_n(uim74u3d4=2_c0(u-ga)eqb2271)4z%3vdfkf^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['playa.cisnemexico.org', 'cancun.cisnemexico.org','suc1.hic.local']
+ALLOWED_HOSTS = ['localhost', 'playa.cisnemexico.org',
+                 'cancun.cisnemexico.org', 'suc1.hic.local']
 
 # AUTH_USER_MODEL = 'main.User'
 LOGIN_REDIRECT_URL = '/'
@@ -95,7 +96,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'hic.urls'
 
-## CLOUDINARY CONFIGURATIONS
+# CLOUDINARY CONFIGURATIONS
 CLOUDINARY = {
     'max_length': 200,
     'cloud_name': 'h3dx0',
@@ -106,8 +107,7 @@ CLOUDINARY = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -154,7 +154,7 @@ DATABASES = {
         'NAME': 'hic_multi',
         'USER': 'hic_multi',
         'PASSWORD': 'Hic123.',
-        'HOST': '127.0.0.1',
+        'HOST': 'postgres',
         'PORT': 5432,
     }
 }
@@ -163,7 +163,7 @@ DATABASE_ROUTERS = (
 )
 
 
-TENANT_MODEL = "customer.Client"# app.Model
+TENANT_MODEL = "customer.Client"  # app.Model
 
 HIC_DIR = "hic/hic_pdf/"
 HIC_HOST = 'http://localhost:8000/'

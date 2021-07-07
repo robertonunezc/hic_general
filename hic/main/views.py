@@ -303,7 +303,7 @@ def first_tenant(request):
     from customer.models import Client
 
     # create your public tenant
-    tenant = Client(domain_url='playa.cisnemexico.org', schema_name='playaok', name='SucursalPlayaOK', plan='ANUAL',
+    tenant = Client(domain_url='suc1.hic.local', schema_name='local', name='Local', plan='ANUAL',
                     started_date='2020-12-12')
     tenant.save()
 
